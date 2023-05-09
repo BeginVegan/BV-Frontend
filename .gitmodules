@@ -1,0 +1,3 @@
+[submodule "BV-Frontend-env"]
+	path = BV-Frontend-env
+	url = https://github.com/BeginVegan/BV-Frontend-env.git
