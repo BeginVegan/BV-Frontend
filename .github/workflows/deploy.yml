@@ -2,7 +2,7 @@ name: deploy
 
 on:
   release:
-    types: [created]
+    types: [published]
 
 jobs:
   deploy:
@@ -10,7 +10,12 @@ jobs:
     env:
       working-directory: ./
     steps:
-      - uses: actions/checkout@master
+      - name: Checkout source code
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+          token: ${{ secrets.BV_TOKEN }}
+
       - name: Install dependencies
         working-directory: ${{ env.working-directory }}
         run: yarn install --immutable --immutable-cache --check-cache
