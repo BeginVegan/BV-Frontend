@@ -27,7 +27,11 @@ const AppRoutes = () => {
     <BrowserRouter>
       <Routes onError={handleRouteError}>
         <Route errorElement={<ErrorPage />}>
-          <Route path="/" element={isAuthenticated ? <Navigate to="/main" /> : <LoginPage />} />
+          <Route
+            path="/"
+            element={isAuthenticated ? <Navigate to="/main" /> : <Navigate to="/login" />}
+          />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/main" element={<MainPage />} />
           <Route path="*" element={<NotFoundPage />} />

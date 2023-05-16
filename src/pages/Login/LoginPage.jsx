@@ -1,6 +1,7 @@
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { Button } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
+import { Navigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
