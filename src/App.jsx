@@ -1,8 +1,12 @@
-import { useState } from 'react';
-import Main from './pages/Main/Main';
+import { ChakraProvider } from '@chakra-ui/react';
+import AppRoutes from './AppRoutes';
 
 function App() {
-  return <Main />;
+  return (
+    <ChakraProvider>
+      <AppRoutes />
+    </ChakraProvider>
+  );
 }
 
 export default App;
