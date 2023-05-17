@@ -1,18 +1,21 @@
+import Footer from '@/components/Layout/Footer';
+import Header from '@/components/Layout/Header';
 import AuthPage from '@/pages/Auth/AuthPage';
 import ErrorPage from '@/pages/Error/ErrorPage';
 import NotFoundPage from '@/pages/Error/NotFoundPage';
 import LoginPage from '@/pages/Login/LoginPage';
 import MainPage from '@/pages/Main/MainPage';
+import MyPageMain from '@/pages/Personal/MyPageMain';
+import SearchResultPage from '@/pages/SearchResult/SearchResultPage';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { useToast } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
-import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 const AppRoutes = () => {
   const toast = useToast();
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
-  console.log('11', isAuthenticated);
+  console.log('AppRoutes', isAuthenticated);
   const handleRouteError = error => {
     toast({
       title: 'Error',
@@ -24,20 +27,23 @@ const AppRoutes = () => {
   };
 
   return (
-    <BrowserRouter>
-      <Routes onError={handleRouteError}>
-        <Route errorElement={<ErrorPage />}>
-          <Route
-            path="/"
-            element={isAuthenticated ? <Navigate to="/main" /> : <Navigate to="/login" />}
-          />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/auth" element={<AuthPage />} />
-          <Route path="/main" element={<MainPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <Header />
+        <Routes onError={handleRouteError}>
+          <Route errorElement={<ErrorPage />}>
+            <Route path="/" element={<Navigate to="/main" />} />
+            <Route path="/main" element={<MainPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/search/:query" element={<SearchResultPage />} />
+            <Route path="/mypage" element={<MyPageMain />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </>
   );
 };
 
