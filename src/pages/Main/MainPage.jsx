@@ -1,6 +1,7 @@
 import { Button, Input, InputGroup, InputRightElement, Text, VStack } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -8,7 +9,14 @@ const MainPage = () => {
     if (e.key === 'Enter') handleSubmit();
   };
   const handleSubmit = () => {
-    if (inputRef === null || inputRef.current.value === 'null') return;
+    if (inputRef === null || inputRef.current.value === '') {
+      Swal.fire({
+        icon: 'question',
+        title: '검색어를 입력해주세요',
+        text: '지역, 식당 또는 음식',
+      });
+      return;
+    }
     const query = inputRef.current.value;
     console.log(query);
     navigate('/search/' + query);
