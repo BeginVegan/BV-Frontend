@@ -10,9 +10,10 @@ const ControllBar = () => {
   const [userStatus, setUserStatus] = useAtom(userAtom);
   const navigate = useNavigate();
   // console.log('ControllBar', isAuthenticated);
-
+  // console.log(userStatus);
   const logout = () => {
     setIsAuthenticated(false);
+    setUserStatus(null);
     /**
      * localStorage에서 토큰정보 삭제 해야함
      */
