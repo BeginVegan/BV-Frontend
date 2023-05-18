@@ -13,6 +13,9 @@ const ControllBar = () => {
 
   const logout = () => {
     setIsAuthenticated(false);
+    /**
+     * localStorage에서 토큰정보 삭제 해야함
+     */
     Swal.fire({
       icon: 'success',
       title: '로그아웃 성공',

@@ -9,6 +9,9 @@ const LoginPage = () => {
 
   const submitLogin = () => {
     setIsAuthenticated(true);
+    /**
+     * 로그인 api에서 토큰 받아와서 localStorage에 저장해야함
+     */
     Swal.fire({
       icon: 'success',
       title: '로그인 성공',
