@@ -22,6 +22,8 @@ const MainPage = () => {
     navigate('/search/' + query);
   };
   const inputRef = useRef(null);
+
+  console.log(import.meta.env.VITE_KAKAO_REST_API_KEY);
   return (
     <>
       <VStack>
