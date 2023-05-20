@@ -7,6 +7,7 @@ import { Navigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import SocialGoogle from './LoginAPIs/SocialGoogle';
 import SocialKakao from './LoginAPIs/SocialKakao';
+import SocialNaver from './LoginAPIs/SocialNaver';
 
 const LoginPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
@@ -49,6 +50,7 @@ const LoginPage = () => {
         <Text>Login Page</Text>
         <SocialKakao />
         <SocialGoogle />
+        <SocialNaver />
         <Button onClick={() => submitLogin('normal')}>일반 로그인</Button>
         <Button onClick={() => submitLogin('admin')}>관리자 로그인</Button>
       </VStack>
