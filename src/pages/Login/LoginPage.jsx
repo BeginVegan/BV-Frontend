@@ -5,6 +5,7 @@ import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import SocialKakao from './LoginAPIs/KakaoLogin';
 
 const LoginPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
@@ -52,7 +53,9 @@ const LoginPage = () => {
       {isAuthenticated ? <Navigate to="/main" /> : null}
       <VStack>
         <Text>Login Page</Text>
-        <Button onClick={handleLogin}>카카오 로그인</Button>
+        {/* <Button onClick={handleLogin}>카카오 로그인</Button> */}
+        {/* <KakaoLogin /> */}
+        <SocialKakao />
         <Button onClick={() => submitLogin('normal')}>일반 로그인</Button>
         <Button onClick={() => submitLogin('admin')}>관리자 로그인</Button>
       </VStack>
