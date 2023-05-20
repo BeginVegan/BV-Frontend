@@ -1,17 +1,21 @@
-import Footer from '@/components/Layout/Footer';
-import Header from '@/components/Layout/Header';
+import DefaultLayout from '@/components/Layout/DefaultLayout';
+import MainLayout from '@/components/Layout/MainLayout';
+import MypageLayout from '@/components/Layout/MypageLayout';
 import AdminPage from '@/pages/Admin/AdminPage';
 import AuthPage from '@/pages/Auth/AuthPage';
 import ErrorPage from '@/pages/Error/ErrorPage';
 import NotFoundPage from '@/pages/Error/NotFoundPage';
 import LoginPage from '@/pages/Login/LoginPage';
 import MainPage from '@/pages/Main/MainPage';
-import MyPage from '@/pages/Personal/MyPage';
+import BookmarkPage from '@/pages/Personal/BookmarkPage';
+import HistoryPage from '@/pages/Personal/HistoryPage';
+import MyPageMain from '@/pages/Personal/MyPageMain';
+import ReviseInfoPage from '@/pages/Personal/ReviseInfoPage';
 import SearchResultPage from '@/pages/SearchResult/SearchResultPage';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { useToast } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 const AppRoutes = () => {
   const toast = useToast();
@@ -29,22 +33,31 @@ const AppRoutes = () => {
 
   return (
     <>
-      <BrowserRouter>
-        <Header />
-        <Routes onError={handleRouteError}>
-          <Route errorElement={<ErrorPage />}>
+      <Routes onError={handleRouteError}>
+        <Route errorElement={<ErrorPage />}>
+          {/* MainLayout은 검색창 없는 헤더 만 있는 레이아웃*/}
+          <Route element={<MainLayout />}>
             <Route path="/" element={<Navigate to="/main" />} />
             <Route path="/main" element={<MainPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/auth" element={<AuthPage />} />
             <Route path="/admin" element={<AdminPage />} />
-            <Route path="/search/:query" element={<SearchResultPage />} />
-            <Route path="/mypage/*" element={<MyPage />} />
-            <Route path="*" element={<NotFoundPage />} />
           </Route>
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+          {/* DefaultLayout은 검색창 있는 헤더 만 있는 레이아웃*/}
+          <Route element={<DefaultLayout />}>
+            <Route path="/search/:query" element={<SearchResultPage />} />
+          </Route>
+          {/* Mypage는 검색창있는 헤더와 사이드바가 있는 레이아웃 */}
+          <Route element={<MypageLayout />}>
+            <Route path="/mypage/" element={<Navigate to="/mypage/main" />} />
+            <Route path="/mypage/main" element={<MyPageMain />} />
+            <Route path="/mypage/history" element={<HistoryPage />} />
+            <Route path="/mypage/bookmark" element={<BookmarkPage />} />
+            <Route path="/mypage/revise" element={<ReviseInfoPage />} />
+          </Route>
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
     </>
   );
 };
