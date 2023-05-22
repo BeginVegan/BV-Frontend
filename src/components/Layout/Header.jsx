@@ -1,7 +1,7 @@
+import ControllBar from '@/components/Layout/ControllBar';
 import { Box, Flex, useColorModeValue, Image } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import wideLogo from '@/assets/images/logo_wide_black.png';
-import ControllBar from './ControllBar';
 
 const Header = ({ children }) => {
   const navigate = useNavigate();
