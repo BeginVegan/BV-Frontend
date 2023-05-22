@@ -9,8 +9,7 @@ const ControllBar = () => {
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
   const [userStatus, setUserStatus] = useAtom(userAtom);
   const navigate = useNavigate();
-  // console.log('ControllBar', isAuthenticated);
-  // console.log(userStatus);
+
   const logout = () => {
     setIsAuthenticated(false);
     setUserStatus(null);

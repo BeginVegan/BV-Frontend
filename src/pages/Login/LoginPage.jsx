@@ -1,3 +1,4 @@
+import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
 import { Button, Text, VStack } from '@chakra-ui/react';
@@ -41,7 +42,7 @@ const LoginPage = () => {
   }, [userStatus]);
   return (
     <>
-      {isAuthenticated ? <Navigate to="/main" /> : null}
+      {isAuthenticated ? <Navigate to={ROUTES.MAIN} /> : null}
       <VStack>
         <Text>Login Page</Text>
         <Button onClick={() => submitLogin('normal')}>일반 로그인</Button>
