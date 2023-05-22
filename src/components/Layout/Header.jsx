@@ -2,6 +2,7 @@ import ControllBar from '@/components/Layout/ControllBar';
 import { Box, Flex, useColorModeValue, Image } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import wideLogo from '@/assets/images/logo_wide_black.png';
+import { ROUTES } from '@/routes/ROUTES';
 
 const Header = ({ children }) => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const Header = ({ children }) => {
         <Flex flex={{ base: 1 }} justify={'start'}>
           <Image
             h="32px"
-            onClick={() => navigate('/')}
+            onClick={() => navigate(ROUTES.HOME)}
             objectFit="cover"
             src={wideLogo}
             alt="logo"
