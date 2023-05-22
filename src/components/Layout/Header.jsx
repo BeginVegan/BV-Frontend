@@ -27,6 +27,8 @@ const Header = ({ children }) => {
             src={wideLogo}
             alt="logo"
             cursor={'pointer'}
+            onDragStart={e => e.preventDefault()}
+            onContextMenu={e => e.preventDefault()}
           />
           {children}
         </Flex>

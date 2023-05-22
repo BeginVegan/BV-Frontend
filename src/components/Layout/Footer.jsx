@@ -7,7 +7,14 @@ const Footer = () => {
   return (
     <Box minH={'162px'} marginTop={'auto'} bg={COLORS.GREEN400} color={'white'}>
       <Container as={Stack} maxW={'6xl'} py={4} spacing={4} justify={'center'} align={'center'}>
-        <Image h="32px" objectFit="cover" src={wideLogo} alt="logo" />
+        <Image
+          h="32px"
+          objectFit="cover"
+          src={wideLogo}
+          alt="logo"
+          onDragStart={e => e.preventDefault()}
+          onContextMenu={e => e.preventDefault()}
+        />
         <Stack direction={'row'} spacing={6}>
           <Link>Home</Link>
           <Link>About</Link>
