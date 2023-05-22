@@ -1,3 +1,4 @@
+import { ROUTES } from '@/routes/ROUTES';
 import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -18,8 +19,8 @@ const SearchBar = () => {
       return;
     }
     const query = inputRef.current.value;
-    console.log(query);
-    navigate('/search/' + query);
+
+    navigate(ROUTES.SEARCH_RAW + query);
   };
   const inputRef = useRef(null);
   return (

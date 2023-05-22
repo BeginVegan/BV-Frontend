@@ -1,6 +1,6 @@
+import ControllBar from '@/components/Layout/ControllBar';
 import { Divider, HStack, Spacer, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import ControllBar from './ControllBar';
 
 const Header = ({ children }) => {
   const navigate = useNavigate();

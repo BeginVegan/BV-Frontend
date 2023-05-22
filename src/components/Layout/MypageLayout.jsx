@@ -1,3 +1,7 @@
+import Footer from '@/components/Layout/Footer';
+import Header from '@/components/Layout/Header';
+import Sidebar from '@/components/Layout/Sidebar';
+import SearchBar from '@/components/search/SearchBar';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
 import { HStack, VStack } from '@chakra-ui/react';
@@ -5,15 +9,11 @@ import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import SearchBar from '../search/SearchBar';
-import Footer from './Footer';
-import Header from './Header';
-import Sidebar from './Sidebar';
 
 const MypageLayout = () => {
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
   const [userStatus, setUserStatus] = useAtom(userAtom);
-  // console.log(userStatus);
+
   const navigate = useNavigate();
   useEffect(() => {
     if (isAuthenticated === false) {

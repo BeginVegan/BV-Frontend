@@ -1,3 +1,4 @@
+import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
 import { Spacer, Text } from '@chakra-ui/react';
@@ -37,9 +38,9 @@ const Sidebar = () => {
 
   return (
     <>
-      <Text onClick={() => navigate('/mypage/history')}>히스토리</Text>
-      <Text onClick={() => navigate('/mypage/bookmark')}>즐겨찾기</Text>
-      <Text onClick={() => navigate('/mypage/revise')}>정보수정</Text>
+      <Text onClick={() => navigate(ROUTES.MYPAGE_HISTORY)}>히스토리</Text>
+      <Text onClick={() => navigate(ROUTES.MYPAGE_BOOKMARK)}>즐겨찾기</Text>
+      <Text onClick={() => navigate(ROUTES.MYPAGE_REVISE)}>정보수정</Text>
       <Spacer />
       <Text onClick={dropUser}>회원탈퇴</Text>
     </>

@@ -14,7 +14,6 @@ const SearchResultPage = () => {
     return data;
   });
 
-  console.log(data);
   return (
     <VStack>
       <Text>{query}에 대한 검색결과</Text>
