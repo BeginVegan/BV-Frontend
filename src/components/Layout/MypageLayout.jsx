@@ -2,6 +2,7 @@ import Footer from '@/components/Layout/Footer';
 import Header from '@/components/Layout/Header';
 import Sidebar from '@/components/Layout/Sidebar';
 import SearchBar from '@/components/search/SearchBar';
+import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
 import { HStack, VStack } from '@chakra-ui/react';
@@ -22,7 +23,7 @@ const MypageLayout = () => {
         title: '로그인이 필요합니다',
         text: '메인으로 이동합니다',
       });
-      navigate('/main');
+      navigate(ROUTES.HOME);
     }
   }, [isAuthenticated]);
   return (

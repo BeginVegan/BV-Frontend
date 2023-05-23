@@ -10,6 +10,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
   const [userStatus, setUserStatus] = useAtom(userAtom);
+
   const dropUser = () => {
     Swal.fire({
       icon: 'question',
@@ -29,7 +30,7 @@ const Sidebar = () => {
              */
             setIsAuthenticated(false);
             setUserStatus(null);
-            navigate('/main');
+            navigate(ROUTES.HOME);
           }
         });
       }

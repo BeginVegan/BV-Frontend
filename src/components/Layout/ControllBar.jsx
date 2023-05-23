@@ -1,3 +1,4 @@
+import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
 import { Button, Stack } from '@chakra-ui/react';
@@ -21,7 +22,7 @@ const ControllBar = () => {
       title: '로그아웃 성공',
       text: '메인으로 돌아갑니다',
     });
-    navigate('/main');
+    navigate(ROUTES.HOME);
   };
 
   return (
@@ -48,7 +49,7 @@ const ControllBar = () => {
             fontSize={'sm'}
             fontWeight={400}
             variant={'link'}
-            onClick={() => navigate('/login')}
+            onClick={() => navigate(ROUTES.LOGIN)}
             cursor={'pointer'}
           >
             로그인
@@ -76,7 +77,7 @@ const ControllBar = () => {
           _hover={{
             bg: 'gray.300',
           }}
-          onClick={() => navigate('/mypage')}
+          onClick={() => navigate(ROUTES.MYPAGE_HOME)}
           cursor={'pointer'}
         >
           마이페이지
@@ -90,7 +91,7 @@ const ControllBar = () => {
           _hover={{
             bg: 'gray.300',
           }}
-          onClick={() => navigate('/admin')}
+          onClick={() => navigate(ROUTES.ADMIN)}
           cursor={'pointer'}
         >
           관리페이지
