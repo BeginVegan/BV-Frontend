@@ -1,16 +1,15 @@
-import Footer from '@/components/Layout/Footer';
 import Header from '@/components/Layout/Header';
 import SearchBar from '@/components/search/SearchBar';
 import { Outlet } from 'react-router-dom';
 
-const DefaultLayout = () => {
+const DefaultLayout = ({ hasFooter }) => {
   return (
     <>
       <Header>
         <SearchBar />
       </Header>
       <Outlet />
-      <Footer />
+      {hasFooter && <Footer />}
     </>
   );
 };
