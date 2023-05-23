@@ -1,3 +1,6 @@
+import SocialGoogle from '@/components/LoginAPIs/SocialGoogle';
+import SocialKakao from '@/components/LoginAPIs/SocialKakao';
+import SocialNaver from '@/components/LoginAPIs/SocialNaver';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
 import { Button, Text, VStack } from '@chakra-ui/react';
@@ -5,9 +8,6 @@ import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import SocialGoogle from './LoginAPIs/SocialGoogle';
-import SocialKakao from './LoginAPIs/SocialKakao';
-import SocialNaver from './LoginAPIs/SocialNaver';
 
 const LoginPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);

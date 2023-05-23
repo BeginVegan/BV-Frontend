@@ -6,7 +6,7 @@ const SocialKakao = () => {
   const kakaoClientId = import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY;
 
   const kakaoOnSuccess = async data => {
-    const idToken = data.response.id_token; // 인가코드 백엔드로 전달
+    const idToken = data.response.id_token;
     console.log(idToken);
     navigate('/auth', {
       state: {

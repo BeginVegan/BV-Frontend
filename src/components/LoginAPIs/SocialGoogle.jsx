@@ -20,7 +20,7 @@ const SocialGoogle = () => {
   return (
     <>
       <GoogleOAuthProvider clientId={clientId}>
-        <GoogleLogin onSuccess={googleOnSuccess} onFailure={googleOnFailure} />
+        <GoogleLogin size="large" onSuccess={googleOnSuccess} onFailure={googleOnFailure} />
       </GoogleOAuthProvider>
     </>
   );

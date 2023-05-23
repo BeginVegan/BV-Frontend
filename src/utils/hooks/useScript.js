@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // Hook
-function useScript(src) {
+export function useScript(src) {
   // Keep track of script status ("idle", "loading", "ready", "error")
   const [status, setStatus] = useState(src ? 'loading' : 'idle');
   useEffect(
@@ -55,41 +55,3 @@ function useScript(src) {
   );
   return status;
 }
-function SocialNaver() {
-  const status = useScript('https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js');
-  const [naverLogin, setNaverLogin] = useState(null);
-  const { naver } = window;
-
-  const naverClientId = import.meta.env.VITE_NAVER_CLIENT_ID;
-  const naverCallbackUrl = 'http://localhost:5173/auth';
-  useEffect(() => {
-    if (status === 'ready') {
-      const newNaverLogin = new naver.LoginWithNaverId({
-        clientId: naverClientId,
-        callbackUrl: naverCallbackUrl,
-        isPopup: true,
-        loginButton: {
-          color: 'green',
-          type: 3,
-          height: 50,
-        },
-      });
-
-      newNaverLogin.init();
-    }
-  }, [status]);
-
-  useEffect(() => {
-    if (naverLogin) {
-      naverLogin.init();
-    }
-  }, [naverLogin]);
-
-  return (
-    <>
-      <div id="naverIdLogin"> </div>
-    </>
-  );
-}
-
-export default SocialNaver;
