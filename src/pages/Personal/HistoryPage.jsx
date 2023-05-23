@@ -6,7 +6,7 @@ const HistoryPage = () => {
     <>
       <Tabs>
         <Flex>
-          <VStack>
+          <VStack width={'100%'}>
             <TabList>
               <HStack spacing={'2rem'}>
                 <Tab>예약중</Tab>

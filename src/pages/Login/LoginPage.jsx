@@ -1,6 +1,7 @@
 import SocialGoogle from '@/components/LoginAPIs/SocialGoogle';
 import SocialKakao from '@/components/LoginAPIs/SocialKakao';
 import SocialNaver from '@/components/LoginAPIs/SocialNaver';
+import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
 import { Button, Text, VStack } from '@chakra-ui/react';
@@ -45,7 +46,7 @@ const LoginPage = () => {
 
   return (
     <>
-      {isAuthenticated ? <Navigate to="/main" /> : null}
+      {isAuthenticated ? <Navigate to={ROUTES.MAIN} /> : null}
       <VStack>
         <Text>Login Page</Text>
         <SocialKakao />
