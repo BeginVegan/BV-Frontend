@@ -1,3 +1,6 @@
+import SocialGoogle from '@/components/LoginAPIs/SocialGoogle';
+import SocialKakao from '@/components/LoginAPIs/SocialKakao';
+import SocialNaver from '@/components/LoginAPIs/SocialNaver';
 import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
@@ -40,11 +43,15 @@ const LoginPage = () => {
       });
     }
   }, [userStatus]);
+
   return (
     <>
       {isAuthenticated ? <Navigate to={ROUTES.MAIN} /> : null}
       <VStack>
         <Text>Login Page</Text>
+        <SocialKakao />
+        <SocialGoogle />
+        <SocialNaver />
         <Button onClick={() => submitLogin('normal')}>일반 로그인</Button>
         <Button onClick={() => submitLogin('admin')}>관리자 로그인</Button>
       </VStack>

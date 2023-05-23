@@ -4,6 +4,24 @@ import Hero from '@/components/Layout/Hero';
 import BestStoreCard from '@/components/main/BestStoreCard';
 
 const MainPage = () => {
+//   const navigate = useNavigate();
+//   const handleKeyDown = e => {
+//     if (e.key === 'Enter') handleSubmit();
+//   };
+//   const handleSubmit = () => {
+//     if (inputRef === null || inputRef.current.value === '') {
+//       Swal.fire({
+//         icon: 'question',
+//         title: '검색어를 입력해주세요',
+//         text: '지역, 식당 또는 음식',
+//       });
+//       return;
+//     }
+//     const query = inputRef.current.value;
+//     console.log(query);
+//     navigate('/search/' + query);
+//   };
+//   const inputRef = useRef(null);
   return (
     <>
       <Hero />
