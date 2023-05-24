@@ -10,6 +10,7 @@ export const ROUTES = {
   BEST: '/best/:category',
   RESTAURANT_RAW: '/resturant/',
   RESTAURANT: '/resturant/:resturantno',
+  RESTAURANT_RESERVATION: '/reservation',
   MYPAGE_HOME: '/mypage',
   MYPAGE_MAIN: '/mypage/main',
   MYPAGE_HISTORY: '/mypage/history',
