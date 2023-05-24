@@ -8,6 +8,8 @@ export const ROUTES = {
   SEARCH: '/search/:query',
   BEST_RAW: '/best/',
   BEST: '/best/:category',
+  RESTAURANT_RAW: '/resturant/',
+  RESTAURANT: '/resturant/:resturantno',
   MYPAGE_HOME: '/mypage',
   MYPAGE_MAIN: '/mypage/main',
   MYPAGE_HISTORY: '/mypage/history',

@@ -18,6 +18,7 @@ import { useAtom } from 'jotai';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './ROUTES';
 import BestPage from '@/pages/Best/BestPage';
+import RestaurantDetailPage from '@/pages/Restaurant/RestaurantDetailPage';
 
 const AppRoutes = () => {
   const toast = useToast();
@@ -48,6 +49,10 @@ const AppRoutes = () => {
           <Route element={<DefaultLayout />}>
             <Route path={ROUTES.SEARCH} element={<SearchResultPage />} />
             <Route path={ROUTES.BEST} element={<BestPage />} />
+          </Route>
+          {/* DefaultLayout 레이아웃에서 푸터가 있는 레이아웃*/}
+          <Route element={<DefaultLayout hasFooter={true} />}>
+            <Route path={ROUTES.RESTAURANT} element={<RestaurantDetailPage />} />
           </Route>
           {/* Mypage는 검색창있는 헤더와 사이드바가 있는 레이아웃 */}
           <Route element={<MypageLayout />}>
