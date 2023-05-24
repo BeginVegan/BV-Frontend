@@ -1,14 +1,18 @@
 import { ROUTES } from '@/routes/ROUTES';
-import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
+import { SearchIcon } from '@chakra-ui/icons';
+import { Input, InputGroup, InputLeftElement, InputRightAddon } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-const SearchBar = () => {
+const SearchBar = ({ isMain }) => {
   const navigate = useNavigate();
+  const inputRef = useRef(null);
+
   const handleKeyDown = e => {
     if (e.key === 'Enter') handleSubmit();
   };
+
   const handleSubmit = () => {
     if (inputRef === null || inputRef.current.value === '') {
       Swal.fire({
@@ -22,23 +26,34 @@ const SearchBar = () => {
 
     navigate(ROUTES.SEARCH_RAW + query);
   };
-  const inputRef = useRef(null);
+
   return (
-    <>
-      <InputGroup size="lg">
-        <Input
-          placeholder="지역, 식당 또는 음식"
-          size="lg"
-          ref={inputRef}
-          onKeyDown={handleKeyDown}
-        />
-        <InputRightElement>
-          <Button size="lg" onClick={handleSubmit}>
-            검색
-          </Button>
-        </InputRightElement>
-      </InputGroup>
-    </>
+    <InputGroup
+      ml={!isMain && 8}
+      size={isMain ? 'lg' : 'md'}
+      w={{ base: '300px', lg: '600px' }}
+      display={isMain ? 'flex' : { base: 'none', lg: 'flex' }}
+    >
+      <InputLeftElement
+        pointerEvents="none"
+        children={<SearchIcon boxSize={5} color="gray.300" />}
+      />
+      <Input
+        placeholder="지역, 식당 또는 음식"
+        size="full"
+        borderRadius={isMain ? '3xl' : 'md'}
+        bg="white"
+        ref={inputRef}
+        onKeyDown={handleKeyDown}
+      />
+      <InputRightAddon
+        borderRightRadius={isMain && '3xl'}
+        children="검색"
+        _hover={{ bgColor: 'green.200' }}
+        cursor={'pointer'}
+        onClick={handleSubmit}
+      />
+    </InputGroup>
   );
 };
 export default SearchBar;

@@ -20,7 +20,7 @@ const Header = ({ children }) => {
         borderColor={useColorModeValue('gray.200', 'gray.900')}
         align={'center'}
       >
-        <Flex flex={{ base: 1 }} justify={'start'}>
+        <Flex flex={{ base: 1 }} align={'center'}>
           <Image
             h="32px"
             onClick={() => navigate(ROUTES.HOME)}

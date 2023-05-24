@@ -1,7 +1,7 @@
 import React from 'react';
 import { Stack, Flex, Text, VStack, useBreakpointValue } from '@chakra-ui/react';
 import heroImage from '@/assets/images/hero.jpg';
-import HeroSearchBar from '@/components/search/HeroSearchBar';
+import SearchBar from '@/components/search/SearchBar';
 
 const Hero = () => {
   return (
@@ -30,7 +30,7 @@ const Hero = () => {
             <br /> 비긴비건.
           </Text>
           <Stack direction={'row'}>
-            <HeroSearchBar />
+            <SearchBar isMain={true} />
           </Stack>
         </Stack>
       </VStack>
