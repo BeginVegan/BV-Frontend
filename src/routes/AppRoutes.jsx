@@ -17,6 +17,7 @@ import { useToast } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './ROUTES';
+import BestPage from '@/pages/Best/BestPage';
 
 const AppRoutes = () => {
   const toast = useToast();
@@ -46,6 +47,7 @@ const AppRoutes = () => {
           {/* DefaultLayout은 검색창 있는 헤더 만 있는 레이아웃*/}
           <Route element={<DefaultLayout />}>
             <Route path={ROUTES.SEARCH} element={<SearchResultPage />} />
+            <Route path={ROUTES.BEST} element={<BestPage />} />
           </Route>
           {/* Mypage는 검색창있는 헤더와 사이드바가 있는 레이아웃 */}
           <Route element={<MypageLayout />}>
