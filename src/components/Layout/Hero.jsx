@@ -1,7 +1,7 @@
 import React from 'react';
 import { Stack, Flex, Text, VStack, useBreakpointValue } from '@chakra-ui/react';
 import heroImage from '@/assets/images/hero.jpg';
-import SearchBar from '../search/SearchBar';
+import SearchBar from '@/components/search/SearchBar';
 
 const Hero = () => {
   return (
