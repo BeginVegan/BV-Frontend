@@ -14,8 +14,10 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { RiHeart3Line } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
 const RestaurantDetailPage = () => {
+  const navigator = useNavigate();
   const [veganLevel, setVeganLevel] = useState(0);
 
   return (
@@ -66,7 +68,12 @@ const RestaurantDetailPage = () => {
               </Text>
             </Box>
             <Box display={'flex'} alignItems={'center'} gap={4}>
-              <Button color={'white'} bgColor={'red.200'} _hover={{ bgColor: 'red.400' }}>
+              <Button
+                color={'white'}
+                bgColor={'red.200'}
+                _hover={{ bgColor: 'red.400' }}
+                onClick={() => navigator('/')}
+              >
                 주문하기
               </Button>
               <RiHeart3Line size={30} fill="red" />
@@ -204,24 +211,24 @@ const RestaurantDetailPage = () => {
                     <Image
                       objectFit="cover"
                       h={'90px'}
-                      w={'120px'}
+                      w={'90px'}
                       src={'https://source.unsplash.com/random/?dish'}
                     />
                     <Image
                       objectFit="cover"
                       h={'90px'}
-                      w={'120px'}
+                      w={'90px'}
                       src={'https://source.unsplash.com/random/?dish'}
                     />
                     <Image
                       objectFit="cover"
                       h={'90px'}
-                      w={'120px'}
+                      w={'90px'}
                       src={'https://source.unsplash.com/random/?dish'}
                     />
                     <Flex
                       h={'90px'}
-                      w={'120px'}
+                      w={'90px'}
                       backgroundSize={'cover'}
                       backgroundPosition={'center center'}
                       alignItems={'center'}
@@ -268,24 +275,24 @@ const RestaurantDetailPage = () => {
                     <Image
                       objectFit="cover"
                       h={'90px'}
-                      w={'120px'}
+                      w={'90px'}
                       src={'https://source.unsplash.com/random/?dish'}
                     />
                     <Image
                       objectFit="cover"
                       h={'90px'}
-                      w={'120px'}
+                      w={'90px'}
                       src={'https://source.unsplash.com/random/?dish'}
                     />
                     <Image
                       objectFit="cover"
                       h={'90px'}
-                      w={'120px'}
+                      w={'90px'}
                       src={'https://source.unsplash.com/random/?dish'}
                     />
                     <Flex
                       h={'90px'}
-                      w={'120px'}
+                      w={'90px'}
                       backgroundSize={'cover'}
                       backgroundPosition={'center center'}
                       alignItems={'center'}
