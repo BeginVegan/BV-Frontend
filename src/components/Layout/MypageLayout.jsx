@@ -31,11 +31,11 @@ const MypageLayout = () => {
       <Header>
         <SearchBar />
       </Header>
-      <HStack width={'100%'}>
-        <VStack width={'30%'} height={'95vh'}>
+      <HStack width={'100%'} height={'100%'}>
+        <VStack height={'100vh'} align={'start'}>
           <Sidebar />
         </VStack>
-        <VStack width={'100%'}>
+        <VStack width={'100%'} height={'100%'} zIndex={0} alignContent={'start'}>
           <Outlet />
         </VStack>
       </HStack>

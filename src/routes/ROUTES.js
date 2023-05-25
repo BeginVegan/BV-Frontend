@@ -16,5 +16,6 @@ export const ROUTES = {
   MYPAGE_HISTORY: '/mypage/history',
   MYPAGE_BOOKMARK: '/mypage/bookmark',
   MYPAGE_REVISE: '/mypage/revise',
+  MYPAGE_DROP: '/mypage/drop',
   OTHERS: '*',
 };

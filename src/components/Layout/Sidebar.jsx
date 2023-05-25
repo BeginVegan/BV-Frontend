@@ -1,83 +1,130 @@
 import { ROUTES } from '@/routes/ROUTES';
-import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
-import { userAtom } from '@/utils/atoms/userAtom';
-import { Spacer, Text, VStack } from '@chakra-ui/react';
-import { useAtom } from 'jotai';
+import {
+  Box,
+  CloseButton,
+  Drawer,
+  DrawerContent,
+  Flex,
+  Icon,
+  IconButton,
+  Text,
+  useColorModeValue,
+  useDisclosure,
+} from '@chakra-ui/react';
+import { FiCompass, FiHome, FiMenu, FiTrendingUp } from 'react-icons/fi';
+import { TiWarningOutline } from 'react-icons/ti';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+const LinkItems = [
+  { name: '메인', icon: FiHome, route: ROUTES.MYPAGE_MAIN },
+  { name: '히스토리', icon: FiTrendingUp, route: ROUTES.MYPAGE_HISTORY },
+  { name: '즐겨찾기', icon: FiCompass, route: ROUTES.MYPAGE_BOOKMARK },
+  { name: '회원탈퇴', icon: TiWarningOutline, route: ROUTES.MYPAGE_DROP },
+];
 
-const Sidebar = () => {
-  const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
-  const [userStatus, setUserStatus] = useAtom(userAtom);
-  // const [whereAmI, setWhereAmI] = useState('main');
-  const _hereIAm = useLocation();
-  const hereIAm = _hereIAm.pathname.split('/')[2];
-
-  console.log('here', hereIAm);
-  const dropUser = () => {
-    Swal.fire({
-      icon: 'question',
-      title: '정말 탈퇴하시겠습니까?',
-      text: '탈퇴 요청은 되돌릴 수 없습니다',
-      showCancelButton: true,
-    }).then(res => {
-      if (res.isConfirmed) {
-        Swal.fire({
-          icon: 'success',
-          title: '회원 탈퇴 성공',
-          text: '그동안 이용해 주셔서 감사합니다',
-        }).then(res => {
-          if (res.isConfirmed) {
-            /**
-             * 회원 삭제 쿼리 보내는곳
-             */
-            setIsAuthenticated(false);
-            setUserStatus(null);
-            navigate(ROUTES.HOME);
-          }
-        });
-      }
-    });
-  };
-
+export default function Sidebar({ children }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <VStack
-      width={'100%'}
-      height={'100%'}
-      spacing={'1rem'}
-      borderRight={'1px'}
-      borderColor={'gray.300'}
-      paddingTop={'3rem'}
-      paddingBottom={'3rem'}
+    <Box minH={'100%'} bg={useColorModeValue('gray.100', 'gray.900')}>
+      <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
+      <Drawer
+        autoFocus={false}
+        isOpen={isOpen}
+        placement="left"
+        onClose={onClose}
+        returnFocusOnClose={false}
+        onOverlayClick={onClose}
+        size="full"
+      >
+        <DrawerContent>
+          <SidebarContent onClose={onClose} />
+        </DrawerContent>
+      </Drawer>
+      {/* mobilenav */}
+      <MobileNav display={{ base: 'flex', md: 'none' }} onOpen={onOpen} />
+      <Box ml={{ base: 0, md: 60 }} p="4">
+        {children}
+      </Box>
+    </Box>
+  );
+}
+
+const SidebarContent = ({ onClose, ...rest }) => {
+  return (
+    <Box
+      bg={useColorModeValue('white', 'gray.900')}
+      borderRight="1px"
+      borderRightColor={useColorModeValue('gray.200', 'gray.700')}
+      w={{ base: 'full', md: 60 }}
+      h="100%"
+      {...rest}
     >
-      <Text
-        fontSize={hereIAm === 'history' ? '2xl' : 'xl'}
-        as={hereIAm === 'history' ? 'u' : null}
-        onClick={() => navigate(ROUTES.MYPAGE_HISTORY)}
-      >
-        히스토리
-      </Text>
-      <Text
-        fontSize={hereIAm === 'bookmark' ? '2xl' : 'xl'}
-        as={hereIAm === 'bookmark' ? 'u' : null}
-        onClick={() => navigate(ROUTES.MYPAGE_BOOKMARK)}
-      >
-        즐겨찾기
-      </Text>
-      <Text
-        fontSize={hereIAm === 'revise' ? '2xl' : 'xl'}
-        as={hereIAm === 'revise' ? 'u' : null}
-        onClick={() => navigate(ROUTES.MYPAGE_REVISE)}
-      >
-        정보수정
-      </Text>
-      <Spacer />
-      <Text fontSize={'xl'} onClick={dropUser}>
-        회원탈퇴
-      </Text>
-    </VStack>
+      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
+        <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
+      </Flex>
+      {LinkItems.map(link => (
+        <NavItem key={link.name} icon={link.icon} route={link.route}>
+          {link.name}
+        </NavItem>
+      ))}
+    </Box>
   );
 };
 
-export default Sidebar;
+const NavItem = ({ icon, route, children, ...rest }) => {
+  const navigate = useNavigate();
+  const _hereIAm = useLocation();
+  const hereIAm = _hereIAm.pathname.split('/')[2];
+
+  return (
+    <Flex
+      align="center"
+      p="4"
+      mx="4"
+      borderRadius="lg"
+      role="group"
+      cursor="pointer"
+      _hover={{
+        bg: 'green',
+        color: 'white',
+      }}
+      marginBottom={'1rem'}
+      bg={hereIAm === route.split('/')[2] ? 'green' : null}
+      color={hereIAm === route.split('/')[2] ? 'white' : 'black'}
+      {...rest}
+      onClick={() => navigate(route)}
+    >
+      {icon && (
+        <Icon
+          mr="4"
+          fontSize="16"
+          _groupHover={{
+            color: 'white',
+          }}
+          as={icon}
+        />
+      )}
+      {children}
+    </Flex>
+  );
+};
+
+const MobileNav = ({ onOpen, ...rest }) => {
+  return (
+    <Flex
+      ml={{ base: 0, md: 60 }}
+      px={{ base: 4, md: 24 }}
+      height="20"
+      alignItems="center"
+      bg={useColorModeValue('white', 'gray.900')}
+      borderBottomWidth="1px"
+      borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
+      justifyContent="flex-start"
+      {...rest}
+    >
+      <IconButton variant="outline" onClick={onOpen} aria-label="open menu" icon={<FiMenu />} />
+      <Text fontSize="2xl" ml="8" fontFamily="monospace" fontWeight="bold">
+        Logo
+      </Text>
+    </Flex>
+  );
+};

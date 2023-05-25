@@ -1,10 +1,31 @@
-import { Text, VStack } from '@chakra-ui/react';
+import { Box, HStack, Heading, Text, VStack } from '@chakra-ui/react';
+import { CountUp } from 'use-count-up';
 
 const MyPageMain = () => {
+  const point = '1000000000';
+  const grade = 'VVVVVVVIP';
+
   return (
-    <VStack width={'100%'}>
-      <Text>마이페이지 메인</Text>
-    </VStack>
+    <Box p={8} maxW="md" mx="auto">
+      <VStack spacing={6} align="center">
+        <Heading size="xl">보유 포인트</Heading>
+        <HStack spacing={'0.5rem'}>
+          <Text fontSize="4xl" fontWeight="bold" color="blue.600">
+            <CountUp isCounting={true} end={Number(point)} duration={3.2} easing={'easeOutCubic'} />
+          </Text>
+          <Text fontWeight={'bold'} fontSize={'2xl'}>
+            점
+          </Text>
+        </HStack>
+        <Text fontSize="2xl" fontWeight="bold" color="purple.600">
+          님의 등급은
+        </Text>
+        <Text fontSize="6xl" fontWeight="bold" color="red">
+          {grade}
+        </Text>
+      </VStack>
+    </Box>
   );
 };
+
 export default MyPageMain;
