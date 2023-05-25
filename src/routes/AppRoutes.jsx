@@ -1,25 +1,25 @@
-import { useToast } from '@chakra-ui/react';
-import { useAtom } from 'jotai';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import { ROUTES } from './ROUTES';
-import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import DefaultLayout from '@/components/Layout/DefaultLayout';
 import MainLayout from '@/components/Layout/MainLayout';
 import MypageLayout from '@/components/Layout/MypageLayout';
 import AdminPage from '@/pages/Admin/AdminPage';
 import AuthPage from '@/pages/Auth/AuthPage';
+import BestPage from '@/pages/Best/BestPage';
 import ErrorPage from '@/pages/Error/ErrorPage';
 import NotFoundPage from '@/pages/Error/NotFoundPage';
 import LoginPage from '@/pages/Login/LoginPage';
 import MainPage from '@/pages/Main/MainPage';
 import BookmarkPage from '@/pages/Personal/BookmarkPage';
+import DropPage from '@/pages/Personal/DropPage';
 import HistoryPage from '@/pages/Personal/HistoryPage';
 import MyPageMain from '@/pages/Personal/MyPageMain';
-import ReviseInfoPage from '@/pages/Personal/ReviseInfoPage';
-import SearchResultPage from '@/pages/SearchResult/SearchResultPage';
-import BestPage from '@/pages/Best/BestPage';
-import RestaurantDetailPage from '@/pages/Restaurant/RestaurantDetailPage';
 import RerservationRestaurant from '@/pages/Restaurant/RerservationRestaurant';
+import RestaurantDetailPage from '@/pages/Restaurant/RestaurantDetailPage';
+import SearchResultPage from '@/pages/SearchResult/SearchResultPage';
+import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
+import { useToast } from '@chakra-ui/react';
+import { useAtom } from 'jotai';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { ROUTES } from './ROUTES';
 
 const AppRoutes = () => {
   const toast = useToast();
@@ -62,7 +62,7 @@ const AppRoutes = () => {
             <Route path={ROUTES.MYPAGE_MAIN} element={<MyPageMain />} />
             <Route path={ROUTES.MYPAGE_HISTORY} element={<HistoryPage />} />
             <Route path={ROUTES.MYPAGE_BOOKMARK} element={<BookmarkPage />} />
-            <Route path={ROUTES.MYPAGE_REVISE} element={<ReviseInfoPage />} />
+            <Route path={ROUTES.MYPAGE_DROP} element={<DropPage />} />
           </Route>
           <Route path={ROUTES.AUTH} element={<AuthPage />} />
           <Route path={ROUTES.OTHERS} element={<NotFoundPage />} />
