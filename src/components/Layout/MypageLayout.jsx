@@ -32,7 +32,7 @@ const MypageLayout = () => {
         <SearchBar />
       </Header>
       <HStack width={'100%'}>
-        <VStack width={'30%'}>
+        <VStack width={'30%'} height={'95vh'}>
           <Sidebar />
         </VStack>
         <VStack width={'100%'}>
