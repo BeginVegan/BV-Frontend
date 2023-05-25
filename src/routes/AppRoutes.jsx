@@ -1,3 +1,8 @@
+import { useToast } from '@chakra-ui/react';
+import { useAtom } from 'jotai';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { ROUTES } from './ROUTES';
+import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import DefaultLayout from '@/components/Layout/DefaultLayout';
 import MainLayout from '@/components/Layout/MainLayout';
 import MypageLayout from '@/components/Layout/MypageLayout';
@@ -12,13 +17,9 @@ import HistoryPage from '@/pages/Personal/HistoryPage';
 import MyPageMain from '@/pages/Personal/MyPageMain';
 import ReviseInfoPage from '@/pages/Personal/ReviseInfoPage';
 import SearchResultPage from '@/pages/SearchResult/SearchResultPage';
-import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
-import { useToast } from '@chakra-ui/react';
-import { useAtom } from 'jotai';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import { ROUTES } from './ROUTES';
 import BestPage from '@/pages/Best/BestPage';
 import RestaurantDetailPage from '@/pages/Restaurant/RestaurantDetailPage';
+import RerservationRestaurant from '@/pages/Restaurant/RerservationRestaurant';
 
 const AppRoutes = () => {
   const toast = useToast();
@@ -53,6 +54,7 @@ const AppRoutes = () => {
           {/* DefaultLayout 레이아웃에서 푸터가 있는 레이아웃*/}
           <Route element={<DefaultLayout hasFooter={true} />}>
             <Route path={ROUTES.RESTAURANT} element={<RestaurantDetailPage />} />
+            <Route path={ROUTES.RESTAURANT_RESERVATION} element={<RerservationRestaurant />} />
           </Route>
           {/* Mypage는 검색창있는 헤더와 사이드바가 있는 레이아웃 */}
           <Route element={<MypageLayout />}>

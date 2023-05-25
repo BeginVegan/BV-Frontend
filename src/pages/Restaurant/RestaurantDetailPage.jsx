@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { RiHeart3Line } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/routes/ROUTES';
 
 const RestaurantDetailPage = () => {
   const navigator = useNavigate();
@@ -72,7 +73,7 @@ const RestaurantDetailPage = () => {
                 color={'white'}
                 bgColor={'red.200'}
                 _hover={{ bgColor: 'red.400' }}
-                onClick={() => navigator('/')}
+                onClick={() => navigator(ROUTES.RESTAURANT_RESERVATION)}
               >
                 주문하기
               </Button>
