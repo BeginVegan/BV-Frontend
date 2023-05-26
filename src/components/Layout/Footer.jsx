@@ -5,7 +5,7 @@ import wideLogo from '@/assets/images/logo_wide.png';
 
 const Footer = () => {
   return (
-    <Box minH={'162px'} marginTop={'auto'} bg={COLORS.GREEN400} color={'white'}>
+    <Box bottom={0} minH={'162px'} bg={COLORS.GREEN400} color={'white'}>
       <Container as={Stack} maxW={'6xl'} py={4} spacing={4} justify={'center'} align={'center'}>
         <Image
           h="32px"
