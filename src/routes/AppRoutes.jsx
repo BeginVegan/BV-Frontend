@@ -15,6 +15,7 @@ import MyPageMain from '@/pages/Personal/MyPageMain';
 import RerservationRestaurant from '@/pages/Restaurant/RerservationRestaurant';
 import RestaurantDetailPage from '@/pages/Restaurant/RestaurantDetailPage';
 import SearchResultPage from '@/pages/SearchResult/SearchResultPage';
+import RestaurantRegistration from '@/pages/Admin/Register/RestaurantRegistration';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { useToast } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
@@ -44,7 +45,8 @@ const AppRoutes = () => {
             <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.MAIN} />} />
             <Route path={ROUTES.MAIN} element={<MainPage />} />
             <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-            <Route path={ROUTES.ADMIN} element={<AdminPage />} />
+            <Route path={ROUTES.ADMIN} element={<AdminPage />} />{' '}
+            <Route path={ROUTES.RESTAURANT_REGISTRATION} element={<RestaurantRegistration />} />
           </Route>
           {/* DefaultLayout은 검색창 있는 헤더 만 있는 레이아웃*/}
           <Route element={<DefaultLayout />}>
