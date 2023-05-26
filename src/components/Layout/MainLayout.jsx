@@ -1,15 +1,21 @@
 import Footer from '@/components/Layout/Footer';
 import Header from '@/components/Layout/Header';
-import { Box } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 
 const MainLayout = () => {
   return (
     <>
       <Header />
-      <Box minH={'78vh'}>
+      <Flex
+        position={'relative'}
+        minH={'calc(100vh - 222px)'}
+        direction={'column'}
+        justifyContent={'center'}
+        alignItems={'center'}
+      >
         <Outlet />
-      </Box>
+      </Flex>
       <Footer />
     </>
   );
