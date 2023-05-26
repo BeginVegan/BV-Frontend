@@ -11,6 +11,7 @@ export const ROUTES = {
   RESTAURANT_RAW: '/resturant/',
   RESTAURANT: '/resturant/:resturantno',
   RESTAURANT_RESERVATION: '/reservation',
+  RESTAURANT_REGISTRATION: '/resturant/registration',
   MYPAGE_HOME: '/mypage',
   MYPAGE_MAIN: '/mypage/main',
   MYPAGE_HISTORY: '/mypage/history',
