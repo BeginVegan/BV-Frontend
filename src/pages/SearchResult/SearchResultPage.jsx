@@ -1,20 +1,26 @@
-// const { query } = useParams();
-// const { status, data, error, isFetching } = useQuery('fetchLuke', async () => {
-//   const { data } = await axios.get('http://15.165.34.129:3000/member/list', null, {
-//     headers: {
-//       'Access-Control-Allow-Credentials': 'true',
-//     },
-//   });
-//   return data;
-// });
 import SearchFilter from '@/components/search/SearchFilter';
 import StoreCard from '@/components/store/StoreCard';
-import { Text, Stack, StackDivider, Grid, GridItem, Icon } from '@chakra-ui/react';
-import { useState } from 'react';
+import useRestaurantQuery from '@/hooks/useRestaurantQuery';
+import { Text, Stack, StackDivider, Grid, GridItem, Icon, Button } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { RiEqualizerLine } from 'react-icons/ri';
 
 const SearchResultPage = () => {
+  // const { query } = useParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const { data, isFetching } = useRestaurantQuery();
+  // useEffect(() => {
+  //   if (!isFetching) {
+  //     console.log(data);
+  //   }
+  // }, [isFetching]);
+
+  const onClick = () => {
+    if (!isFetching) {
+      console.log(data);
+    }
+  };
+
   const stores = [
     {
       storeName: '농민백암왕순대',
@@ -127,6 +133,8 @@ const SearchResultPage = () => {
     >
       {isFilterOpen && <SearchFilter setIsFilterOpen={setIsFilterOpen} />}
       <GridItem pt={4} ml={'auto'} rowSpan={1} colSpan={2} minW={'400px'}>
+        <Button onClick={onClick}>테스트</Button>
+        <Text>{!isFetching && data[0].restaurantName}</Text>
         <Stack spacing={4}>
           <Stack direction={'row'} alignItems={'center'}>
             <Text
