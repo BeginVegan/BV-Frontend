@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   Divider,
   Flex,
   HStack,
@@ -59,10 +60,10 @@ const RestaurantRegistration = () => {
       <HStack w={'900px'} justifyContent={'flex-end'} pt={12} gap={4} pr={8}>
         {activeStep === 1 && <Button onClick={() => setActiveStep(activeStep - 1)}>이전</Button>}
         {activeStep < 3 && (
-          <>
+          <ButtonGroup>
             <Button onClick={() => setActiveStep(activeStep === 0 ? 1 : 3)}>다음</Button>
             <Button>취소</Button>
-          </>
+          </ButtonGroup>
         )}
       </HStack>
     </Flex>
