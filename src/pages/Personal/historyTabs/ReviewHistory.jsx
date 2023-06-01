@@ -15,6 +15,7 @@ import {
   Stack,
   Text,
   VStack,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 
 const RESTUARANTS = [
@@ -86,6 +87,8 @@ const RESTUARANTS = [
   },
 ];
 const ReviewHistory = () => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
   return (
     <VStack align={'flex-start'}>
       <Flex height={'80vh'} overflowY={'auto'}>
@@ -93,39 +96,58 @@ const ReviewHistory = () => {
           {RESTUARANTS.map((restaurant, idx) => {
             return (
               <div key={idx}>
-                <HStack w={'100%'} spacing={'2rem'} align={'flex-start'} marginBottom={'2rem'}>
+                <HStack
+                  w={'100%'}
+                  spacing={'2rem'}
+                  align={'flex-start'}
+                  marginBottom={'2rem'}
+                  paddingRight={'2rem'}
+                >
                   <Text fontWeight={'extrabold'} fontSize={'4xl'}>
                     {restaurant.id}
                   </Text>
-                  <Card direction={{ base: 'column', sm: 'row' }}>
-                    <VStack w={'70%'}>
-                      <Stack paddingLeft={'1.5rem'} w={'100%'} mt="6" spacing="3">
-                        <Heading size="md">{restaurant.name}</Heading>
-                        <StarRank number={restaurant.star} />
-                        <HStack spacing={'1rem'}>
-                          <Box
-                            backgroundColor={'green.100'}
-                            paddingLeft={'0.5rem'}
-                            paddingRight={'0.5rem'}
-                          >
-                            <Text color={'green'} fontWeight={'bold'}>
-                              메뉴
-                            </Text>
-                          </Box>
-                          <Text>{restaurant.menu}</Text>
-                          <Box
-                            backgroundColor={'green.100'}
-                            paddingLeft={'0.5rem'}
-                            paddingRight={'0.5rem'}
-                          >
-                            <Text color={'green'} fontWeight={'bold'}>
-                              가격
-                            </Text>
-                          </Box>
-                          <Text>{restaurant.price}</Text>
-                        </HStack>
-                        <br />
-                        <Text>{restaurant.description}</Text>
+                  <Card variant="outline" shadow={'sm'} direction={{ base: 'column', md: 'row' }}>
+                    <VStack>
+                      <Stack w={'100%'} mt="6" spacing="3">
+                        <Stack ml="1rem" direction={'column'} spacing={'1rem'}>
+                          <Heading size="md">{restaurant.name}</Heading>
+                          <StarRank number={restaurant.star} />
+                          <br />
+                          <Stack direction={{ base: 'column', md: 'row' }}>
+                            <Box
+                              backgroundColor={'green.100'}
+                              borderRadius={'10px'}
+                              paddingLeft={'0.5rem'}
+                              paddingRight={'0.5rem'}
+                              w={'3em'}
+                            >
+                              <Text color={'green'} fontWeight={'bold'}>
+                                메뉴
+                              </Text>
+                            </Box>
+                            <Text>{restaurant.menu}</Text>
+                            <Box
+                              backgroundColor={'green.100'}
+                              borderRadius={'10px'}
+                              paddingLeft={'0.5rem'}
+                              paddingRight={'0.5rem'}
+                              w={'3em'}
+                            >
+                              <Text color={'green'} fontWeight={'bold'}>
+                                가격
+                              </Text>
+                            </Box>
+                            <Text>{restaurant.price}</Text>
+                          </Stack>
+                          <br />
+                          <Text>{restaurant.description}</Text>
+                        </Stack>
+
+                        {isMobile && (
+                          <CardBody w={'100%'}>
+                            <Image src={restaurant.image} alt={restaurant.alt} borderRadius="lg" />
+                          </CardBody>
+                        )}
                       </Stack>
                       <Spacer />
                       <CardFooter w={'100%'}>
@@ -138,9 +160,12 @@ const ReviewHistory = () => {
                       </CardFooter>
                     </VStack>
                     <Divider orientation="vertical" />
-                    <CardBody w={'30%'}>
-                      <Image src={restaurant.image} alt={restaurant.alt} borderRadius="lg" />
-                    </CardBody>
+                    <Spacer />
+                    {!isMobile && (
+                      <CardBody w={'30%'}>
+                        <Image src={restaurant.image} alt={restaurant.alt} borderRadius="lg" />
+                      </CardBody>
+                    )}
                   </Card>
                 </HStack>
               </div>

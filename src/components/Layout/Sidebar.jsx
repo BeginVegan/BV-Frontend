@@ -7,7 +7,6 @@ import {
   Flex,
   Icon,
   IconButton,
-  Text,
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -21,7 +20,7 @@ const LinkItems = [
   { name: '회원탈퇴', icon: TiWarningOutline, route: ROUTES.MYPAGE_DROP },
 ];
 
-export default function Sidebar({ children }) {
+export default function Sidebar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box minH={'100%'} bg={useColorModeValue('gray.100', 'gray.900')}>
@@ -41,9 +40,6 @@ export default function Sidebar({ children }) {
       </Drawer>
       {/* mobilenav */}
       <MobileNav display={{ base: 'flex', md: 'none' }} onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
-        {children}
-      </Box>
     </Box>
   );
 }
@@ -70,7 +66,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
   );
 };
 
-const NavItem = ({ icon, route, children, ...rest }) => {
+const NavItem = ({ icon, route, onClose, children, ...rest }) => {
   const navigate = useNavigate();
   const _hereIAm = useLocation();
   const hereIAm = _hereIAm.pathname.split('/')[2];
@@ -116,15 +112,11 @@ const MobileNav = ({ onOpen, ...rest }) => {
       height="20"
       alignItems="center"
       bg={useColorModeValue('white', 'gray.900')}
-      borderBottomWidth="1px"
       borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
       justifyContent="flex-start"
       {...rest}
     >
       <IconButton variant="outline" onClick={onOpen} aria-label="open menu" icon={<FiMenu />} />
-      <Text fontSize="2xl" ml="8" fontFamily="monospace" fontWeight="bold">
-        Logo
-      </Text>
     </Flex>
   );
 };

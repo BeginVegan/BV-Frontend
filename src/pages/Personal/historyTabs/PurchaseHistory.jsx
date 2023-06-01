@@ -1,5 +1,14 @@
 import { StarRank } from '@/components/star/StarRank';
-import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import {
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 
 const DUMMY = [
   {
@@ -43,9 +52,11 @@ const DUMMY = [
 }
 
 const PurchaseHistory = () => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
   return (
     <TableContainer marginTop={'1rem'}>
-      <Table size="lg">
+      <Table size={isMobile ? 'sm' : 'lg'}>
         <Thead>
           <Tr>
             <Th>번호</Th>
