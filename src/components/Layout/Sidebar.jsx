@@ -101,8 +101,8 @@ const NavItem = ({ icon, route, onClose, children, ...rest }) => {
       color={hereIAm === route.split('/')[2] ? 'white' : 'black'}
       {...rest}
       onClick={() => {
-        onClose();
         navigate(route);
+        onClose();
       }}
     >
       {icon && (
