@@ -15,6 +15,7 @@ import {
   Stack,
   Text,
   VStack,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { AiFillStar } from 'react-icons/ai';
 
@@ -66,6 +67,8 @@ const RESTUARANTS = [
   },
 ];
 const VisitHistory = () => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
   return (
     <VStack align={'flex-start'}>
       <RadioGroup defaultValue="2">
@@ -83,17 +86,23 @@ const VisitHistory = () => {
           {RESTUARANTS.map((restaurant, idx) => {
             return (
               <div key={idx}>
-                <HStack w={'100%'} spacing={'2rem'} align={'flex-start'} marginBottom={'2rem'}>
+                <HStack
+                  w={'100%'}
+                  spacing={'2rem'}
+                  align={'flex-start'}
+                  marginBottom={'2rem'}
+                  paddingRight={'2rem'}
+                >
                   <Text fontWeight={'extrabold'} fontSize={'4xl'}>
                     {restaurant.id}
                   </Text>
-                  <Card direction={{ base: 'column', sm: 'row' }}>
-                    <CardBody w={'30%'}>
+                  <Card variant="outline" shadow={'sm'} direction={{ base: 'column', md: 'row' }}>
+                    <CardBody w={isMobile ? '100%' : '30%'}>
                       <Image src={restaurant.image} alt={restaurant.alt} borderRadius="lg" />
                     </CardBody>
                     <Divider orientation="vertical" />
                     <VStack w={'70%'}>
-                      <Stack w={'100%'} mt="6" spacing="3">
+                      <Stack ml={isMobile ? '2rem' : 0} w={'100%'} mt="6" spacing="3">
                         <Heading size="md">{restaurant.name}</Heading>
                         <Text>{restaurant.description}</Text>
                         <HStack>

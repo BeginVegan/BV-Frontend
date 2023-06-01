@@ -1,4 +1,13 @@
-import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import {
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 
 const DUMMY = [
   {
@@ -47,10 +56,13 @@ const DUMMY = [
     cancel: '예약취소',
   },
 ];
+
 const ReservationHistory = () => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
   return (
     <TableContainer marginTop={'1rem'}>
-      <Table size="lg">
+      <Table size={isMobile ? 'sm' : 'lg'}>
         <Thead>
           <Tr>
             <Th>번호</Th>
