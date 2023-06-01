@@ -1,13 +1,11 @@
 import SocialGoogle from '@/components/LoginAPIs/SocialGoogle';
 import SocialKakao from '@/components/LoginAPIs/SocialKakao';
-import SocialNaver from '@/components/LoginAPIs/SocialNaver';
-import { ROUTES } from '@/routes/ROUTES';
+import { COLORS } from '@/constants/colors';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
-import { Button, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Stack, Text, VStack } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const LoginPage = () => {
@@ -46,15 +44,32 @@ const LoginPage = () => {
 
   return (
     <>
-      {isAuthenticated ? <Navigate to={ROUTES.MAIN} /> : null}
-      <VStack>
-        <Text>Login Page</Text>
-        <SocialKakao />
-        <SocialGoogle />
-        <SocialNaver />
-        <Button onClick={() => submitLogin('normal')}>일반 로그인</Button>
-        <Button onClick={() => submitLogin('admin')}>관리자 로그인</Button>
-      </VStack>
+      <Flex
+        minH={'10vh'}
+        align={'center'}
+        justify={'center'}
+        borderRadius={'10px'}
+        bg={COLORS.GREEN100}
+        shadow={'md'}
+      >
+        <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+          <Stack align={'center'}>
+            <Heading fontSize={'4xl'}>로그인</Heading>
+            <Text fontSize={'lg'} color={'gray.600'}>
+              소셜 로그인을 이용해 주세요
+            </Text>
+          </Stack>
+          <Box rounded={'lg'} bg={'green.200'} boxShadow={'2xl'} p={8}>
+            <VStack>
+              <SocialKakao />
+              <SocialGoogle />
+
+              <Button onClick={() => submitLogin('normal')}>일반 로그인</Button>
+              <Button onClick={() => submitLogin('admin')}>관리자 로그인</Button>
+            </VStack>
+          </Box>
+        </Stack>
+      </Flex>
     </>
   );
 };

@@ -1,9 +1,9 @@
-import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import { Image } from '@chakra-ui/react';
+import { useGoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 
 const SocialGoogle = () => {
   const navigate = useNavigate();
-  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   const googleOnSuccess = async data => {
     const idToken = data.credential;
@@ -17,11 +17,18 @@ const SocialGoogle = () => {
     console.log(error);
   };
 
+  const login = useGoogleLogin({
+    onSuccess: googleOnSuccess,
+    onFailure: googleOnFailure,
+  });
+
   return (
     <>
-      <GoogleOAuthProvider clientId={clientId}>
-        <GoogleLogin size="large" onSuccess={googleOnSuccess} onFailure={googleOnFailure} />
-      </GoogleOAuthProvider>
+      <Image
+        w={'14.3rem'}
+        src="src/assets/socialLogins/google_medium.png"
+        onClick={() => login()}
+      />
     </>
   );
 };

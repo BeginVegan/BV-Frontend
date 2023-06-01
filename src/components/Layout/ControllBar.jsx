@@ -1,3 +1,4 @@
+import Axios from '@/api/apiConfig';
 import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
@@ -25,6 +26,10 @@ const ControllBar = () => {
     navigate(ROUTES.HOME);
   };
 
+  const handleSessionTest = async () => {
+    const res = await Axios.get('member/session');
+    console.log(res);
+  };
   return (
     <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={6}>
       {isAuthenticated ? (
@@ -97,6 +102,7 @@ const ControllBar = () => {
           관리페이지
         </Button>
       )}
+      <Button onClick={() => handleSessionTest()}>세션 테스트버튼</Button>
     </Stack>
   );
 };
