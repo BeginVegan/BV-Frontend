@@ -151,7 +151,12 @@ const ReviewHistory = () => {
 
                         {isMobile && (
                           <CardBody w={'100%'}>
-                            <Image src={restaurant.image} alt={restaurant.alt} borderRadius="lg" />
+                            <Image
+                              pointerEvents="none"
+                              src={restaurant.image}
+                              alt={restaurant.alt}
+                              borderRadius="lg"
+                            />
                           </CardBody>
                         )}
                       </Stack>

@@ -104,7 +104,12 @@ const VisitHistory = () => {
                     direction={{ base: 'column', md: 'row' }}
                   >
                     <CardBody w={isMobile ? '100%' : '30%'}>
-                      <Image src={restaurant.image} alt={restaurant.alt} borderRadius="lg" />
+                      <Image
+                        pointerEvents="none"
+                        src={restaurant.image}
+                        alt={restaurant.alt}
+                        borderRadius="lg"
+                      />
                     </CardBody>
                     <Divider orientation="vertical" />
                     <VStack w={'70%'}>
