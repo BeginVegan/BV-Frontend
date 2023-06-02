@@ -6,7 +6,12 @@ const MyPageMain = () => {
   const grade = 'VVVVVVVIP';
 
   return (
-    <Box p={8} maxW="md" mx="auto">
+    <Box
+      p={'20rem'}
+      bg={`url('../src/assets/panel/green.png') no-repeat`}
+      bgPosition="center"
+      bgSize={{ base: '40vh', md: '80vh' }}
+    >
       <VStack spacing={6} align="center">
         <Heading size="xl">보유 포인트</Heading>
         <HStack spacing={'0.5rem'}>

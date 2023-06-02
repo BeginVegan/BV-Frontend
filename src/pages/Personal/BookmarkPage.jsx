@@ -71,6 +71,7 @@ const BookmarkPage = () => {
       </Text>
       <Divider />
       <SimpleGrid
+        justifyItems={'center'}
         height={'85vh'}
         overflow={'auto'}
         width={'100%'}
