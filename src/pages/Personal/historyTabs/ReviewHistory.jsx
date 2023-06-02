@@ -1,4 +1,5 @@
 import { StarRank } from '@/components/star/StarRank';
+import { COLORS } from '@/constants/colors';
 import {
   Box,
   Button,
@@ -106,7 +107,12 @@ const ReviewHistory = () => {
                   <Text fontWeight={'extrabold'} fontSize={'4xl'}>
                     {restaurant.id}
                   </Text>
-                  <Card variant="outline" shadow={'sm'} direction={{ base: 'column', md: 'row' }}>
+                  <Card
+                    _hover={{ borderWidth: '3px', borderColor: COLORS.GREEN200 }}
+                    variant="outline"
+                    shadow={'sm'}
+                    direction={{ base: 'column', md: 'row' }}
+                  >
                     <VStack>
                       <Stack w={'100%'} mt="6" spacing="3">
                         <Stack ml="1rem" direction={'column'} spacing={'1rem'}>

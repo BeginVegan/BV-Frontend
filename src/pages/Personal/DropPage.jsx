@@ -38,7 +38,15 @@ const DropPage = () => {
   };
   return (
     <>
-      <Button size="lg" onClick={dropUser}>
+      <Button
+        size="md"
+        height="48px"
+        width="200px"
+        border="2px"
+        borderColor="green.500"
+        onClick={dropUser}
+        _hover={{ bgColor: 'red', color: 'white', border: 'none' }}
+      >
         회원탈퇴
       </Button>
     </>

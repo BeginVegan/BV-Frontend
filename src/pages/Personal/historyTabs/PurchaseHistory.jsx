@@ -1,4 +1,5 @@
 import { StarRank } from '@/components/star/StarRank';
+import { COLORS } from '@/constants/colors';
 import {
   Table,
   TableContainer,
@@ -59,24 +60,24 @@ const PurchaseHistory = () => {
       <Table size={isMobile ? 'sm' : 'lg'}>
         <Thead>
           <Tr>
-            <Th>번호</Th>
-            <Th>가게명</Th>
-            <Th>결제금액</Th>
-            <Th>결제일자</Th>
-            <Th>평가</Th>
+            <CustomTh>번호</CustomTh>
+            <CustomTh>가게명</CustomTh>
+            <CustomTh>결제금액</CustomTh>
+            <CustomTh>결제일자</CustomTh>
+            <Th fontSize={'xl'}>평가</Th>
           </Tr>
         </Thead>
         <Tbody>
           {DUMMY.map((store, idx) => {
             return (
-              <Tr key={idx}>
-                <Td>{store.number}</Td>
-                <Td>{store.name}</Td>
-                <Td>{store.price}</Td>
-                <Td>{store.reservation}</Td>
-                <Td>
+              <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
+                <CustomTd>{store.number}</CustomTd>
+                <CustomTd>{store.name}</CustomTd>
+                <CustomTd>{Number(store.price).toLocaleString()}</CustomTd>
+                <CustomTd>{store.reservation}</CustomTd>
+                <CustomTd>
                   <StarRank number={store.rank} color={'gold'} />
-                </Td>
+                </CustomTd>
               </Tr>
             );
           })}
@@ -86,3 +87,15 @@ const PurchaseHistory = () => {
   );
 };
 export default PurchaseHistory;
+
+const CustomTh = ({ children }) => {
+  return (
+    <Th fontSize={'xl'} textAlign={'center'}>
+      {children}
+    </Th>
+  );
+};
+
+const CustomTd = ({ children }) => {
+  return <Td textAlign={'center'}>{children}</Td>;
+};

@@ -1,3 +1,4 @@
+import { COLORS } from '@/constants/colors';
 import {
   Button,
   ButtonGroup,
@@ -96,7 +97,12 @@ const VisitHistory = () => {
                   <Text fontWeight={'extrabold'} fontSize={'4xl'}>
                     {restaurant.id}
                   </Text>
-                  <Card variant="outline" shadow={'sm'} direction={{ base: 'column', md: 'row' }}>
+                  <Card
+                    _hover={{ borderWidth: '3px', borderColor: COLORS.GREEN200 }}
+                    variant="outline"
+                    shadow={'sm'}
+                    direction={{ base: 'column', md: 'row' }}
+                  >
                     <CardBody w={isMobile ? '100%' : '30%'}>
                       <Image src={restaurant.image} alt={restaurant.alt} borderRadius="lg" />
                     </CardBody>
