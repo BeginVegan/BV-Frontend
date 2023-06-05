@@ -1,6 +1,7 @@
 import { Button } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
+import { useNavigate } from 'react-router-dom';
 
 const KakaoMap = () => {
   const { kakao } = window;
@@ -95,6 +96,7 @@ export default KakaoMap;
 const CustomMapMarker = ({ loc }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [address, setAddress] = useState(null);
+  const navigate = useNavigate();
   const markerStyle = {
     padding: '5px',
     color: '#000',
@@ -135,6 +137,7 @@ const CustomMapMarker = ({ loc }) => {
         // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
         () => setIsOpen(true)
       }
+      onClick={() => navigate('/restaurant/1')}
       // 마커에 마우스아웃 이벤트를 등록합니다
       onMouseOut={
         // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
@@ -146,7 +149,11 @@ const CustomMapMarker = ({ loc }) => {
           <div style={markerStyle}>
             <span style={{ fontSize: '18px', textAlign: 'center' }}>{loc.title}</span>
             <br />
-            <span style={{ fontSize: '10px', textAlign: 'center' }}>{address.address_name}</span>
+            <span style={{ fontSize: '14px', textAlign: 'center' }}>{address.address_name}</span>
+            <br />
+            <span style={{ fontSize: '8px' }} onClick={() => navigate('/restaurant/1')}>
+              클릭시 이동합니다
+            </span>
           </div>
         </CustomOverlayMap>
       )}
