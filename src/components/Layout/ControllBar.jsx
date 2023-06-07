@@ -7,6 +7,8 @@ import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
+import { Cookies } from 'react-cookie';
+
 const ControllBar = () => {
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
   const [userStatus, setUserStatus] = useAtom(userAtom);
@@ -27,6 +29,8 @@ const ControllBar = () => {
   };
 
   const handleSessionTest = async () => {
+    const cookies = new Cookies();
+    cookies.set('access_token', '1234');
     const res = await Axios.get('member/session');
     console.log(res);
   };
