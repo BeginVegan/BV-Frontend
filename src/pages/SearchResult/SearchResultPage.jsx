@@ -249,7 +249,7 @@ const SearchResultPage = () => {
       {isFilterOpen && <SearchFilter setIsFilterOpen={setIsFilterOpen} />}
       <GridItem pt={4} ml={'auto'} rowSpan={1} colSpan={2} minW={'400px'}>
         <Button onClick={onClickTest}>테스트</Button>
-        <Text>{!isFetching && data[0].restaurantName}</Text>
+        {/* <Text>{!isFetching && data[0].restaurantName}</Text> */}
         <Stack spacing={4}>
           <Stack direction={'row'} alignItems={'center'}>
             <Text
