@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const LOCALHOST = 'http://localhost';
-const BACKEND_SERVER = 'https://ujfup18g68.execute-api.ap-northeast-2.amazonaws.com/';
+const BACKEND_SERVER = 'https://begin-vegan-backend.kro.kr:3000/';
 
 const headers = {
   'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
