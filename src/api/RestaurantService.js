@@ -1,8 +1,8 @@
-import api from '@/api/apiConfig';
+import Axios from './apiConfig';
 
 const RestaurantService = {
   getRestaurantList: async () => {
-    const response = await api.get('/restaurant/list');
+    const response = await Axios.get('/restaurant/list');
     return response.data;
   },
 };
