@@ -1,6 +1,6 @@
 import SearchFilter from '@/components/search/SearchFilter';
 import StoreCard from '@/components/store/StoreCard';
-import { Grid, GridItem, Icon, Stack, StackDivider, Text } from '@chakra-ui/react';
+import { Button, Grid, GridItem, Icon, Stack, StackDivider, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { RiEqualizerLine } from 'react-icons/ri';
 import KakaoMap from './KakaoMap';
