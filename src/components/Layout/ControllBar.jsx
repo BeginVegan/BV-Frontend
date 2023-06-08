@@ -12,18 +12,27 @@ const ControllBar = () => {
   const [userStatus, setUserStatus] = useAtom(userAtom);
   const navigate = useNavigate();
 
-  const logout = () => {
-    setIsAuthenticated(false);
-    setUserStatus(null);
-    /**
-     * localStorage에서 토큰정보 삭제 해야함
-     */
-    Swal.fire({
-      icon: 'success',
-      title: '로그아웃 성공',
-      text: '메인으로 돌아갑니다',
-    });
-    navigate(ROUTES.HOME);
+  const logout = async () => {
+    const res = await Axios.get('member/logout');
+    if (res.status === 200) {
+      setIsAuthenticated(false);
+      setUserStatus(null);
+      /**
+       * localStorage에서 토큰정보 삭제 해야함
+       */
+      Swal.fire({
+        icon: 'success',
+        title: '로그아웃 성공',
+        text: '메인으로 돌아갑니다',
+      });
+      navigate(ROUTES.HOME);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: '로그아웃 실패',
+        text: '무슨일이지',
+      });
+    }
   };
 
   const handleSessionTest = async () => {
