@@ -1,3 +1,4 @@
+import Axios from '@/api/apiConfig';
 import { StarRank } from '@/components/star/StarRank';
 import { COLORS } from '@/constants/colors';
 import {
@@ -18,6 +19,7 @@ import {
   VStack,
   useBreakpointValue,
 } from '@chakra-ui/react';
+import { useEffect } from 'react';
 
 const RESTUARANTS = [
   {
@@ -89,6 +91,14 @@ const RESTUARANTS = [
 ];
 const ReviewHistory = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
+
+  useEffect(() => {
+    const getReview = async () => {
+      const res = await Axios.get('mypage/review/userEmail');
+      console.log(res);
+    };
+    getReview();
+  }, []);
 
   return (
     <VStack align={'flex-start'}>

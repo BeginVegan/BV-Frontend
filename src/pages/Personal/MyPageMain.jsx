@@ -1,14 +1,17 @@
+import { userAtom } from '@/utils/atoms/userAtom';
 import { Box, HStack, Heading, Text, VStack } from '@chakra-ui/react';
+import { useAtom } from 'jotai';
 import { CountUp } from 'use-count-up';
 
 const MyPageMain = () => {
   const point = '1000000000';
   const grade = 'VVVVVVVIP';
+  const [userStatus, setUserStatus] = useAtom(userAtom);
 
   return (
     <Box
       p={'20rem'}
-      bg={`url('../src/assets/panel/green.png') no-repeat`}
+      // bg={`url('../src/assets/panel/green.png') no-repeat`}
       bgPosition="center"
       bgSize={{ base: '40vh', md: '80vh' }}
     >
@@ -23,7 +26,7 @@ const MyPageMain = () => {
           </Text>
         </HStack>
         <Text fontSize="2xl" fontWeight="bold" color="purple.600">
-          님의 등급은
+          {userStatus.login.split('@')[0]}님의 등급은
         </Text>
         <Text fontSize="6xl" fontWeight="bold" color="red">
           {grade}

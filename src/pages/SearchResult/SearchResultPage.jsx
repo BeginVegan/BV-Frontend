@@ -233,7 +233,7 @@ const SearchResultPage = () => {
   // };
 
   const onClickTest = async () => {
-    const res = await Axios.get('restaurant/list');
+    const res = await Axios.get('mypage/review/3');
     console.log(res);
   };
   return (
