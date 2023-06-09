@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Stack, Flex, Text, useBreakpointValue } from '@chakra-ui/react';
-import BestStoreCard from '@/components/store/BestStoreCard';
 import { COLORS } from '@/constants/colors';
+import BestRestaurantCard from '@/components/restaurant/BestRestaurantCard';
 
 const categoryDetail = {
   reservation: {
@@ -89,7 +89,7 @@ const BestPage = () => {
       </Flex>
       <Stack py={4} spacing={4}>
         {stores.map((store, index) => (
-          <BestStoreCard
+          <BestRestaurantCard
             storeId={store.storeId}
             storeName={index + 1 + '. ' + store.storeName}
             storeAddress={store.storeAddress}

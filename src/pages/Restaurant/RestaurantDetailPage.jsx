@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import VeganLevel from '@/components/store/VeganLevel';
+import VeganLevel from '@/components/restaurant/VeganLevel';
 import { StarIcon } from '@chakra-ui/icons';
 import {
   Box,

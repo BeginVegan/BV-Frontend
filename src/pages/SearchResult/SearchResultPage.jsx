@@ -1,10 +1,10 @@
 import Axios from '@/api/apiConfig';
 import SearchFilter from '@/components/search/SearchFilter';
-import StoreCard from '@/components/store/StoreCard';
 import { Button, Grid, GridItem, Icon, Stack, StackDivider, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { RiEqualizerLine } from 'react-icons/ri';
 import KakaoMap from './KakaoMap';
+import RestaurantCard from '@/components/restaurant/RestaurantCard';
 
 const SearchResultPage = () => {
   // const { query } = useParams();
@@ -309,7 +309,7 @@ const SearchResultPage = () => {
             divider={<StackDivider borderColor={'gray.100'} />}
           >
             {stores.map((store, idx) => (
-              <StoreCard
+              <RestaurantCard
                 key={idx}
                 storeName={store.storeName}
                 storeMenu={store.storeMenu}

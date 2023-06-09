@@ -11,7 +11,7 @@ import {
   FormLabel,
 } from '@chakra-ui/react';
 import React from 'react';
-import VeganLevel from '@/components/store/VeganLevel';
+import VeganLevel from '@/components/restaurant/VeganLevel';
 import usePostCode from '@/hooks/usePostCode';
 import { AddressToLatlng, getFullAddress } from '@/utils/address/addressUtil';
 import MultiImageFileUpload from '@/components/fileUpload/MultiImageFileUpload';
