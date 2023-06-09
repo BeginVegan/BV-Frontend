@@ -15,25 +15,68 @@ import {
   StepTitle,
   Stepper,
   VStack,
-  useSteps,
 } from '@chakra-ui/react';
 import React from 'react';
-import RegisterStepOne from '@/pages/Admin/Register/RegisterStepOne';
-import RegisterStepTwo from '@/pages/Admin/Register/RegisterStepTwo';
-import RegisterStepThree from '@/pages/Admin/Register/RegisterStepThree';
-
-const steps = [{ title: '필수정보 입력' }, { title: '상세정보 입력' }, { title: '등록완료' }];
-const pageStep = { 0: <RegisterStepOne />, 1: <RegisterStepTwo />, 3: <RegisterStepThree /> };
+import { useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '@/routes/ROUTES';
+import { useMutation } from 'react-query';
+import RestaurantService from '@/api/RestaurantService';
+import RegisterDetail from './RegisterDetail';
+import RegisterComplete from './RegisterComplete';
 
 const RestaurantRegistration = () => {
-  const { activeStep, setActiveStep } = useSteps({
-    index: 0,
-    count: steps.length,
-  });
+  const { stepno } = useParams();
+  const navigate = useNavigate();
+  const { mutate: onAddRestaurant } = useMutation(RestaurantService.addRestaurant);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+    setValue,
+    getValues,
+  } = useForm();
+
+  const steps = [{ title: '필수정보 입력' }, { title: '등록완료' }];
+
+  const pageStep = {
+    1: <RegisterDetail register={register} control={control} setValue={setValue} errors={errors} />,
+    2: <RegisterComplete />,
+  };
+
+  const onSubmit = data => {
+    onAddRestaurant({
+      restaurantInfo: {
+        restaurantName: data.restaurantName,
+        restaurantAddress:
+          data.addressDetail.length === 0 ? data.address : `${data.address},${data.addressDetail}`,
+        restaurantAddressGu: data.restaurantAddressGu,
+        restaurantX: data.restaurantX,
+        restaurantY: data.restaurantY,
+        restaurantOpen: `${data.openH}:${data.openM}:00`,
+        restaurantClose: `${data.closeH}:${data.closeM}:00`,
+        restaurantDetail: data.restaurantDetail,
+        restaurantTable: data.restaurantTable,
+        restaurantTableMember: data.restaurantTableMember,
+        restaurantAvgPrice: data.restaurantAvgPrice,
+        restaurantVeganLevel: data.restaurantVeganLevel,
+      },
+      restaurantImages: data.restaurantImages,
+      options: {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    });
+
+    navigate(`${ROUTES.RESTAURANT_REGISTRATION_RAW}/${+stepno + 1}`);
+  };
 
   return (
     <Flex direction={'column'} py={12}>
-      <Stepper w={'900px'} pb={12} size="lg" index={activeStep}>
+      <Stepper w={'900px'} pb={12} size="lg" index={stepno}>
         {steps.map((step, index) => (
           <Step key={index}>
             <StepIndicator>
@@ -53,19 +96,21 @@ const RestaurantRegistration = () => {
           </Step>
         ))}
       </Stepper>
-      <VStack gap={6} w={'900px'}>
-        <Divider mb={8} borderColor={'gray.400'} />
-        {pageStep[activeStep]}
-      </VStack>
-      <HStack w={'900px'} justifyContent={'flex-end'} pt={12} gap={4} pr={8}>
-        {activeStep === 1 && <Button onClick={() => setActiveStep(activeStep - 1)}>이전</Button>}
-        {activeStep < 3 && (
-          <ButtonGroup>
-            <Button onClick={() => setActiveStep(activeStep === 0 ? 1 : 3)}>다음</Button>
-            <Button>취소</Button>
-          </ButtonGroup>
-        )}
-      </HStack>
+
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <VStack gap={6} w={'900px'}>
+          <Divider mb={8} borderColor={'gray.400'} />
+          {pageStep[stepno]}
+        </VStack>
+        <HStack w={'900px'} justifyContent={'flex-end'} pt={12} gap={4} pr={8}>
+          {stepno < 4 && (
+            <ButtonGroup>
+              <Button type="submit">다음</Button>
+              <Button>취소</Button>
+            </ButtonGroup>
+          )}
+        </HStack>
+      </form>
     </Flex>
   );
 };
