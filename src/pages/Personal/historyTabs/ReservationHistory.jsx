@@ -1,3 +1,4 @@
+import Axios from '@/api/apiConfig';
 import { COLORS } from '@/constants/colors';
 import {
   Button,
@@ -10,6 +11,7 @@ import {
   Tr,
   useBreakpointValue,
 } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
 const DUMMY = [
@@ -59,10 +61,18 @@ const DUMMY = [
     cancel: '취소불가',
   },
 ];
-
 const ReservationHistory = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
-
+  const [reservationList, setReservationList] = useState(null);
+  useEffect(() => {
+    const getReservations = async () => {
+      const res = await Axios.get('reservation/list/memberEmail');
+      if (res.status === 200) {
+        setReservationList(res.data);
+      }
+    };
+    getReservations();
+  }, []);
   const handleCancel = () => {
     Swal.fire({
       icon: 'question',
@@ -85,6 +95,22 @@ const ReservationHistory = () => {
       }
     });
   };
+
+  const getHowMany = list => {
+    if (list.length > 1) {
+      return list[0].menuName + ' 외 ' + (list.length - 1) + '개';
+    }
+    return list[0].menuName;
+  };
+  const isCancellable = dateString => {
+    const date = new Date(dateString);
+    const currentTime = new Date();
+
+    const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+    return date.getTime() - currentTime.getTime() <= twentyFourHours;
+  };
+
   return (
     <TableContainer marginTop={'1rem'}>
       <Table size={isMobile ? 'sm' : 'lg'}>
@@ -100,31 +126,35 @@ const ReservationHistory = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {DUMMY.map((store, idx) => {
-            return (
-              <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
-                <CustomTd>{store.number}</CustomTd>
-                <CustomTd>{store.name}</CustomTd>
-                <CustomTd>{store.menu}</CustomTd>
-                <CustomTd>{Number(store.price).toLocaleString()}</CustomTd>
-                <CustomTd>{store.status}</CustomTd>
-                <CustomTd>{store.reservation}</CustomTd>
-                <CustomTd>
-                  {store.cancel === '예약취소' ? (
-                    <Button
-                      colorScheme="red"
-                      size={{ base: 'xs', md: 'sm' }}
-                      onClick={() => handleCancel()}
-                    >
-                      예약취소
-                    </Button>
-                  ) : (
-                    '취소불가'
-                  )}
-                </CustomTd>
-              </Tr>
-            );
-          })}
+          {reservationList &&
+            reservationList.map((store, idx) => {
+              return (
+                <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
+                  <CustomTd>{idx + 1}</CustomTd>
+                  <CustomTd>
+                    <RestaurantName restaurantNo={store.restaurantNo} />
+                  </CustomTd>
+                  <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
+                  <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
+                  <CustomTd>{store.reservationStatus}</CustomTd>
+                  <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                  <CustomTd>
+                    {/* 취소 가능일 구하는 로직필요 */}
+                    {isCancellable() === true ? (
+                      <Button
+                        colorScheme="red"
+                        size={{ base: 'xs', md: 'sm' }}
+                        onClick={() => handleCancel()}
+                      >
+                        예약취소
+                      </Button>
+                    ) : (
+                      '취소불가'
+                    )}
+                  </CustomTd>
+                </Tr>
+              );
+            })}
         </Tbody>
       </Table>
     </TableContainer>
@@ -142,4 +172,23 @@ const CustomTh = ({ children }) => {
 
 const CustomTd = ({ children }) => {
   return <Td textAlign={'center'}>{children}</Td>;
+};
+
+const RestaurantName = ({ restaurantNo }) => {
+  const [name, setName] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await Axios.get(`restaurant/${restaurantNo}`);
+      if (res.status === 200) {
+        const data = res.data.restaurant.restaurantName;
+        console.log(data);
+        setName(data);
+      }
+    };
+
+    fetchData();
+  }, [restaurantNo]);
+
+  return <div>{name}</div>;
 };
