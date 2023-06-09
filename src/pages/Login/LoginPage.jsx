@@ -41,14 +41,14 @@ const LoginPage = () => {
           id: 0,
           login: emailIputRef.current.value,
           name: '관리자',
-          status: 'admin',
+          role: 'admin',
         });
       } else {
         setUserStatus({
           id: 0,
           login: emailIputRef.current.value,
           name: '일반유저',
-          status: 'normal',
+          role: 'normal',
         });
       }
       setIsAuthenticated(true);
