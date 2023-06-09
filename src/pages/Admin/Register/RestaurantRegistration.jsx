@@ -22,8 +22,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '@/routes/ROUTES';
 import { useMutation } from 'react-query';
 import RestaurantService from '@/api/RestaurantService';
-import RegisterDetail from './RegisterDetail';
-import RegisterComplete from './RegisterComplete';
+import RegisterDetail from '@/pages/Admin/Register/RegisterDetail';
+import RegisterComplete from '@/pages/Admin/Register/RegisterComplete';
 
 const RestaurantRegistration = () => {
   const { stepno } = useParams();
