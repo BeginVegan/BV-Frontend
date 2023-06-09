@@ -1,6 +1,6 @@
 import { Button, GridItem, SimpleGrid, Stack, StackDivider, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import VeganLevel from '../store/VeganLevel';
+import VeganLevel from '@/components/restaurant/VeganLevel';
 
 const SearchFilter = ({ setIsFilterOpen }) => {
   const [veganLevel, setVeganLevel] = useState(0);

@@ -4,7 +4,7 @@ import { Flex, HStack, Heading, Image, Stack, Text, useColorModeValue } from '@c
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/routes/ROUTES';
 
-const BestStoreCard = ({ storeId, storeName, storeStar, storeAddress, reviewDetail }) => {
+const BestRestaurantCard = ({ storeId, storeName, storeStar, storeAddress, reviewDetail }) => {
   const navigator = useNavigate();
   const moveDetailPage = () => {
     navigator(ROUTES.RESTAURANT_RAW + storeId);
@@ -69,4 +69,4 @@ const BestStoreCard = ({ storeId, storeName, storeStar, storeAddress, reviewDeta
   );
 };
 
-export default BestStoreCard;
+export default BestRestaurantCard;

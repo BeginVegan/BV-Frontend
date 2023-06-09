@@ -11,7 +11,13 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
-const StoreCard = ({ storeName, storeStar, storeAddress, storeMenu }) => {
+const RestaurantCard = ({
+  restaurantName,
+  restaurantStar,
+  restaurantAddress,
+  restaurantDetail,
+  restaurantPhotoDir,
+}) => {
   return (
     <Stack
       borderRadius="lg"
@@ -21,7 +27,7 @@ const StoreCard = ({ storeName, storeStar, storeAddress, storeMenu }) => {
       bg={useColorModeValue('white', 'gray.900')}
     >
       <Flex flex={2} bg="blue.200">
-        <Image objectFit="cover" boxSize="100%" src={'https://source.unsplash.com/random/?dish'} />
+        <Image objectFit="cover" boxSize="100%" src={`${restaurantPhotoDir}`} />
       </Flex>
       <Stack
         flex={4}
@@ -32,16 +38,16 @@ const StoreCard = ({ storeName, storeStar, storeAddress, storeMenu }) => {
         pt={2}
       >
         <Heading fontSize={'xl'}>
-          {storeName}
+          {restaurantName}
           <StarIcon ml={4} boxSize={4} color={'yellow.500'} />
-          {` ${storeStar}`}
+          {` ${restaurantStar}`}
         </Heading>
         <Text fontWeight={400} color={'gray.500'} size="sm" mb={4}>
-          {storeAddress} - {storeMenu}
+          {restaurantAddress} - {restaurantDetail}
         </Text>
       </Stack>
     </Stack>
   );
 };
 
-export default StoreCard;
+export default RestaurantCard;
