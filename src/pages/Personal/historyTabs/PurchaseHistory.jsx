@@ -1,3 +1,4 @@
+import Axios from '@/api/apiConfig';
 import { StarRank } from '@/components/star/StarRank';
 import { COLORS } from '@/constants/colors';
 import {
@@ -10,6 +11,7 @@ import {
   Tr,
   useBreakpointValue,
 } from '@chakra-ui/react';
+import { useEffect, useMemo, useState } from 'react';
 
 const DUMMY = [
   {
@@ -54,6 +56,43 @@ const DUMMY = [
 
 const PurchaseHistory = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
+  const [reservationList, setReservationList] = useState(null);
+  useEffect(() => {
+    const getReservations = async () => {
+      const res = await Axios.get('reservation/list/memberEmail');
+      if (res.status === 200) {
+        setReservationList(res.data);
+      }
+    };
+    getReservations();
+  }, []);
+
+  const isCancellable = dateString => {
+    const date = new Date(dateString);
+    const currentTime = new Date();
+
+    const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+    const timeGap = date.getTime() - currentTime.getTime();
+
+    return timeGap >= 0 && timeGap <= twentyFourHours;
+  };
+
+  const filteredReservationList = useMemo(() => {
+    if (reservationList) {
+      return reservationList.filter(store => !isCancellable(store.reservationTime));
+    }
+    return [];
+  }, [reservationList]);
+
+  const sortedReservationList = useMemo(() => {
+    if (filteredReservationList) {
+      return [...filteredReservationList].sort(
+        (a, b) => new Date(a.reservationTime) - new Date(b.reservationTime)
+      );
+    }
+    return [];
+  }, [filteredReservationList]);
 
   return (
     <TableContainer marginTop={'1rem'}>
@@ -68,19 +107,23 @@ const PurchaseHistory = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {DUMMY.map((store, idx) => {
-            return (
-              <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
-                <CustomTd>{store.number}</CustomTd>
-                <CustomTd>{store.name}</CustomTd>
-                <CustomTd>{Number(store.price).toLocaleString()}</CustomTd>
-                <CustomTd>{store.reservation}</CustomTd>
-                <CustomTd>
-                  <StarRank number={store.rank} color={'gold'} />
-                </CustomTd>
-              </Tr>
-            );
-          })}
+          {reservationList &&
+            sortedReservationList.map((store, idx) => {
+              console.log(store);
+              return (
+                <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
+                  <CustomTd>{idx + 1}</CustomTd>
+                  <CustomTd>
+                    <RestaurantName restaurantNo={store.restaurantNo} />
+                  </CustomTd>
+                  <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
+                  <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                  <CustomTd>
+                    <RestaurantStar restaurantNo={store.restaurantNo} />
+                  </CustomTd>
+                </Tr>
+              );
+            })}
         </Tbody>
       </Table>
     </TableContainer>
@@ -98,4 +141,42 @@ const CustomTh = ({ children }) => {
 
 const CustomTd = ({ children }) => {
   return <Td textAlign={'center'}>{children}</Td>;
+};
+
+const RestaurantName = ({ restaurantNo }) => {
+  const [name, setName] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await Axios.get(`restaurant/${restaurantNo}`);
+      if (res.status === 200) {
+        const data = res.data.restaurant.restaurantName;
+        // console.log(data);
+        setName(data);
+      }
+    };
+
+    fetchData();
+  }, [restaurantNo]);
+
+  return <div>{name}</div>;
+};
+
+const RestaurantStar = ({ restaurantNo }) => {
+  const [star, setStar] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await Axios.get(`restaurant/${restaurantNo}`);
+      if (res.status === 200) {
+        const data = res.data.restaurant.restaurantStar;
+
+        setStar(data);
+      }
+    };
+
+    fetchData();
+  }, [restaurantNo]);
+
+  return <StarRank number={star} color={'gold'} />;
 };
