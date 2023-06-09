@@ -3,10 +3,10 @@ import { atom } from 'jotai';
 /**
  * @example
  * {
- * id: 0,
- * login: 'test',
+ * email: 'test',
  * name: 'test testtest',
- * status: 'admin',
+ * point : 1234,
+ * role: 'admin',
  * }
  */
 export const userAtom = atom(null);

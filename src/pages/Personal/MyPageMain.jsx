@@ -26,7 +26,7 @@ const MyPageMain = () => {
           </Text>
         </HStack>
         <Text fontSize="2xl" fontWeight="bold" color="purple.600">
-          {userStatus.login.split('@')[0]}님의 등급은
+          {userStatus.name} 님의 등급은
         </Text>
         <Text fontSize="6xl" fontWeight="bold" color="red">
           {grade}

@@ -2,7 +2,7 @@ import Axios from '@/api/apiConfig';
 import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
-import { Button, Stack } from '@chakra-ui/react';
+import { Button, Stack, Text } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -42,20 +42,25 @@ const ControllBar = () => {
   return (
     <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={6}>
       {isAuthenticated ? (
-        <Button
-          as={'a'}
-          fontSize={'sm'}
-          fontWeight={600}
-          color={'white'}
-          bg={'red.400'}
-          _hover={{
-            bg: 'red.300',
-          }}
-          onClick={logout}
-          cursor={'pointer'}
-        >
-          로그아웃
-        </Button>
+        <>
+          <Text width={'5rem'} textAlign={'center'} pt={'0.5rem'}>
+            {userStatus.name}
+          </Text>
+          <Button
+            as={'a'}
+            fontSize={'sm'}
+            fontWeight={600}
+            color={'white'}
+            bg={'red.400'}
+            _hover={{
+              bg: 'red.300',
+            }}
+            onClick={logout}
+            cursor={'pointer'}
+          >
+            로그아웃
+          </Button>
+        </>
       ) : (
         <>
           <Button
@@ -97,7 +102,7 @@ const ControllBar = () => {
           마이페이지
         </Button>
       ) : null}
-      {isAuthenticated && userStatus && userStatus.status === 'admin' && (
+      {isAuthenticated && userStatus && userStatus.role === 'admin' && (
         <Button
           as={'a'}
           fontSize={'sm'}
