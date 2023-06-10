@@ -13,47 +13,6 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
 
-const DUMMY = [
-  {
-    number: 1,
-    name: '임시가게명1',
-    price: '10000',
-    reservation: '2023.5.29',
-    rank: '1',
-  },
-  {
-    number: 2,
-    name: '임시가게명2',
-    price: '10000',
-    reservation: '2023.5.29',
-    rank: '2',
-  },
-  {
-    number: 3,
-    name: '임시가게명3',
-    price: '10000',
-    reservation: '2023.5.29',
-    rank: '3',
-  },
-  {
-    number: 4,
-    name: '임시가게명4',
-    price: '10000',
-    reservation: '2023.5.29',
-    rank: '4',
-  },
-  {
-    number: 5,
-    name: '임시가게명5',
-    price: '10000',
-    reservation: '2023.5.29',
-    rank: '5',
-  },
-];
-{
-  /* <Box boxShadow="xs" m={'1rem'} w={'100%'}> */
-}
-
 const PurchaseHistory = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [reservationList, setReservationList] = useState(null);
@@ -109,7 +68,6 @@ const PurchaseHistory = () => {
         <Tbody>
           {reservationList &&
             sortedReservationList.map((store, idx) => {
-              console.log(store);
               return (
                 <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
                   <CustomTd>{idx + 1}</CustomTd>
@@ -151,7 +109,7 @@ const RestaurantName = ({ restaurantNo }) => {
       const res = await Axios.get(`restaurant/${restaurantNo}`);
       if (res.status === 200) {
         const data = res.data.restaurant.restaurantName;
-        // console.log(data);
+
         setName(data);
       }
     };

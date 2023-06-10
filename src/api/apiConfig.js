@@ -3,6 +3,7 @@ import { Cookies } from 'react-cookie';
 
 const LOCALHOST = 'http://localhost';
 const BACKEND_SERVER = 'http://localhost:3000/';
+// const BACKEND_SERVER = 'https://begin-vegan-backend.kro.kr:3000/';
 
 const headers = {
   // 기본 헤더 설정 (옵션)

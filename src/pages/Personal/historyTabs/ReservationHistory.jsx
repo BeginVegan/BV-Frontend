@@ -14,53 +14,6 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import Swal from 'sweetalert2';
 
-const DUMMY = [
-  {
-    number: 0,
-    name: '임시가게명1',
-    menu: '임시메뉴1',
-    price: '10000',
-    status: '결제완료',
-    reservation: '2023.5.29',
-    cancel: '예약취소',
-  },
-  {
-    number: 0,
-    name: '임시가게명1',
-    menu: '임시메뉴1',
-    price: '10000',
-    status: '결제완료',
-    reservation: '2023.5.29',
-    cancel: '예약취소',
-  },
-  {
-    number: 0,
-    name: '임시가게명1',
-    menu: '임시메뉴1',
-    price: '10000',
-    status: '결제완료',
-    reservation: '2023.5.29',
-    cancel: '예약취소',
-  },
-  {
-    number: 0,
-    name: '임시가게명1',
-    menu: '임시메뉴1',
-    price: '10000',
-    status: '결제완료',
-    reservation: '2023.5.29',
-    cancel: '예약취소',
-  },
-  {
-    number: 0,
-    name: '임시가게명1',
-    menu: '임시메뉴1',
-    price: '10000',
-    status: '결제완료',
-    reservation: '2023.5.29',
-    cancel: '취소불가',
-  },
-];
 const ReservationHistory = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [reservationList, setReservationList] = useState(null);
@@ -200,7 +153,7 @@ const RestaurantName = ({ restaurantNo }) => {
       const res = await Axios.get(`restaurant/${restaurantNo}`);
       if (res.status === 200) {
         const data = res.data.restaurant.restaurantName;
-        // console.log(data);
+
         setName(data);
       }
     };

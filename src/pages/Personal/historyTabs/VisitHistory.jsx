@@ -24,54 +24,6 @@ import { AiFillStar } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { useRestaurantDetail } from './hooks/useRestaurantDetail';
 
-const RESTUARANTS = [
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-];
-
 const VisitHistory = () => {
   const [reservationList, setReservationList] = useState(null);
   const [sortBy, setSortBy] = useState('2');
@@ -81,7 +33,6 @@ const VisitHistory = () => {
       const res = await Axios.get('reservation/list/memberEmail');
       if (res.status === 200) {
         setReservationList(res.data);
-        console.log(reservationList);
       }
     };
     getReservations();
@@ -91,13 +42,13 @@ const VisitHistory = () => {
     if (reservationList) {
       if (sortBy === '1') {
         // 최신순
-        console.log('최신순');
+
         return [...reservationList].sort(
           (a, b) => new Date(b.reservationVisitTime) - new Date(a.reservationVisitTime)
         );
       } else {
         // 별점순
-        console.log('별점순');
+
         return [...reservationList].sort((a, b) => b.restaurantStar - a.restaurantStar);
       }
     }
@@ -135,7 +86,6 @@ const RestaurantCards = ({ restaurant, id }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const navigate = useNavigate();
 
-  // console.log('방문시간', restaurant.reservationVisitTime);
   return (
     <div key={restaurant.id}>
       {data && (
@@ -172,7 +122,7 @@ const RestaurantCards = ({ restaurant, id }) => {
                 {/* 상세정보 */}
                 <Text>{restaurantDetail}</Text>
                 <HStack>
-                  <AiFillStar color="gold" size={'2rem'} />
+                  <AiFillStar color="gold" size={'40px'} />
                   <Text color="blue.600" fontSize="2xl">
                     {restaurantStar}
                   </Text>

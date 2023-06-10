@@ -1,99 +1,56 @@
 import Axios from '@/api/apiConfig';
-import { Flex, HStack, Stack, VStack, useBreakpointValue } from '@chakra-ui/react';
+import { StarRank } from '@/components/star/StarRank';
+import { COLORS } from '@/constants/colors';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Card,
+  CardBody,
+  CardFooter,
+  Divider,
+  Flex,
+  HStack,
+  Heading,
+  Image,
+  Spacer,
+  Stack,
+  Text,
+  VStack,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRestaurantDetail } from './hooks/useRestaurantDetail';
 
-const RESTUARANTS = [
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당이었당',
-    menu: '박복자 보끔밥',
-    price: '30000',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당이었당',
-    menu: '박복자 보끔밥',
-    price: '30000',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당이었당',
-    menu: '박복자 보끔밥',
-    price: '30000',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당이었당',
-    menu: '박복자 보끔밥',
-    price: '30000',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당이었당',
-    menu: '박복자 보끔밥',
-    price: '30000',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당이었당',
-    menu: '박복자 보끔밥',
-    price: '30000',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-];
 const ReviewHistory = () => {
-  const isMobile = useBreakpointValue({ base: true, md: false });
   const [reviewList, setReviewList] = useState(null);
 
   useEffect(() => {
     const getReview = async () => {
       const res = await Axios.get('mypage/review/userEmail');
-      console.log('review', res);
+
       if (res.status === 200) {
-        console.log('review', res.data);
         setReviewList(res.data);
       }
     };
     getReview();
   }, []);
-
   return (
     <VStack align={'flex-start'}>
       <Flex height={'80vh'} overflowY={'auto'}>
         <VStack marginTop={'2rem'} align={'start'}>
-          {reviewList.map((review, idx) => {
-            return <RestaurantReviewCard key={idx} restaurantNo={review.restaurantNo} />;
-          })}
+          {reviewList &&
+            reviewList.map((review, idx) => {
+              return (
+                <RestaurantReviewCard
+                  key={idx}
+                  idx={idx}
+                  restaurantNo={review.restaurantNo}
+                  img={review.reviewPhotoDir}
+                />
+              );
+            })}
         </VStack>
       </Flex>
     </VStack>
@@ -101,9 +58,10 @@ const ReviewHistory = () => {
 };
 export default ReviewHistory;
 
-const RestaurantReviewCard = ({ restaurantNo, key }) => {
+const RestaurantReviewCard = ({ restaurantNo, key, idx, img }) => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
+  const navigate = useNavigate();
   const { data } = useRestaurantDetail(restaurantNo);
-  console.log('!!!!!!!!!!!', data);
 
   const getHowMany = list => {
     if (list.length > 1) {
@@ -111,6 +69,12 @@ const RestaurantReviewCard = ({ restaurantNo, key }) => {
     }
     return list[0].menuName;
   };
+
+  const getHowMuch = list => {
+    return list.reduce((acc, menu) => acc + menu.menuPrice, 0);
+  };
+
+  if (!data) return <></>;
   return (
     <div key={restaurantNo}>
       <HStack
@@ -121,7 +85,7 @@ const RestaurantReviewCard = ({ restaurantNo, key }) => {
         paddingRight={'2rem'}
       >
         <Text fontWeight={'extrabold'} fontSize={'4xl'}>
-          {key + 1}
+          {idx + 1}
         </Text>
         <Card
           _hover={{ borderWidth: '3px', borderColor: COLORS.GREEN200 }}
@@ -147,7 +111,7 @@ const RestaurantReviewCard = ({ restaurantNo, key }) => {
                       메뉴
                     </Text>
                   </Box>
-                  <Text>{getHowMany(data.reservationMenuList)}</Text>
+                  <Text>{getHowMany(data.menuList)}</Text>
                   <Box
                     backgroundColor={'green.100'}
                     borderRadius={'10px'}
@@ -159,20 +123,20 @@ const RestaurantReviewCard = ({ restaurantNo, key }) => {
                       가격
                     </Text>
                   </Box>
-                  {/* <Text>{data.}</Text> */}
+                  <Text>{getHowMuch(data.menuList)}</Text>
                 </Stack>
                 <br />
-                {/* <Text>{restaurant.description}</Text> */}
+                <Text>{data.restaurantDetail}</Text>
               </Stack>
 
               {isMobile && (
                 <CardBody w={'100%'}>
-                  {/* <Image
+                  <Image
                     pointerEvents="none"
-                    src={restaurant.image}
-                    alt={restaurant.alt}
+                    src={data.reviewPhotoDir}
+                    alt={img}
                     borderRadius="lg"
-                  /> */}
+                  />
                 </CardBody>
               )}
             </Stack>
@@ -180,7 +144,11 @@ const RestaurantReviewCard = ({ restaurantNo, key }) => {
             <CardFooter w={'100%'}>
               <ButtonGroup spacing="2">
                 {/* 여기에 상세페이지로 링크 */}
-                <Button variant="solid" colorScheme="green">
+                <Button
+                  variant="solid"
+                  colorScheme="green"
+                  onClick={() => navigate(`/restaurant/${restaurantNo}`)}
+                >
                   상세 페이지
                 </Button>
               </ButtonGroup>
@@ -190,7 +158,7 @@ const RestaurantReviewCard = ({ restaurantNo, key }) => {
           <Spacer />
           {!isMobile && (
             <CardBody w={'30%'}>
-              {/* <Image src={restaurant.image} alt={restaurant.alt} borderRadius="lg" /> */}
+              <Image w="100%" h="100%" src={data.reviewPhotoDir} alt={img} borderRadius="lg" />
             </CardBody>
           )}
         </Card>
