@@ -22,13 +22,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '@/routes/ROUTES';
 import { useMutation } from 'react-query';
 import RestaurantService from '@/api/RestaurantService';
-import RegisterDetail from '@/pages/Admin/Register/RegisterDetail';
-import RegisterComplete from '@/pages/Admin/Register/RegisterComplete';
+import RegisterDetail from './RegisterDetail';
+import RegisterComplete from './RegisterComplete';
+import Storage from '@/utils/storage/storage';
+import Swal from 'sweetalert2';
 
 const RestaurantRegistration = () => {
   const { stepno } = useParams();
   const navigate = useNavigate();
-  const { mutate: onAddRestaurant } = useMutation(RestaurantService.addRestaurant);
+  const { mutate: onAddRestaurant } = useMutation('addRestaurant', RestaurantService.addRestaurant);
 
   const {
     register,
@@ -36,7 +38,6 @@ const RestaurantRegistration = () => {
     formState: { errors },
     control,
     setValue,
-    getValues,
   } = useForm();
 
   const steps = [{ title: '필수정보 입력' }, { title: '등록완료' }];
@@ -46,32 +47,58 @@ const RestaurantRegistration = () => {
     2: <RegisterComplete />,
   };
 
-  const onSubmit = data => {
-    onAddRestaurant({
-      restaurantInfo: {
-        restaurantName: data.restaurantName,
-        restaurantAddress:
-          data.addressDetail.length === 0 ? data.address : `${data.address},${data.addressDetail}`,
-        restaurantAddressGu: data.restaurantAddressGu,
-        restaurantX: data.restaurantX,
-        restaurantY: data.restaurantY,
-        restaurantOpen: `${data.openH}:${data.openM}:00`,
-        restaurantClose: `${data.closeH}:${data.closeM}:00`,
-        restaurantDetail: data.restaurantDetail,
-        restaurantTable: data.restaurantTable,
-        restaurantTableMember: data.restaurantTableMember,
-        restaurantAvgPrice: data.restaurantAvgPrice,
-        restaurantVeganLevel: data.restaurantVeganLevel,
-      },
-      restaurantImages: data.restaurantImages,
-      options: {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      },
+  const onSubmit = async data => {
+    Swal.fire({
+      icon: 'warning',
+      title: '가게를 생성 하시겠습니까?',
+      html: `업체명: ${data.restaurantName}<br/>
+            주소: ${data.address}<br/>
+            영업시간: ${data.openH}:${data.openM}:00 ~ ${data.closeH}:${data.closeM}:00`,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '생성',
+      cancelButtonText: '취소',
+      reverseButtons: true, // 버튼 순서 거꾸로
+    }).then(result => {
+      if (result.isConfirmed) {
+        // 만약 모달창에서 confirm 버튼을 눌렀다면
+        Swal.fire('가게생성이 완료되었습니다.');
+        onAddRestaurant(
+          {
+            restaurantInfo: {
+              restaurantName: data.restaurantName,
+              restaurantAddress:
+                data.addressDetail.length === 0
+                  ? data.address
+                  : `${data.address},${data.addressDetail}`,
+              restaurantAddressGu: data.restaurantAddressGu,
+              restaurantX: data.restaurantX,
+              restaurantY: data.restaurantY,
+              restaurantOpen: `${data.openH}:${data.openM}:00`,
+              restaurantClose: `${data.closeH}:${data.closeM}:00`,
+              restaurantDetail: data.restaurantDetail,
+              restaurantTable: data.restaurantTable,
+              restaurantTableMember: data.restaurantTableMember,
+              restaurantAvgPrice: data.restaurantAvgPrice,
+              restaurantVeganLevel: data.restaurantVeganLevel,
+            },
+            restaurantImages: data.restaurantImages,
+            options: {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            },
+          },
+          {
+            onSuccess: res => {
+              Storage.setJsonItem('rastaurantInfo', { ...data, restaurantNo: res.data });
+              navigate(`${ROUTES.RESTAURANT_REGISTRATION_RAW}/2`);
+            },
+          }
+        );
+      }
     });
-
-    navigate(`${ROUTES.RESTAURANT_REGISTRATION_RAW}/${+stepno + 1}`);
   };
 
   return (
@@ -103,10 +130,22 @@ const RestaurantRegistration = () => {
           {pageStep[stepno]}
         </VStack>
         <HStack w={'900px'} justifyContent={'flex-end'} pt={12} gap={4} pr={8}>
-          {stepno < 4 && (
+          {stepno == 1 && (
             <ButtonGroup>
-              <Button type="submit">다음</Button>
-              <Button>취소</Button>
+              <Button
+                bgColor={'green.200'}
+                _hover={{ bgColor: 'green.400', color: 'white' }}
+                type="submit"
+              >
+                생성하기
+              </Button>
+              <Button
+                onClick={() => navigate(ROUTES.ADMIN)}
+                _hover={{ bgColor: 'red.400', color: 'white' }}
+                bgColor={'red.200'}
+              >
+                취소
+              </Button>
             </ButtonGroup>
           )}
         </HStack>

@@ -6,11 +6,20 @@ const RestaurantService = {
     return response.data;
   },
 
+  getRestaurantDetails: async restaurantNo => {
+    const response = await Axios.get(`/restaurant/${restaurantNo}`);
+    return response.data;
+  },
+
   addRestaurant: async ({ restaurantInfo, restaurantImages, options }) => {
     const formData = new FormData();
 
-    for (let i = 0; i < restaurantImages.length; i++) {
-      formData.append('restaurantImages', restaurantImages[i]);
+    if (restaurantImages) {
+      if (restaurantImages.length) {
+        for (let i = 0; i < restaurantImages.length; i++) {
+          formData.append('restaurantImages', restaurantImages[i]);
+        }
+      } else formData.append('restaurantImages', restaurantImages);
     }
 
     formData.append(
