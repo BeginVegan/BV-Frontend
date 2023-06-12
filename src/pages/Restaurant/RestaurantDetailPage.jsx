@@ -13,7 +13,6 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import Axios from '@/api/apiConfig';
-import Swal from 'sweetalert2';
 import { Spinner } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { RiHeart3Line } from 'react-icons/ri';
@@ -24,7 +23,6 @@ import VeganLevel from '@/components/restaurant/VeganLevel';
 const RestaurantDetailPage = () => {
   // const isMobile = useBreakpointValue({ base: true, md: false });
   const navigator = useNavigate();
-  const [veganLevel, setVeganLevel] = useState(0);
   const [restaurantInfo, setRestaurantInfo] = useState(null);
   const _hereIAm = useLocation();
   const restaurantNo = _hereIAm.pathname.split('/')[2];
@@ -35,7 +33,6 @@ const RestaurantDetailPage = () => {
         const res = await Axios.get(`restaurant/${restaurantNo}`);
         if (res.status === 200) {
           setRestaurantInfo(res.data);
-          setVeganLevel(res.data.restaurant.restaurantVeganLevel);
         }
       } catch (error) {
         if (error.response && error.response.status === 500) {
@@ -142,7 +139,7 @@ const RestaurantDetailPage = () => {
   };
 
   const RestaurntReivew = ({ reviewList }) => (
-    // 수정 필요 : 리뷰 스크롤 또는 페이징?
+    // 수정 필요 : 리뷰 ?
     <React.Fragment>
       {reviewList.map(review => (
         <HStack w={'600px'} gap={4} alignItems={'flex-start'} justifyContent={'space-around'}>
@@ -298,7 +295,7 @@ const RestaurantDetailPage = () => {
                 비건 레벨
               </Text>
               {/* 수정 필요 : VeganLevel 컴포넌트 사용법 확인 후 수정 예정입니다. */}
-              <VeganLevel veganLevel={veganLevel} setVeganLevel={setVeganLevel} />
+              <VeganLevel level={restaurantInfo.restaurant.restaurantVeganLevel} />
             </HStack>
           </VStack>
           <VStack gap={2} py={4} alignItems={'flex-start'}>

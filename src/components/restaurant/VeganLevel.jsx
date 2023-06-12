@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IconButton, Img, Stack } from '@chakra-ui/react';
 import fishIcon from '@/assets/icons/icons-fish.png';
 import broccoliIcon from '@/assets/icons/icon-broccoli.png';
@@ -7,12 +7,18 @@ import eggIcon from '@/assets/icons/icons-egg.png';
 import meatIcon from '@/assets/icons/icons-meat.png';
 import chickenIcon from '@/assets/icons/icon-thanksgiving.png';
 
-const VeganLevel = ({ setValue }) => {
-  const [veganLevel, setVeganLevel] = useState(1);
+const VeganLevel = ({ setValue, level }) => {
+  const [veganLevel, setVeganLevel] = useState(level ? level : 1);
+
+  useEffect(() => {
+    if (level) setVeganLevel(level);
+  }, [level]);
 
   const changeVeganLevel = level => {
-    setVeganLevel(level);
-    setValue('restaurantVeganLevel', level);
+    if (!level) {
+      setVeganLevel(level);
+      setValue('restaurantVeganLevel', level);
+    }
   };
 
   return (
