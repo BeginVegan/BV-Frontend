@@ -27,37 +27,37 @@ const VeganLevel = ({ setValue, level }) => {
         bg={'white'}
         opacity={veganLevel === 1 ? '1' : '0.5'}
         icon={<Img src={broccoliIcon} />}
-        onClick={() => changeVeganLevel(1)}
+        onClick={() => !level && changeVeganLevel(1)}
       />
       <IconButton
         bg={'white'}
         opacity={veganLevel === 2 ? '1' : '0.5'}
         icon={<Img src={milkIcon} />}
-        onClick={() => changeVeganLevel(2)}
+        onClick={() => !level && changeVeganLevel(2)}
       />
       <IconButton
         bg={'white'}
         opacity={veganLevel === 3 ? '1' : '0.5'}
         icon={<Img src={eggIcon} />}
-        onClick={() => changeVeganLevel(3)}
+        onClick={() => !level && changeVeganLevel(3)}
       />
       <IconButton
         bg={'white'}
         opacity={veganLevel === 4 ? '1' : '0.5'}
         icon={<Img src={fishIcon} />}
-        onClick={() => changeVeganLevel(4)}
+        onClick={() => !level && changeVeganLevel(4)}
       />
       <IconButton
         bg={'white'}
         opacity={veganLevel === 5 ? '1' : '0.5'}
         icon={<Img src={chickenIcon} />}
-        onClick={() => changeVeganLevel(5)}
+        onClick={() => !level && changeVeganLevel(5)}
       />
       <IconButton
         bg={'white'}
         opacity={veganLevel === 6 ? '1' : '0.5'}
         icon={<Img src={meatIcon} />}
-        onClick={() => changeVeganLevel(6)}
+        onClick={() => !level && changeVeganLevel(6)}
       />
     </Stack>
   );
