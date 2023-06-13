@@ -2,6 +2,7 @@ import DefaultLayout from '@/components/Layout/DefaultLayout';
 import MainLayout from '@/components/Layout/MainLayout';
 import MypageLayout from '@/components/Layout/MypageLayout';
 import AdminPage from '@/pages/Admin/AdminPage';
+import RestaurantRegistration from '@/pages/Admin/Register/RestaurantRegistration';
 import AuthPage from '@/pages/Auth/AuthPage';
 import BestPage from '@/pages/Best/BestPage';
 import ErrorPage from '@/pages/Error/ErrorPage';
@@ -14,13 +15,14 @@ import HistoryPage from '@/pages/Personal/HistoryPage';
 import MyPageMain from '@/pages/Personal/MyPageMain';
 import RestaurantDetailPage from '@/pages/Restaurant/RestaurantDetailPage';
 import SearchResultPage from '@/pages/SearchResult/SearchResultPage';
-import RestaurantRegistration from '@/pages/Admin/Register/RestaurantRegistration';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { useToast } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './ROUTES';
 import RegisterMenu from '@/pages/Admin/Register/RegisterMenu';
+import SubmitReviewPage from '@/pages/Personal/SubmitReviewPage';
+import RerservationRestaurant from '@/pages/Restaurant/RerservationRestaurant';
 
 const AppRoutes = () => {
   const toast = useToast();
@@ -65,6 +67,7 @@ const AppRoutes = () => {
             <Route path={ROUTES.MYPAGE_HISTORY} element={<HistoryPage />} />
             <Route path={ROUTES.MYPAGE_BOOKMARK} element={<BookmarkPage />} />
             <Route path={ROUTES.MYPAGE_DROP} element={<DropPage />} />
+            <Route path={ROUTES.MYPAGE_REVIEW} element={<SubmitReviewPage />} />
           </Route>
           <Route path={ROUTES.AUTH} element={<AuthPage />} />
           <Route path={ROUTES.OTHERS} element={<NotFoundPage />} />

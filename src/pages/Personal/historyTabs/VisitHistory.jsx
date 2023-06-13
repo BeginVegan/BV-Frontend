@@ -27,6 +27,7 @@ import { useRestaurantDetail } from './hooks/useRestaurantDetail';
 const VisitHistory = () => {
   const [reservationList, setReservationList] = useState(null);
   const [sortBy, setSortBy] = useState('2');
+  const [reviewList, setReviewList] = useState(null);
 
   useEffect(() => {
     const getReservations = async () => {
@@ -35,8 +36,17 @@ const VisitHistory = () => {
         setReservationList(res.data);
       }
     };
+    const getReview = async () => {
+      const res = await Axios.get('mypage/review/userEmail');
+
+      if (res.status === 200) {
+        setReviewList(res.data);
+
+      }
+    }
     getReservations();
-  }, []);
+    getReview();
+  },[]);
 
   const sortedReservationList = useMemo(() => {
     if (reservationList) {
@@ -70,7 +80,7 @@ const VisitHistory = () => {
       <Flex height={'80vh'} overflowY={'auto'}>
         <VStack marginTop={'2rem'} align={'start'}>
           {sortedReservationList.map((restaurant, idx) => {
-            return <RestaurantCards key={idx} id={idx} restaurant={restaurant} />;
+            return <RestaurantCards reservationNo={restaurant.reservationNo} reviewList={reviewList} key={idx} id={idx} restaurant={restaurant} />;
           })}
         </VStack>
       </Flex>
@@ -80,17 +90,28 @@ const VisitHistory = () => {
 
 export default VisitHistory;
 
-const RestaurantCards = ({ restaurant, id }) => {
+const RestaurantCards = ({reservationNo, reviewList, restaurant, id }) => {
   const { data } = useRestaurantDetail(restaurant.restaurantNo);
-  const { restaurantName, restaurantDetail, restaurantPhotoDir, restaurantStar } = data || {};
+  const { restaurantName, restaurantDetail, restaurantPhotoDir, restaurantStar,restaurantNo } = data || {};
   const isMobile = useBreakpointValue({ base: true, md: false });
+  const [isReviewable, setIsReviewable] = useState(false)
   const navigate = useNavigate();
   
+  useEffect(()=>{
+    if (reviewList && data) {
+      const hasReview = reviewList.find(review => review.restaurantNo === restaurantNo && review.reservationNo === reservationNo);
+      if (!hasReview) {
+        setIsReviewable(true)
+      }
+    }
+  },[data])
+
+
   return (
     <div key={restaurant.id}>
       {data && (
         <HStack
-          w={'100%'}
+          w={'80%'}
           spacing={'2rem'}
           align={'flex-start'}
           marginBottom={'2rem'}
@@ -104,8 +125,9 @@ const RestaurantCards = ({ restaurant, id }) => {
             variant="outline"
             shadow={'sm'}
             direction={{ base: 'column', md: 'row' }}
+            w={isMobile ? '30%' : '100%'}
           >
-            <CardBody w={isMobile ? '100%' : '30%'}>
+            <CardBody w={isMobile ? '80%' : '30%'}>
               <Image
                 w={'100rem'}
                 h={'100%'}
@@ -130,7 +152,7 @@ const RestaurantCards = ({ restaurant, id }) => {
               </Stack>
               <Spacer />
               <CardFooter w={'100%'}>
-                <ButtonGroup spacing="2">
+                <ButtonGroup spacing="4">
                   {/* 여기에 상세페이지로 링크 */}
                   <Button
                     variant="solid"
@@ -138,6 +160,16 @@ const RestaurantCards = ({ restaurant, id }) => {
                     onClick={() => navigate(`/restaurant/${restaurant.restaurantNo}`)}
                   >
                     상세 페이지
+                  </Button>
+                  <Button
+                    variant="solid"
+                    colorScheme="teal"
+                    onClick={() => navigate(`/mypage/review`,{state :{
+                      reservationNo : reservationNo,
+                      restaurantNo : restaurantNo
+                    }})}
+                  >
+                    리뷰 작성
                   </Button>
                 </ButtonGroup>
               </CardFooter>
