@@ -58,7 +58,7 @@ const ReviewHistory = () => {
 };
 export default ReviewHistory;
 
-const RestaurantReviewCard = ({ restaurantNo, key, idx, img }) => {
+const RestaurantReviewCard = ({ restaurantNo,idx, img }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const navigate = useNavigate();
   const { data } = useRestaurantDetail(restaurantNo);
@@ -76,7 +76,7 @@ const RestaurantReviewCard = ({ restaurantNo, key, idx, img }) => {
 
   if (!data) return <></>;
   return (
-    <div key={restaurantNo}>
+    <div >
       <HStack
         w={'100%'}
         spacing={'2rem'}

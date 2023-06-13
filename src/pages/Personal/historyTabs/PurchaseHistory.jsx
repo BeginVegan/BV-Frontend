@@ -13,6 +13,17 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
 
+export const isCancellable = dateString => {
+  const date = new Date(dateString);
+  const currentTime = new Date();
+
+  const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+  const timeGap = date.getTime() - currentTime.getTime();
+
+  return timeGap >= 0 && timeGap <= twentyFourHours;
+};
+
 const PurchaseHistory = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [reservationList, setReservationList] = useState(null);
@@ -26,17 +37,7 @@ const PurchaseHistory = () => {
     getReservations();
   }, []);
 
-  const isCancellable = dateString => {
-    const date = new Date(dateString);
-    const currentTime = new Date();
-
-    const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-
-    const timeGap = date.getTime() - currentTime.getTime();
-
-    return timeGap >= 0 && timeGap <= twentyFourHours;
-  };
-
+ 
   const filteredReservationList = useMemo(() => {
     if (reservationList) {
       return reservationList.filter(store => !isCancellable(store.reservationTime));

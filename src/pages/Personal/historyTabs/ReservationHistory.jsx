@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
 import Swal from 'sweetalert2';
+import { isCancellable } from './PurchaseHistory';
 
 const ReservationHistory = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -56,16 +57,7 @@ const ReservationHistory = () => {
     }
     return list[0].menuName;
   };
-  const isCancellable = dateString => {
-    const date = new Date(dateString);
-    const currentTime = new Date();
 
-    const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-
-    const timeGap = date.getTime() - currentTime.getTime();
-
-    return timeGap >= 0 && timeGap <= twentyFourHours;
-  };
 
   const filteredReservationList = useMemo(() => {
     if (reservationList) {
