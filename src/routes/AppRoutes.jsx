@@ -20,9 +20,7 @@ import { useToast } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './ROUTES';
-import TestPage from '@/pages/Login/TestPage';
 import RegisterMenu from '@/pages/Admin/Register/RegisterMenu';
-import ReservationRestaurant from '@/pages/Restaurant/ReservationRestaurant';
 
 const AppRoutes = () => {
   const toast = useToast();
@@ -59,7 +57,6 @@ const AppRoutes = () => {
           {/* DefaultLayout 레이아웃에서 푸터가 있는 레이아웃*/}
           <Route element={<DefaultLayout hasFooter={true} />}>
             <Route path={ROUTES.RESTAURANT} element={<RestaurantDetailPage />} />
-            <Route path={ROUTES.RESTAURANT_RESERVATION} element={<ReservationRestaurant />} />
           </Route>
           {/* Mypage는 검색창있는 헤더와 사이드바가 있는 레이아웃 */}
           <Route element={<MypageLayout />}>

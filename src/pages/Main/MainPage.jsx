@@ -41,7 +41,7 @@ const MainPage = () => {
             heading={'평점 베스트 10곳'}
             description={'믿고가는 가게'}
             img={'/images/main_card2.jpg'}
-            href={ROUTES.BEST_RAW + 'grade'}
+            href={ROUTES.BEST_RAW + 'star'}
           />
           <BestStoreCard
             heading={'리뷰 베스트 10곳'}
