@@ -9,7 +9,7 @@ import {
   CardBody,
   CardFooter,
   Divider,
-  Flex,
+  Grid,
   HStack,
   Heading,
   Image,
@@ -17,7 +17,7 @@ import {
   Stack,
   Text,
   VStack,
-  useBreakpointValue,
+  useBreakpointValue
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -36,25 +36,43 @@ const ReviewHistory = () => {
     };
     getReview();
   }, []);
+  // return (
+  //   <VStack align={'flex-start'}>
+  //     <Flex height={'80vh'} overflowY={'auto'}>
+  //       <VStack marginTop={'2rem'} align={'start'}>
+  //         {reviewList &&
+  //           reviewList.map((review, idx) => {
+  //             return (
+  //               <RestaurantReviewCard
+  //                 key={idx}
+  //                 idx={idx}
+  //                 restaurantNo={review.restaurantNo}
+  //                 img={review.reviewPhotoDir}
+  //               />
+  //             );
+  //           })}
+  //       </VStack>
+  //     </Flex>
+  //   </VStack>
+  // );
+  const templateColumns = useBreakpointValue({ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' });
+
   return (
     <VStack align={'flex-start'}>
-      <Flex height={'80vh'} overflowY={'auto'}>
-        <VStack marginTop={'2rem'} align={'start'}>
-          {reviewList &&
-            reviewList.map((review, idx) => {
-              return (
-                <RestaurantReviewCard
-                  key={idx}
-                  idx={idx}
-                  restaurantNo={review.restaurantNo}
-                  img={review.reviewPhotoDir}
-                />
-              );
-            })}
-        </VStack>
-      </Flex>
+      <Grid w={"100%"} templateColumns={templateColumns} gap={4} height={'80vh'} overflowY={'auto'} padding={4}>
+        {reviewList &&
+          reviewList.map((review, idx) => (
+            <RestaurantReviewCard
+              key={idx}
+              idx={idx}
+              restaurantNo={review.restaurantNo}
+              img={review.reviewPhotoDir}
+            />
+          ))}
+      </Grid>
     </VStack>
   );
+
 };
 export default ReviewHistory;
 
@@ -137,6 +155,12 @@ const RestaurantReviewCard = ({ restaurantNo,idx, img }) => {
                     alt={"리뷰 이미지"}
                     borderRadius="lg"
                   />
+                  {/* <Image
+                    pointerEvents="none"
+                    src={'https://picsum.photos/200/300'}
+                    alt={"리뷰 이미지"}
+                    borderRadius="lg"
+                  /> */}
                 </CardBody>
               )}
             </Stack>
@@ -159,6 +183,7 @@ const RestaurantReviewCard = ({ restaurantNo,idx, img }) => {
           {!isMobile && (
             <CardBody w={'30%'}>
               <Image w="100%" h="100%" src={data.reviewPhotoDir} alt={"리뷰 이미지"} borderRadius="lg" />
+              {/* <Image w="100%" h="100%" src={'https://picsum.photos/200/300'} alt={"리뷰 이미지"} borderRadius="lg" /> */}
             </CardBody>
           )}
         </Card>

@@ -111,7 +111,7 @@ const RestaurantCards = ({reservationNo, reviewList, restaurant, id }) => {
     <div key={restaurant.id}>
       {data && (
         <HStack
-          w={'100%'}
+          w={'80%'}
           spacing={'2rem'}
           align={'flex-start'}
           marginBottom={'2rem'}
@@ -125,8 +125,9 @@ const RestaurantCards = ({reservationNo, reviewList, restaurant, id }) => {
             variant="outline"
             shadow={'sm'}
             direction={{ base: 'column', md: 'row' }}
+            w={isMobile ? '30%' : '100%'}
           >
-            <CardBody w={isMobile ? '100%' : '30%'}>
+            <CardBody w={isMobile ? '80%' : '30%'}>
               <Image
                 w={'100rem'}
                 h={'100%'}
