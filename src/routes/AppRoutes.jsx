@@ -13,8 +13,6 @@ import BookmarkPage from '@/pages/Personal/BookmarkPage';
 import DropPage from '@/pages/Personal/DropPage';
 import HistoryPage from '@/pages/Personal/HistoryPage';
 import MyPageMain from '@/pages/Personal/MyPageMain';
-import SubmitReviewPage from '@/pages/Personal/SubmitReviewPage';
-import RerservationRestaurant from '@/pages/Restaurant/RerservationRestaurant';
 import RestaurantDetailPage from '@/pages/Restaurant/RestaurantDetailPage';
 import SearchResultPage from '@/pages/SearchResult/SearchResultPage';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
@@ -22,6 +20,9 @@ import { useToast } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './ROUTES';
+import RegisterMenu from '@/pages/Admin/Register/RegisterMenu';
+import SubmitReviewPage from '@/pages/Personal/SubmitReviewPage';
+import RerservationRestaurant from '@/pages/Restaurant/RerservationRestaurant';
 
 const AppRoutes = () => {
   const toast = useToast();
@@ -46,8 +47,9 @@ const AppRoutes = () => {
             <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.MAIN} />} />
             <Route path={ROUTES.MAIN} element={<MainPage />} />
             <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-            <Route path={ROUTES.ADMIN} element={<AdminPage />} />{' '}
+            <Route path={ROUTES.ADMIN} element={<AdminPage />} />
             <Route path={ROUTES.RESTAURANT_REGISTRATION} element={<RestaurantRegistration />} />
+            <Route path={ROUTES.RESTAURANTMENU_REGISTRATION} element={<RegisterMenu />} />
           </Route>
           {/* DefaultLayout은 검색창 있는 헤더 만 있는 레이아웃*/}
           <Route element={<DefaultLayout />}>
@@ -57,7 +59,6 @@ const AppRoutes = () => {
           {/* DefaultLayout 레이아웃에서 푸터가 있는 레이아웃*/}
           <Route element={<DefaultLayout hasFooter={true} />}>
             <Route path={ROUTES.RESTAURANT} element={<RestaurantDetailPage />} />
-            <Route path={ROUTES.RESTAURANT_RESERVATION} element={<RerservationRestaurant />} />
           </Route>
           {/* Mypage는 검색창있는 헤더와 사이드바가 있는 레이아웃 */}
           <Route element={<MypageLayout />}>

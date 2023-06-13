@@ -31,7 +31,11 @@ const RegisterDetail = ({ register, control, setValue, errors }) => {
     <>
       <FormControl as={HStack} w={'660px'}>
         <FormLabel w={'120px'}>매장사진</FormLabel>
-        <MultiImageFileUpload name={'restaurantImages'} control={control}></MultiImageFileUpload>
+        <MultiImageFileUpload
+          name={'restaurantImages'}
+          control={control}
+          errors={errors}
+        ></MultiImageFileUpload>
       </FormControl>
       <FormControl as={HStack} w={'660px'}>
         <FormLabel w={'120px'}>업체명</FormLabel>
