@@ -27,26 +27,24 @@ const ReservationHistory = () => {
     };
     getReservations();
   }, []);
-  const handleCancel = () => {
+
+  const handleCancel = (reservationNo) => {
     Swal.fire({
       icon: 'question',
       title: '정말 취소하시겠습니까?',
       text: '취소 요청은 되돌릴 수 없습니다',
       showCancelButton: true,
-    }).then(res => {
+    }).then(async res => {
       if (res.isConfirmed) {
-        Swal.fire({
-          icon: 'success',
-          title: '예약 취소 성공',
-          text: '그동안 이용해 주셔서 감사합니다',
-        }).then(res => {
-          if (res.isConfirmed) {
-            /**
-             * 예약 취소 쿼리 보내는곳
-             * TODO:
-             */
-          }
-        });
+        const result = await Axios.delete(`reservation/${reservationNo}`);
+        if (result.status === 200) {
+          Swal.fire({
+            icon: 'success',
+            title: '예약 취소 성공',
+            text: '그동안 이용해 주셔서 감사합니다',
+          })
+        }
+        
       }
     });
   };
@@ -92,6 +90,7 @@ const ReservationHistory = () => {
         <Tbody>
           {reservationList &&
             sortedReservationList.map((store, idx) => {
+              console.log(store)
               return (
                 <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
                   <CustomTd>{idx + 1}</CustomTd>
@@ -107,7 +106,7 @@ const ReservationHistory = () => {
                       <Button
                         colorScheme="red"
                         size={{ base: 'xs', md: 'sm' }}
-                        onClick={() => handleCancel()}
+                        onClick={() => handleCancel(store.reservationNo)}
                       >
                         예약취소
                       </Button>

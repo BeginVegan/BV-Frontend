@@ -73,7 +73,7 @@ const BookmarkCard = ({ restuarantNo, idx }) => {
               h={'100%'}
               src={data.restuarantPhotoDir}
               
-              alt={null}
+              alt={"식당 이미지"}
               borderRadius="lg"
             />
             <Stack mt="6" spacing="3">
