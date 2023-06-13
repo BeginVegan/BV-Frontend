@@ -134,7 +134,7 @@ const RestaurantReviewCard = ({ restaurantNo,idx, img }) => {
                   <Image
                     pointerEvents="none"
                     src={data.reviewPhotoDir}
-                    alt={img}
+                    alt={"리뷰 이미지"}
                     borderRadius="lg"
                   />
                 </CardBody>
@@ -158,7 +158,7 @@ const RestaurantReviewCard = ({ restaurantNo,idx, img }) => {
           <Spacer />
           {!isMobile && (
             <CardBody w={'30%'}>
-              <Image w="100%" h="100%" src={data.reviewPhotoDir} alt={img} borderRadius="lg" />
+              <Image w="100%" h="100%" src={data.reviewPhotoDir} alt={"리뷰 이미지"} borderRadius="lg" />
             </CardBody>
           )}
         </Card>
