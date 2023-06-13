@@ -18,53 +18,6 @@ import { useEffect, useState } from 'react';
 import { AiFillStar } from 'react-icons/ai';
 import { useRestaurantDetail } from './historyTabs/hooks/useRestaurantDetail';
 
-const RESTUARANTS = [
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-];
 
 const BookmarkPage = () => {
   const [bookmarks, setBookmarks] = useState(null);
@@ -73,7 +26,7 @@ const BookmarkPage = () => {
       const res = await Axios.get('mypage/bookmark/userEmail');
       if (res.status === 200) {
         setBookmarks(res.data);
-        console.log(bookmarks);
+        
       }
     };
     getReservations();
@@ -94,11 +47,7 @@ const BookmarkPage = () => {
         spacing={10}
         align={'center'}
       >
-        {/* {bookmarks &&
-            bookmarks.map((bookmark, idx) => {
-            return <BookmarkCard restuarantNo={bookmark.restuarantNo} key={idx} idx={idx} />;
-           })} */}
-        {/* restuarantNo={bookmark.restuarantNo} key={idx} idx={idx} */}
+       
         <BookmarkCard restuarantNo={1} key={0} idx={0} />
       </SimpleGrid>
     </VStack>
@@ -108,7 +57,7 @@ export default BookmarkPage;
 
 const BookmarkCard = ({ restuarantNo, idx }) => {
   const { data } = useRestaurantDetail(restuarantNo);
-  console.log(data);
+  
 
   if (!data) return <></>;
   return (
@@ -122,10 +71,8 @@ const BookmarkCard = ({ restuarantNo, idx }) => {
             <Image
               w={'100%'}
               h={'100%'}
-              // src={data.restuarantPhotoDir}
-              src={
-                'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
-              }
+              src={data.restuarantPhotoDir}
+              
               alt={null}
               borderRadius="lg"
             />
@@ -145,7 +92,7 @@ const BookmarkCard = ({ restuarantNo, idx }) => {
               <Button
                 variant="solid"
                 colorScheme="green"
-                onClick={() => navigate(`/restaurant/${restaurantNo}`)}
+                onClick={() => navigate(`/restaurant/${data.restaurantNo}`)}
               >
                 상세페이지
               </Button>

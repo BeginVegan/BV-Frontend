@@ -85,7 +85,7 @@ const RestaurantCards = ({ restaurant, id }) => {
   const { restaurantName, restaurantDetail, restaurantPhotoDir, restaurantStar } = data || {};
   const isMobile = useBreakpointValue({ base: true, md: false });
   const navigate = useNavigate();
-  console.log(restaurantPhotoDir)
+  
   return (
     <div key={restaurant.id}>
       {data && (

@@ -14,40 +14,6 @@ import { useNavigate } from "react-router-dom";
 import { isCancellable } from "./historyTabs/PurchaseHistory";
 import { useRestaurantDetail } from "./historyTabs/hooks/useRestaurantDetail";
 
-// const MyPageMain = () => {
-//   const point = '1000000000';
-//   const grade = 'VVVVVVVIP';
-//   const [userStatus, setUserStatus] = useAtom(userAtom);
-
-//   return (
-//     <Box
-//       p={'20rem'}
-//       // bg={`url('../src/assets/panel/green.png') no-repeat`}
-//       bgPosition="center"
-//       bgSize={{ base: '40vh', md: '80vh' }}
-//     >
-//       <VStack spacing={6} align="center">
-//         <Heading size="xl">보유 포인트</Heading>
-//         <HStack spacing={'0.5rem'}>
-//           <Text fontSize="4xl" fontWeight="bold" color="blue.600">
-//             <CountUp isCounting={true} end={Number(point)} duration={3.2} easing={'easeOutCubic'} />
-//           </Text>
-//           <Text fontWeight={'bold'} fontSize={'2xl'}>
-//             점
-//           </Text>
-//         </HStack>
-//         <Text fontSize="2xl" fontWeight="bold" color="purple.600">
-//           {userStatus.name} 님의 등급은
-//         </Text>
-//         <Text fontSize="6xl" fontWeight="bold" color="red">
-//           {grade}
-//         </Text>
-//       </VStack>
-//     </Box>
-//   );
-// };
-
-// export default MyPageMain;
 
 const MyPageMain = () => {
   const [userStatus, setUserStatus] = useAtom(userAtom);
@@ -129,21 +95,27 @@ const MyPageMain = () => {
     <>
       <Flex mb={"5rem"}>
         <VStack>
-          <Text fontSize={"3xl"}>{userStatus && userStatus.name ? userStatus.name : '-'} 님의 등급은</Text>
           <HStack>
-            <Text fontSize={'xl'}>{getGradeName()}</Text>
+            <Text fontSize={"4xl"} fontWeight={"bold"}>{userStatus && userStatus.name ? userStatus.name : '-'}</Text>
+            <Text fontSize={"3xl"}>님의 등급은</Text>
+
+          </HStack>
+          
+          <HStack>
+            <Text fontSize={'2xl'} color={COLORS.GREEN300} fontWeight={"bold"} >{getGradeName()}</Text>
             <Text fontSize={"5xl"}>{getGradeIcon()}</Text>
             <Text fontSize={"3xl"}> 입니다</Text>
           </HStack>
         </VStack>
       </Flex>
-      <Wrap spacing={"5rem"}>
-  
-
-        <MyPageMainCard title="예약중" value={onReadyReservationList.length} list={onReadyReservationList}/>
-        <MyPageMainCard title="리뷰대기" value={reservationsWithoutReview.length} list={reservationsWithoutReview}/>
-        <MyPageMainCard title="포인트" value={userStatus && userStatus.point ? userStatus.point : '-'}/>
-      </Wrap>
+      <Flex ml={{ base: "20rem", md: 0 }}>
+        <Wrap  spacing={"5rem"}>
+          <MyPageMainCard title="예약중" value={onReadyReservationList.length} list={onReadyReservationList}/>
+          <MyPageMainCard title="리뷰대기" value={reservationsWithoutReview.length} list={reservationsWithoutReview}/>
+          <MyPageMainCard title="포인트" value={userStatus && userStatus.point ? userStatus.point : '-'}/>
+        </Wrap>
+      </Flex>
+      
     </>
   )
 }
@@ -161,9 +133,8 @@ const MyPageMainCard = ({title, value, list}) => {
           details.push(data);
         }
       }
-      // setRestaurantDetails(details);
-      
-      setRestaurantDetails([{restaurantName : "임시", restaurantNo : 1},{restaurantName : "임시임시", restaurantNo : 1},{restaurantName : "임시임시임시", restaurantNo : 1},{restaurantName : "임시임시임시임시", restaurantNo : 1}])
+      setRestaurantDetails(details);
+      // setRestaurantDetails([{restaurantName : "임시", restaurantNo : 1},{restaurantName : "임시임시", restaurantNo : 1},{restaurantName : "임시임시임시", restaurantNo : 1},{restaurantName : "임시임시임시임시", restaurantNo : 1}])
     }
     
     fetchDetails();
@@ -191,37 +162,59 @@ const MyPageMainCard = ({title, value, list}) => {
           <PopoverTrigger>
             {/* <Button>here</Button> */}
             {/* <Tooltip label='상세정보 보기' placement='bottom'> */}
-              <TriangleDownIcon color={COLORS.GREEN300} />
+              <TriangleDownIcon fontSize={"2xl"} color={COLORS.GREEN300} _hover={{color:"green.600"}}/>
 
             {/* </Tooltip> */}
           </PopoverTrigger>
             <Portal>
               <PopoverContent alignItems={"center"} width={"200px"} p="1rem" borderColor={COLORS.GREEN300}>
-                {!restaurantDetails.length && title === '예약중' || title === '리뷰대기' ? <Text>목록이 없어요😂</Text> :
+                {!restaurantDetails.length && (title === '예약중' || title === '리뷰대기') ? <Text>목록이 없어요😂</Text> :
                   <>
                   
                   {title === '예약중' || title === '리뷰대기' ? (
                     <VStack>
-                      {restaurantDetails.map((detail) => (
-                        <HStack w={"100%"}>
-                          <Text>{trimName(detail.restaurantName)}</Text>
-                          <Spacer />
-                          <Button color={"white"} bgColor={COLORS.GREEN200} size={"xs"}
-                          onClick={() => navigate(`/restaurant/${detail.restaurantNo}`)}
-                          
-                          >GO</Button>
-                        </HStack>
-                      ))}
+                      {restaurantDetails.map((detail, idx) => {
+
+                        if (idx > 5) return 
+                        return (
+                          <HStack w={"100%"} key={idx}>
+                            <Text >{trimName(detail.restaurantName)}</Text>
+                            <Spacer />
+                            <Button color={"white"} bgColor={COLORS.GREEN200} size={"xs"}
+                            onClick={() => navigate(`/restaurant/${detail.restaurantNo}`)}
+                            
+                            >GO</Button>
+                          </HStack>
+                        )
+                      }
+                        
+                      )}
                     </VStack>
                   ): 
                         <>
                         
-                          <VStack>
-                          
-                            <Text>🌱 : ~10000</Text>
-                            <Text>🌿 : ~50000</Text>
-                            <Text>🪴 : ~100000</Text>
-                            <Text>🪴 : 100000~</Text>
+                          <VStack width={"100%"}>
+                            <HStack width={"70%"}>
+                              <Text>🌱 :</Text>
+                              <Spacer />
+                              <Text> ~10000</Text>
+                            </HStack>
+                            <HStack width={"70%"}>
+                              <Text>🌿 :</Text>
+                              <Spacer />
+                              <Text> ~50000</Text>
+                            </HStack>
+                            <HStack width={"70%"}>
+                              <Text>🪴 :</Text>
+                              <Spacer />
+                              <Text> ~100000</Text>
+                            </HStack>
+                            <HStack width={"70%"}>
+                              <Text>🌳 :</Text>
+                              <Spacer />
+                              <Text> 100000~</Text>
+                            </HStack>
+                            
                           </VStack>
                         </>
                   }
