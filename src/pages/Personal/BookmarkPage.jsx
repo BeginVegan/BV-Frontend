@@ -1,5 +1,6 @@
 import Axios from '@/api/apiConfig';
 import {
+  Box,
   Button,
   ButtonGroup,
   Card,
@@ -16,21 +17,25 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { AiFillStar } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { useRestaurantDetail } from './historyTabs/hooks/useRestaurantDetail';
 
 
 const BookmarkPage = () => {
   const [bookmarks, setBookmarks] = useState(null);
+  const [forceUpdate, setForceUpdate] = useState(false); 
+  
+  const getBookmarks = async () => {
+    const res = await Axios.get('mypage/bookmark/userEmail');
+    if (res.status === 200) {
+      setBookmarks(res.data);
+      
+    }
+  };
   useEffect(() => {
-    const getReservations = async () => {
-      const res = await Axios.get('mypage/bookmark/userEmail');
-      if (res.status === 200) {
-        setBookmarks(res.data);
-        
-      }
-    };
-    getReservations();
-  }, []);
+    getBookmarks();
+  }, [forceUpdate]);
 
   return (
     <VStack width={'100%'} spacing={'2rem'} paddingLeft={'2rem'}>
@@ -40,6 +45,7 @@ const BookmarkPage = () => {
       <Divider />
       <SimpleGrid
         justifyItems={'center'}
+        gap={4}
         height={'85vh'}
         overflow={'auto'}
         width={'100%'}
@@ -47,18 +53,46 @@ const BookmarkPage = () => {
         spacing={10}
         align={'center'}
       >
-       
-        <BookmarkCard restuarantNo={1} key={0} idx={0} />
+        {bookmarks && bookmarks.map((bookmark,idx)=>(
+          <BookmarkCard restuarantNo={bookmark.restaurantNo} key={idx} idx={idx} 
+          refresh={() => setForceUpdate(!forceUpdate)}
+          />
+        ))}
+{/*        
+        <BookmarkCard restuarantNo={1} key={0} idx={0} 
+        refresh={() => setForceUpdate(!forceUpdate)}
+        /> */}
       </SimpleGrid>
     </VStack>
   );
 };
 export default BookmarkPage;
 
-const BookmarkCard = ({ restuarantNo, idx }) => {
+const BookmarkCard = ({ restuarantNo, idx, refresh }) => {
   const { data } = useRestaurantDetail(restuarantNo);
-  
+  const navigate = useNavigate()
 
+
+  
+  const deleteBookmark = async (restaurantNo) => {
+    const result = await Axios.delete(`mypage/bookmark/${restaurantNo}`)
+    if (result.status === 200 ) {
+      Swal.fire({
+        icon: 'success',
+        title: '북마크 삭제 성공',
+        text: '더 나은 서비스로 만나 뵙겠습니다',
+      })
+      refresh()
+    }
+    else {
+      Swal.fire({
+        icon:'error',
+        title:'북마크 삭제 실패',
+        text: '다시 시도해 주세요'
+      })
+    }
+    refresh()
+  }
   if (!data) return <></>;
   return (
     <div>
@@ -68,14 +102,16 @@ const BookmarkCard = ({ restuarantNo, idx }) => {
         </Text>
         <Card maxW="sm">
           <CardBody>
-            <Image
-              w={'100%'}
-              h={'100%'}
-              src={data.restuarantPhotoDir}
-              
-              alt={"식당 이미지"}
-              borderRadius="lg"
-            />
+            <Box ml="2rem" mt={"1rem"} p="1rem" w="15rem" h="15rem">
+              <Image
+                w={'100%'}
+                h={'100%'}
+                src={data.restuarantPhotoDir ? data.restuarantPhotoDir : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/restaurant/default.png' }
+                
+                alt={"식당 이미지"}
+                borderRadius="lg"
+              />
+            </Box>
             <Stack mt="6" spacing="3">
               <Heading size="md">{data.restuarantName}</Heading>
               <Text>{data.restuarantDetail}</Text>
@@ -95,6 +131,13 @@ const BookmarkCard = ({ restuarantNo, idx }) => {
                 onClick={() => navigate(`/restaurant/${data.restaurantNo}`)}
               >
                 상세페이지
+              </Button>
+              <Button
+                variant="solid"
+                colorScheme="teal"
+                onClick={() => deleteBookmark(data.restaurantNo)}
+              >
+                리뷰 삭제
               </Button>
             </ButtonGroup>
           </CardFooter>

@@ -134,7 +134,7 @@ const RestaurantCards = ({reservationNo, reviewList, restaurant, id }) => {
                 w={'100rem'}
                 h={'100%'}
                 pointerEvents="none"
-                src={restaurantPhotoDir}
+                src={restaurantPhotoDir ? restaurantPhotoDir : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/restaurant/default.png'}
                 alt={restaurant.alt}
                 borderRadius="lg"
               />
