@@ -22,7 +22,7 @@ import { useToast } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './ROUTES';
-import RegisterMenu from '@/pages/Admin/Register/RegisterMenu';
+// import RegisterMenu from '@/pages/Admin/Register/RegisterMenu';
 import ReservationManagementPage from '@/pages/Admin/Reservation/ReservationManagementPage';
 // import ReservationRestaurant from '@/pages/Restaurant/ReservationRestaurant';
 
