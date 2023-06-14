@@ -13,6 +13,7 @@ public class ReviewDTO {
 */
 
 import Axios from '@/api/apiConfig';
+import { ROUTES } from '@/routes/ROUTES';
 import { StarIcon } from '@chakra-ui/icons';
 import {
   Box,
@@ -28,18 +29,15 @@ import {
   useToast
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SubmitReviewPage = () => {
   const location = useLocation();
-
+  const navigate = useNavigate();
   const [fileName, setFileName] = useState("No file chosen");
 
   const {reservationNo : reserNo, restaurantNo :restNo} = location.state
 
-  // const [reviewNo, setReviewNo] = useState("");
-  // const [memberEmail, setMemberEmail] = useState("");
-  // const [reviewPhotoDir, setReviewPhotoDir] = useState("");
   const [reservationNo, setReservationNo] = useState(0);
   const [restaurantNo, setRestaurantNo] = useState(0);
   const [reviewStar, setReviewStar] = useState(0);
@@ -79,6 +77,7 @@ const SubmitReviewPage = () => {
         duration: 5000,
         isClosable: true,
       });
+      navigate(ROUTES.MYPAGE_MAIN)
     } catch (error) {
       toast({
         title: "An error occurred.",

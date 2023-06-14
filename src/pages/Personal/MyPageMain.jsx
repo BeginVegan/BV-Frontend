@@ -1,7 +1,3 @@
-// import { userAtom } from '@/utils/atoms/userAtom';
-// import { Box, HStack, Heading, Text, VStack } from '@chakra-ui/react';
-// import { useAtom } from 'jotai';
-// import { CountUp } from 'use-count-up';
 
 import Axios from "@/api/apiConfig";
 import { COLORS } from "@/constants/colors";
@@ -13,7 +9,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingPage from "../Loading/LoadingPage";
 import { isCancellable } from "./historyTabs/PurchaseHistory";
-import { useRestaurantDetail } from "./historyTabs/hooks/useRestaurantDetail";
 
 
 const MyPageMain = () => {
@@ -127,23 +122,29 @@ const MyPageMain = () => {
 }
 export default MyPageMain;
 
+export const fetchRestaurantDetail = async (restaurantNo) => {
+  const res = await Axios.get(`restaurant/${restaurantNo}`);
+  if (res.status === 200) {
+    return res.data.restaurant;
+  }
+};
+
 const MyPageMainCard = ({title, value, list}) => {
   const [restaurantDetails, setRestaurantDetails] = useState([]);
+  
   const navigate = useNavigate();
   useEffect(() => {
     const fetchDetails = async () => {
       const details = [];
       if(Array.isArray(list)) {
         for (let store of list) {
-          const { data } = await useRestaurantDetail(store.reservationNo);
+          const data = await fetchRestaurantDetail(store.reservationNo);
           details.push({...{reservationNo : store.reservationNo},...data});
         }
       }
       setRestaurantDetails(details);
-      // setRestaurantDetails([{restaurantName : "임시", restaurantNo : 1},{restaurantName : "임시임시", restaurantNo : 1},{restaurantName : "임시임시임시", restaurantNo : 1},{restaurantName : "임시임시임시임시", restaurantNo : 1}])
     }
-    
-    fetchDetails();
+    fetchDetails();    
   }, [list]); // list가 바뀔 때마다 비동기 작업을 수행합니다.
 
   const trimName = (name) => {
