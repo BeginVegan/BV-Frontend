@@ -4,6 +4,7 @@ export const ROUTES = {
   LOGIN: '/login',
   AUTH: '/auth',
   ADMIN: '/admin',
+  RESERVATION_MANAGEMENT: '/admin/reservation',
   SEARCH_RAW: '/search/',
   SEARCH: '/search/:query',
   BEST_RAW: '/best/',
