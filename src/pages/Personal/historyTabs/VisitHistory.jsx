@@ -97,12 +97,14 @@ const RestaurantCards = ({reservationNo, reviewList, restaurant, id }) => {
   const [isReviewable, setIsReviewable] = useState(false)
   const navigate = useNavigate();
   
+
   useEffect(()=>{
     if (reviewList && data) {
       const hasReview = reviewList.find(review => review.restaurantNo === restaurantNo && review.reservationNo === reservationNo);
       if (!hasReview) {
         setIsReviewable(true)
       }
+      
     }
   },[data])
 
@@ -161,7 +163,7 @@ const RestaurantCards = ({reservationNo, reviewList, restaurant, id }) => {
                   >
                     상세 페이지
                   </Button>
-                  <Button
+                  {isReviewable && <Button
                     variant="solid"
                     colorScheme="teal"
                     onClick={() => navigate(`/mypage/review`,{state :{
@@ -170,7 +172,7 @@ const RestaurantCards = ({reservationNo, reviewList, restaurant, id }) => {
                     }})}
                   >
                     리뷰 작성
-                  </Button>
+                  </Button>}
                 </ButtonGroup>
               </CardFooter>
             </VStack>

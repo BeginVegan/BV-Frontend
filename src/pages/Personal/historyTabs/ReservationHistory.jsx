@@ -90,7 +90,7 @@ const ReservationHistory = () => {
         <Tbody>
           {reservationList &&
             sortedReservationList.map((store, idx) => {
-              console.log(store)
+              
               return (
                 <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
                   <CustomTd>{idx + 1}</CustomTd>

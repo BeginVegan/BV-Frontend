@@ -2,6 +2,7 @@ import DefaultLayout from '@/components/Layout/DefaultLayout';
 import MainLayout from '@/components/Layout/MainLayout';
 import MypageLayout from '@/components/Layout/MypageLayout';
 import AdminPage from '@/pages/Admin/AdminPage';
+import RegisterMenu from '@/pages/Admin/Register/RegisterMenu';
 import RestaurantRegistration from '@/pages/Admin/Register/RestaurantRegistration';
 import AuthPage from '@/pages/Auth/AuthPage';
 import BestPage from '@/pages/Best/BestPage';
@@ -13,6 +14,7 @@ import BookmarkPage from '@/pages/Personal/BookmarkPage';
 import DropPage from '@/pages/Personal/DropPage';
 import HistoryPage from '@/pages/Personal/HistoryPage';
 import MyPageMain from '@/pages/Personal/MyPageMain';
+import SubmitReviewPage from '@/pages/Personal/SubmitReviewPage';
 import RestaurantDetailPage from '@/pages/Restaurant/RestaurantDetailPage';
 import SearchResultPage from '@/pages/SearchResult/SearchResultPage';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
@@ -20,9 +22,7 @@ import { useToast } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './ROUTES';
-import RegisterMenu from '@/pages/Admin/Register/RegisterMenu';
-import SubmitReviewPage from '@/pages/Personal/SubmitReviewPage';
-import RerservationRestaurant from '@/pages/Restaurant/RerservationRestaurant';
+// import RerservationRestaurant from '@/pages/Restaurant/RerservationRestaurant';
 
 const AppRoutes = () => {
   const toast = useToast();
