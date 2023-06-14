@@ -26,8 +26,16 @@ const RestaurantCard = ({
       direction={'row'}
       bg={useColorModeValue('white', 'gray.900')}
     >
-      <Flex flex={2} bg="blue.200">
-        <Image objectFit="cover" boxSize="100%" src={`${restaurantPhotoDir}`} />
+      <Flex flex={2}>
+        <Image
+          objectFit="cover"
+          boxSize="100%"
+          src={
+            restaurantPhotoDir
+              ? `${restaurantPhotoDir}`
+              : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/restaurant/default.png'
+          }
+        />
       </Flex>
       <Stack
         flex={4}

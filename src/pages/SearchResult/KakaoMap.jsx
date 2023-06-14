@@ -3,27 +3,35 @@ import { useEffect, useState } from 'react';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useNavigate } from 'react-router-dom';
 
-const KakaoMap = () => {
+const KakaoMap = ({ restaurants }) => {
   const { kakao } = window;
   const [level, setLevel] = useState(3);
+  const [locations, setLocations] = useState([]);
+  const [currentLocation, setCurrentLocation] = useState({ lat: 33.5563, lng: 126.79581 });
 
-  const locations = [
-    { title: '카카오', latlng: { lat: 33.450705, lng: 126.570677 } },
-    { title: '생태연못', latlng: { lat: 33.450936, lng: 126.569477 } },
-    { title: '텃밭', latlng: { lat: 33.450879, lng: 126.56994 } },
-    { title: '근린공원', latlng: { lat: 33.451393, lng: 126.570738 } },
-  ];
-
-  const [location, setLoacation] = useState({ latitude: 33.5563, longitude: 126.79581 }); // 현재 위치를 저장할 상태
+  // const [location, setLoacation] = useState({ latitude: 33.5563, longitude: 126.79581 }); // 현재 위치를 저장할 상태
 
   useEffect(() => {
+    let newLocations = [];
+    restaurants.forEach(restaurant => {
+      newLocations.push({
+        title: restaurant.restaurantName,
+        latlng: { lat: restaurant.restaurantX, lng: restaurant.restaurantY },
+        restaurantNo: restaurant.restaurantNo,
+      });
+    });
+    setLocations(newLocations);
     navigator.geolocation.getCurrentPosition(successHandler, errorHandler); // 성공시 successHandler, 실패시 errorHandler 함수가 실행된다.
   }, []);
+
+  useEffect(() => {
+    console.log('locations: ', locations);
+  }, [locations]);
 
   const successHandler = response => {
     console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
     const { latitude, longitude } = response.coords;
-    setLoacation({ latitude, longitude });
+    setCurrentLocation({ latitude, longitude });
   };
 
   const errorHandler = error => {
@@ -32,14 +40,14 @@ const KakaoMap = () => {
 
   return (
     <>
-      {location && (
+      {locations.length != 0 && (
         <Map
-          center={{ lat: 33.5563, lng: 126.79581 }} // 지도의 중심 좌표
+          center={{ lat: locations[0].latlng.lat, lng: locations[0].latlng.lng }} // 지도의 중심 좌표
           style={{ position: 'relative', width: '100%', height: '100%' }} // 지도 크기
           level={level} // 지도 확대 레벨
         >
           <MapMarker
-            position={{ lat: location.latitude, lng: location.longitude }}
+            position={{ lat: currentLocation.latitude, lng: currentLocation.longitude }}
             title="현재위치"
           />
           {locations.map((loc, idx) => (
@@ -137,7 +145,7 @@ const CustomMapMarker = ({ loc }) => {
         // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
         () => setIsOpen(true)
       }
-      onClick={() => navigate('/restaurant/1')}
+      onClick={() => navigate(`/restaurant/${loc.restaurantNo}`)}
       // 마커에 마우스아웃 이벤트를 등록합니다
       onMouseOut={
         // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
@@ -151,9 +159,7 @@ const CustomMapMarker = ({ loc }) => {
             <br />
             <span style={{ fontSize: '14px', textAlign: 'center' }}>{address.address_name}</span>
             <br />
-            <span style={{ fontSize: '8px' }} onClick={() => navigate('/restaurant/1')}>
-              클릭시 이동합니다
-            </span>
+            <span style={{ fontSize: '8px' }}>클릭시 이동합니다</span>
           </div>
         </CustomOverlayMap>
       )}
