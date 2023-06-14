@@ -1,15 +1,14 @@
 import Axios from '@/api/apiConfig';
+import { ReactComponent as GoogleLoginButton } from '@/assets/socialLogins/googleLogin.svg';
 import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
-import { Image } from '@chakra-ui/react';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-
 const SocialGoogle = () => {
   /**
    * @description
@@ -35,6 +34,15 @@ const SocialGoogle = () => {
   const [token, setToken] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
   const [userStatus, setUserStatus] = useAtom(userAtom);
+  const [isActive, setIsActive] = useState(false);
+
+  const handleMouseDown = () => {
+    setIsActive(true);
+  };
+
+  const handleMouseUp = () => {
+    setIsActive(false);
+  };
 
   const googleOnSuccess = async data => {
     const access_token = data.access_token;
@@ -85,11 +93,13 @@ const SocialGoogle = () => {
   }, [token]);
   return (
     <>
-      <Image
-        w={'14.3rem'}
-        src="src/assets/socialLogins/google_medium.png"
-        onClick={() => login()}
-      />
+      <GoogleLoginButton 
+      onMouseDown={handleMouseDown} 
+      onMouseUp={handleMouseUp} 
+      style={{cursor: 'pointer', 
+      transform: isActive ? 'translateY(-4px)' : null, 
+      boxShadow: isActive ? 'lg' : null}} 
+      onClick={() => login()}/>
     </>
   );
 };

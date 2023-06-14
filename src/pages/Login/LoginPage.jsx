@@ -85,10 +85,10 @@ const LoginPage = () => {
             </Text>
           </Stack>
           <Box rounded={'lg'} bg={'green.200'} boxShadow={'2xl'} p={8}>
-            <VStack>
+            <VStack spacing={"1rem"}>
               <SocialKakao />
               <SocialGoogle />
-              <br />
+             
               <Input bgColor={'white'} ref={emailIputRef} />
               <Button onClick={() => submitLogin('normal')}>일반 로그인</Button>
               <Button onClick={() => submitLogin('admin')}>관리자 로그인</Button>

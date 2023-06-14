@@ -162,15 +162,11 @@ const RestaurantReviewCard = ({ restaurantNo,idx, img, reviewNo, content, refres
               </Stack>
 
               {isMobile && (
-                <CardBody w={'100%'}>
-                  <Image
-                    pointerEvents="none"
-                    src={img}
-                    alt={"리뷰 이미지"}
-                    borderRadius="lg"
-                  />
-                  
-                </CardBody>
+              <CardBody w={'100%'}>
+                <Box ml="2rem" mt={"1rem"} p="1rem" w="15rem" h="15rem">
+                  <Image w="100%" h="100%"  src={img ? img : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/restaurant/default.png'} alt={"리뷰 이미지"} borderRadius="lg" />
+                </Box>
+              </CardBody>
               )}
             </Stack>
             <Spacer />
@@ -199,7 +195,7 @@ const RestaurantReviewCard = ({ restaurantNo,idx, img, reviewNo, content, refres
           {!isMobile && (
             <CardBody w={'100%'}>
               <Box ml="2rem" mt={"1rem"} p="1rem" w="15rem" h="15rem">
-                <Image w="100%" h="100%"  src={img} alt={"리뷰 이미지"} borderRadius="lg" />
+                <Image w="100%" h="100%"  src={img? img: 'https://bv-image.s3.ap-northeast-2.amazonaws.com/restaurant/default.png'} alt={"리뷰 이미지"} borderRadius="lg" />
               </Box>
             </CardBody>
           )}
