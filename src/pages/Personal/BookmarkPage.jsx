@@ -106,7 +106,7 @@ const BookmarkCard = ({ restuarantNo, idx, refresh }) => {
               <Image
                 w={'100%'}
                 h={'100%'}
-                src={data.restuarantPhotoDir ? data.restuarantPhotoDir : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/restaurant/default.png' }
+                src={data.restuarantPhotoDir ? data.restuarantPhotoDir : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/logoSVG.svg' }
                 
                 alt={"식당 이미지"}
                 borderRadius="lg"
