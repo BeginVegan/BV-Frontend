@@ -79,6 +79,7 @@ const RestaurantRegistration = () => {
               restaurantClose: `${data.closeH}:${data.closeM}:00`,
               restaurantDetail: data.restaurantDetail,
               restaurantTable: data.restaurantTable,
+              restaurantPhone: `${data.phoneNum1}-${data.phoneNum2}-${data.phoneNum3}`,
               restaurantTableMember: data.restaurantTableMember,
               restaurantAvgPrice: data.restaurantAvgPrice,
               restaurantVeganLevel: data.restaurantVeganLevel,

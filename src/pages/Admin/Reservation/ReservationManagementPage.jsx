@@ -1,5 +1,5 @@
 import ReservationInfo from '@/pages/Admin/Reservation/ReservationInfo';
-import { Flex, Heading, VStack, Card, CardBody } from '@chakra-ui/react';
+import { Flex, Heading, VStack, Card, CardBody, Box } from '@chakra-ui/react';
 import Axios from '@/api/apiConfig';
 import React, { useEffect, useState } from 'react';
 import Loading from '@/components/common/Loading';
@@ -139,18 +139,15 @@ const ReservationManagementPage = () => {
   }
 
   return (
-    <div align={'right'}>
-      <Flex pt={20} pl={5} justifyContent={'space-between'}>
-        <Heading color={'#323232'}>전체 예약 관리</Heading>
-      </Flex>
-      <Card m={5} pl={3} pr={3} pb={5} mb={20} bg="#f8f8ff">
-        <CardBody>
+    <Flex w={'100%'}>
+      <Card bg="#f8f8ff" boxShadow={'none'}>
+        <CardBody p={0}>
           <VStack>
             <ReservationInfo data={reservationList}></ReservationInfo>
           </VStack>
         </CardBody>
       </Card>
-    </div>
+    </Flex>
   );
 };
 

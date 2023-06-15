@@ -150,7 +150,7 @@ const ReservationRankingChart = ({ dataList }) => {
   }
 
   return (
-    <Card pr={'2px'} pt={5} pb={5}>
+    <Card shadow={'none'} pr={'2px'} pt={5} pb={5}>
       <CardBody>
         <div style={{ marginBottom: '10px' }}>
           <Chart

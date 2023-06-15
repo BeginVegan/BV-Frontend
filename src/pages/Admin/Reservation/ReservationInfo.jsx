@@ -145,7 +145,6 @@ const ReservationInfo = ({ data }) => {
   return (
     <VStack>
       <Box
-        mt={2}
         mb={5}
         pr={6}
         pl={6}
@@ -153,6 +152,7 @@ const ReservationInfo = ({ data }) => {
         borderRadius="lg"
         overflow="hidden"
         bg="white"
+        border={'none'}
       >
         {/* Filter Section */}
         <Fade in={true} offsetY={-20}>
@@ -251,7 +251,7 @@ const ReservationInfo = ({ data }) => {
       </HStack>
 
       {/* Table */}
-      <Card>
+      <Card shadow={'none'}>
         <CardBody>
           <Fade in={true} offsetY={-20}>
             <TableContainer w={1240}>
@@ -290,94 +290,91 @@ const ReservationInfo = ({ data }) => {
                 </Tbody>
               </Table>
             </TableContainer>
+
+            {/* Pagination */}
+            <HStack mt={5} pt={6}>
+              <Flex w={'100%'} alignItems={'center'} justifyContent={'center'} gap={4}>
+                <Flex>
+                  <Tooltip label="첫 페이지">
+                    <IconButton
+                      onClick={() => gotoPage(0)}
+                      isDisabled={!canPreviousPage}
+                      icon={<ArrowLeftIcon h={3} w={3} />}
+                      mr={4}
+                      sx={{
+                        backgroundColor: 'black',
+                        color: 'white',
+                      }}
+                    />
+                  </Tooltip>
+                  <Tooltip label="이전 페이지">
+                    <IconButton
+                      onClick={previousPage}
+                      isDisabled={!canPreviousPage}
+                      icon={<ChevronLeftIcon h={6} w={6} />}
+                      sx={{
+                        backgroundColor: 'darkgray',
+                        color: 'white',
+                      }}
+                    />
+                  </Tooltip>
+                </Flex>
+                <Flex alignItems="center">
+                  <Text flexShrink="0" mr={8}>
+                    페이지{' '}
+                    <Text fontWeight="bold" as="span">
+                      {pageIndex + 1}
+                    </Text>{' '}
+                    /{' '}
+                    <Text fontWeight="bold" as="span">
+                      {pageOptions.length}
+                    </Text>
+                  </Text>
+                  <Select
+                    w={32}
+                    value={pageSize}
+                    onChange={e => {
+                      setPageSize(Number(e.target.value));
+                    }}
+                  >
+                    {[10, 20, 30, 40, 50].map(pageSize => (
+                      <option key={pageSize} value={pageSize}>
+                        {pageSize}개
+                      </option>
+                    ))}
+                  </Select>
+                </Flex>
+
+                <Flex>
+                  <Tooltip label="다음 페이지">
+                    <IconButton
+                      onClick={nextPage}
+                      isDisabled={!canNextPage}
+                      icon={<ChevronRightIcon h={6} w={6} />}
+                      sx={{
+                        backgroundColor: 'darkgray',
+                        color: 'white',
+                      }}
+                    />
+                  </Tooltip>
+                  <Tooltip label="마지막 페이지">
+                    <IconButton
+                      onClick={() => gotoPage(pageCount - 1)}
+                      isDisabled={!canNextPage}
+                      icon={<ArrowRightIcon h={3} w={3} />}
+                      sx={{
+                        backgroundColor: 'black',
+                        color: 'white',
+                      }}
+                      ml={4}
+                    />
+                  </Tooltip>
+                </Flex>
+              </Flex>
+            </HStack>
           </Fade>
         </CardBody>
       </Card>
-
-      {/* Pagination */}
-      <Fade in={true} offsetY={-20}>
-        <HStack mt={5} pt={6}>
-          <Flex gap={4}>
-            <Flex>
-              <Tooltip label="첫 페이지">
-                <IconButton
-                  onClick={() => gotoPage(0)}
-                  isDisabled={!canPreviousPage}
-                  icon={<ArrowLeftIcon h={3} w={3} />}
-                  mr={4}
-                  sx={{
-                    backgroundColor: 'black',
-                    color: 'white',
-                  }}
-                />
-              </Tooltip>
-              <Tooltip label="이전 페이지">
-                <IconButton
-                  onClick={previousPage}
-                  isDisabled={!canPreviousPage}
-                  icon={<ChevronLeftIcon h={6} w={6} />}
-                  sx={{
-                    backgroundColor: 'darkgray',
-                    color: 'white',
-                  }}
-                />
-              </Tooltip>
-            </Flex>
-
-            <Flex alignItems="center">
-              <Text flexShrink="0" mr={8}>
-                페이지{' '}
-                <Text fontWeight="bold" as="span">
-                  {pageIndex + 1}
-                </Text>{' '}
-                /{' '}
-                <Text fontWeight="bold" as="span">
-                  {pageOptions.length}
-                </Text>
-              </Text>
-              <Select
-                w={32}
-                value={pageSize}
-                onChange={e => {
-                  setPageSize(Number(e.target.value));
-                }}
-              >
-                {[10, 20, 30, 40, 50].map(pageSize => (
-                  <option key={pageSize} value={pageSize}>
-                    {pageSize}개
-                  </option>
-                ))}
-              </Select>
-            </Flex>
-
-            <Flex>
-              <Tooltip label="다음 페이지">
-                <IconButton
-                  onClick={nextPage}
-                  isDisabled={!canNextPage}
-                  icon={<ChevronRightIcon h={6} w={6} />}
-                  sx={{
-                    backgroundColor: 'darkgray',
-                    color: 'white',
-                  }}
-                />
-              </Tooltip>
-              <Tooltip label="마지막 페이지">
-                <IconButton
-                  onClick={() => gotoPage(pageCount - 1)}
-                  isDisabled={!canNextPage}
-                  icon={<ArrowRightIcon h={3} w={3} />}
-                  sx={{
-                    backgroundColor: 'black',
-                    color: 'white',
-                  }}
-                  ml={4}
-                />
-              </Tooltip>
-            </Flex>
-          </Flex>
-        </HStack>
-      </Fade>
 
       {/* Modal */}
       <Fade in={isOpen} offsetY={-20}>
