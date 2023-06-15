@@ -11,56 +11,10 @@ import {
   Tr,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Swal from 'sweetalert2';
+import { isCancellable } from './PurchaseHistory';
 
-const DUMMY = [
-  {
-    number: 0,
-    name: '임시가게명1',
-    menu: '임시메뉴1',
-    price: '10000',
-    status: '결제완료',
-    reservation: '2023.5.29',
-    cancel: '예약취소',
-  },
-  {
-    number: 0,
-    name: '임시가게명1',
-    menu: '임시메뉴1',
-    price: '10000',
-    status: '결제완료',
-    reservation: '2023.5.29',
-    cancel: '예약취소',
-  },
-  {
-    number: 0,
-    name: '임시가게명1',
-    menu: '임시메뉴1',
-    price: '10000',
-    status: '결제완료',
-    reservation: '2023.5.29',
-    cancel: '예약취소',
-  },
-  {
-    number: 0,
-    name: '임시가게명1',
-    menu: '임시메뉴1',
-    price: '10000',
-    status: '결제완료',
-    reservation: '2023.5.29',
-    cancel: '예약취소',
-  },
-  {
-    number: 0,
-    name: '임시가게명1',
-    menu: '임시메뉴1',
-    price: '10000',
-    status: '결제완료',
-    reservation: '2023.5.29',
-    cancel: '취소불가',
-  },
-];
 const ReservationHistory = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [reservationList, setReservationList] = useState(null);
@@ -73,25 +27,24 @@ const ReservationHistory = () => {
     };
     getReservations();
   }, []);
-  const handleCancel = () => {
+
+  const handleCancel = (reservationNo) => {
     Swal.fire({
       icon: 'question',
       title: '정말 취소하시겠습니까?',
       text: '취소 요청은 되돌릴 수 없습니다',
       showCancelButton: true,
-    }).then(res => {
+    }).then(async res => {
       if (res.isConfirmed) {
-        Swal.fire({
-          icon: 'success',
-          title: '예약 취소 성공',
-          text: '그동안 이용해 주셔서 감사합니다',
-        }).then(res => {
-          if (res.isConfirmed) {
-            /**
-             * 예약 취소 쿼리 보내는곳
-             */
-          }
-        });
+        const result = await Axios.delete(`reservation/${reservationNo}`);
+        if (result.status === 200) {
+          Swal.fire({
+            icon: 'success',
+            title: '예약 취소 성공',
+            text: '그동안 이용해 주셔서 감사합니다',
+          })
+        }
+        
       }
     });
   };
@@ -102,14 +55,23 @@ const ReservationHistory = () => {
     }
     return list[0].menuName;
   };
-  const isCancellable = dateString => {
-    const date = new Date(dateString);
-    const currentTime = new Date();
 
-    const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
-    return date.getTime() - currentTime.getTime() <= twentyFourHours;
-  };
+  const filteredReservationList = useMemo(() => {
+    if (reservationList) {
+      return reservationList.filter(store => isCancellable(store.reservationTime));
+    }
+    return [];
+  }, [reservationList]);
+
+  const sortedReservationList = useMemo(() => {
+    if (filteredReservationList) {
+      return [...filteredReservationList].sort(
+        (a, b) => new Date(a.reservationTime) - new Date(b.reservationTime)
+      );
+    }
+    return [];
+  }, [filteredReservationList]);
 
   return (
     <TableContainer marginTop={'1rem'}>
@@ -127,7 +89,8 @@ const ReservationHistory = () => {
         </Thead>
         <Tbody>
           {reservationList &&
-            reservationList.map((store, idx) => {
+            sortedReservationList.map((store, idx) => {
+              
               return (
                 <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
                   <CustomTd>{idx + 1}</CustomTd>
@@ -139,12 +102,11 @@ const ReservationHistory = () => {
                   <CustomTd>{store.reservationStatus}</CustomTd>
                   <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
                   <CustomTd>
-                    {/* 취소 가능일 구하는 로직필요 */}
-                    {isCancellable() === true ? (
+                    {Number(isCancellable(store.reservationTime)) < 0 ? (
                       <Button
                         colorScheme="red"
                         size={{ base: 'xs', md: 'sm' }}
-                        onClick={() => handleCancel()}
+                        onClick={() => handleCancel(store.reservationNo)}
                       >
                         예약취소
                       </Button>
@@ -182,7 +144,7 @@ const RestaurantName = ({ restaurantNo }) => {
       const res = await Axios.get(`restaurant/${restaurantNo}`);
       if (res.status === 200) {
         const data = res.data.restaurant.restaurantName;
-        console.log(data);
+
         setName(data);
       }
     };

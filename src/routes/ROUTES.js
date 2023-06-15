@@ -4,6 +4,7 @@ export const ROUTES = {
   LOGIN: '/login',
   AUTH: '/auth',
   ADMIN: '/admin',
+  RESERVATION_MANAGEMENT: '/admin/reservation',
   SEARCH_RAW: '/search/',
   SEARCH: '/search/:query',
   BEST_RAW: '/best/',
@@ -22,5 +23,6 @@ export const ROUTES = {
   MYPAGE_BOOKMARK: '/mypage/bookmark',
   MYPAGE_REVISE: '/mypage/revise',
   MYPAGE_DROP: '/mypage/drop',
+  MYPAGE_REVIEW: '/mypage/review',
   OTHERS: '*',
 };

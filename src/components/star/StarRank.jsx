@@ -5,7 +5,7 @@ export const StarRank = ({ number, color = 'gold' }) => {
   return (
     <HStack spacing={'0.1rem'}>
       {Array.from({ length: Number(number) }, (_, index) => (
-        <AiFillStar key={index} color={color} size="1rem" />
+        <AiFillStar key={index} color={color} size="1em" />
       ))}
     </HStack>
   );

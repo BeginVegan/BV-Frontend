@@ -1,4 +1,4 @@
-import { atom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
 
 /**
  * @example
@@ -9,4 +9,4 @@ import { atom } from 'jotai';
  * role: 'admin',
  * }
  */
-export const userAtom = atom(null);
+export const userAtom = atomWithStorage(null);
