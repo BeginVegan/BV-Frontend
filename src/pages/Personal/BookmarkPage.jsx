@@ -1,4 +1,6 @@
+import Axios from '@/api/apiConfig';
 import {
+  Box,
   Button,
   ButtonGroup,
   Card,
@@ -13,57 +15,28 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { AiFillStar } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { useRestaurantDetail } from './historyTabs/hooks/useRestaurantDetail';
 
-const RESTUARANTS = [
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-  {
-    id: '1',
-    name: '식당1',
-    description: '맛있는 식당',
-    image:
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-    alt: 'tmp',
-    star: '4.5',
-  },
-];
 
 const BookmarkPage = () => {
+  const [bookmarks, setBookmarks] = useState(null);
+  const [forceUpdate, setForceUpdate] = useState(false); 
+  
+  const getBookmarks = async () => {
+    const res = await Axios.get('mypage/bookmark/userEmail');
+    if (res.status === 200) {
+      setBookmarks(res.data);
+      
+    }
+  };
+  useEffect(() => {
+    getBookmarks();
+  }, [forceUpdate]);
+
   return (
     <VStack width={'100%'} spacing={'2rem'} paddingLeft={'2rem'}>
       <Text fontSize={'5xl'} fontWeight={'extrabold'}>
@@ -72,6 +45,7 @@ const BookmarkPage = () => {
       <Divider />
       <SimpleGrid
         justifyItems={'center'}
+        gap={4}
         height={'85vh'}
         overflow={'auto'}
         width={'100%'}
@@ -79,41 +53,96 @@ const BookmarkPage = () => {
         spacing={10}
         align={'center'}
       >
-        {RESTUARANTS.map((restuarant, idx) => {
-          return (
-            <div key={idx}>
-              <HStack align={'flex-start'} spacing={'2rem'}>
-                <Text fontWeight={'extrabold'} fontSize={'4xl'}>
-                  {restuarant.id}
-                </Text>
-                <Card maxW="sm">
-                  <CardBody>
-                    <Image src={restuarant.image} alt={restuarant.alt} borderRadius="lg" />
-                    <Stack mt="6" spacing="3">
-                      <Heading size="md">{restuarant.name}</Heading>
-                      <Text>{restuarant.description}</Text>
-                      <HStack>
-                        <AiFillStar color="gold" size={'2rem'} />
-                        <Text color="blue.600" fontSize="2xl">
-                          {restuarant.star}
-                        </Text>
-                      </HStack>
-                    </Stack>
-                  </CardBody>
-                  <CardFooter>
-                    <ButtonGroup spacing="2">
-                      <Button variant="solid" colorScheme="green">
-                        상세페이지
-                      </Button>
-                    </ButtonGroup>
-                  </CardFooter>
-                </Card>
-              </HStack>
-            </div>
-          );
-        })}
+        {bookmarks && bookmarks.map((bookmark,idx)=>(
+          <BookmarkCard restuarantNo={bookmark.restaurantNo} key={idx} idx={idx} 
+          refresh={() => setForceUpdate(!forceUpdate)}
+          />
+        ))}
+{/*        
+        <BookmarkCard restuarantNo={1} key={0} idx={0} 
+        refresh={() => setForceUpdate(!forceUpdate)}
+        /> */}
       </SimpleGrid>
     </VStack>
   );
 };
 export default BookmarkPage;
+
+const BookmarkCard = ({ restuarantNo, idx, refresh }) => {
+  const { data } = useRestaurantDetail(restuarantNo);
+  const navigate = useNavigate()
+
+
+  
+  const deleteBookmark = async (restaurantNo) => {
+    const result = await Axios.delete(`mypage/bookmark/${restaurantNo}`)
+    if (result.status === 200 ) {
+      Swal.fire({
+        icon: 'success',
+        title: '북마크 삭제 성공',
+        text: '더 나은 서비스로 만나 뵙겠습니다',
+      })
+      refresh()
+    }
+    else {
+      Swal.fire({
+        icon:'error',
+        title:'북마크 삭제 실패',
+        text: '다시 시도해 주세요'
+      })
+    }
+    refresh()
+  }
+  if (!data) return <></>;
+  return (
+    <div>
+      <HStack align={'flex-start'} spacing={'2rem'}>
+        <Text fontWeight={'extrabold'} fontSize={'4xl'}>
+          {idx + 1}
+        </Text>
+        <Card maxW="sm">
+          <CardBody>
+            <Box ml="2rem" mt={"1rem"} p="1rem" w="15rem" h="15rem">
+              <Image
+                w={'100%'}
+                h={'100%'}
+                src={data.restuarantPhotoDir ? data.restuarantPhotoDir : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/logoSVG.svg' }
+                
+                alt={"식당 이미지"}
+                borderRadius="lg"
+              />
+            </Box>
+            <Stack mt="6" spacing="3">
+              <Heading size="md">{data.restuarantName}</Heading>
+              <Text>{data.restuarantDetail}</Text>
+              <HStack>
+                <AiFillStar color="gold" size={'40px'} />
+                <Text color="blue.600" fontSize="2xl">
+                  {data.restaurantStar}
+                </Text>
+              </HStack>
+            </Stack>
+          </CardBody>
+          <CardFooter>
+            <ButtonGroup spacing="2">
+              <Button
+                variant="solid"
+                colorScheme="green"
+                onClick={() => navigate(`/restaurant/${data.restaurantNo}`)}
+              >
+                상세페이지
+              </Button>
+              <Button
+                variant="solid"
+                colorScheme="teal"
+                onClick={() => deleteBookmark(data.restaurantNo)}
+              >
+                리뷰 삭제
+              </Button>
+            </ButtonGroup>
+          </CardFooter>
+        </Card>
+      </HStack>
+    </div>
+  );
+};

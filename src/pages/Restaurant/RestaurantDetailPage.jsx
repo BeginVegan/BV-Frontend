@@ -19,6 +19,7 @@ import { RiHeart3Line } from 'react-icons/ri';
 import { ROUTES } from '@/routes/ROUTES';
 import { useLocation, useNavigate } from 'react-router-dom';
 import VeganLevel from '@/components/restaurant/VeganLevel';
+import Loading from '@/components/common/Loading';
 
 const RestaurantDetailPage = () => {
   // const isMobile = useBreakpointValue({ base: true, md: false });
@@ -180,19 +181,8 @@ const RestaurantDetailPage = () => {
   );
 
   if (!restaurantInfo) {
-    // restaurantInfo가 존재하지 않으면 Spinner을 반환하여 조건부 렌더링 처리
-    return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh', // Adjust this if needed
-        }}
-      >
-        <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
-      </div>
-    );
+    // restaurantInfo가 존재하지 않으면 Loading 화면 렌더링 처리
+    return <Loading />;
   }
 
   return (

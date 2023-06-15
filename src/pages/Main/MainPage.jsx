@@ -1,10 +1,10 @@
-import React from 'react';
-import { Box, Container, Flex, Heading, Stack, useBreakpointValue } from '@chakra-ui/react';
 import Hero from '@/components/Layout/Hero';
 import BestStoreCard from '@/components/main/BestStoreCard';
 import { ROUTES } from '@/routes/ROUTES';
+import { Flex, Heading, useBreakpointValue } from '@chakra-ui/react';
 
 const MainPage = () => {
+  
   //   const navigate = useNavigate();
   //   const handleKeyDown = e => {
   //     if (e.key === 'Enter') handleSubmit();
@@ -41,7 +41,7 @@ const MainPage = () => {
             heading={'평점 베스트 10곳'}
             description={'믿고가는 가게'}
             img={'/images/main_card2.jpg'}
-            href={ROUTES.BEST_RAW + 'grade'}
+            href={ROUTES.BEST_RAW + 'star'}
           />
           <BestStoreCard
             heading={'리뷰 베스트 10곳'}

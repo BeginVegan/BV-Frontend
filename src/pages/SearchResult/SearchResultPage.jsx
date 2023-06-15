@@ -5,6 +5,9 @@ import { useState } from 'react';
 import { RiEqualizerLine } from 'react-icons/ri';
 import KakaoMap from './KakaoMap';
 import RestaurantCard from '@/components/restaurant/RestaurantCard';
+import RestaurantService from '@/api/RestaurantService';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 
 const SearchResultPage = () => {
   // const { query } = useParams();
@@ -22,104 +25,11 @@ const SearchResultPage = () => {
   //   }
   // };
 
-  const stores = [
-    {
-      storeName: '농민백암왕순대',
-      storeAddress: '강남역',
-      storeStar: '4.7',
-      storeMenu: '탕 / 찌개 / 전골',
-    },
-    {
-      storeName: '농민백암왕순대',
-      storeAddress: '강남역',
-      storeStar: '4.7',
-      storeMenu: '탕 / 찌개 / 전골',
-    },
-    {
-      storeName: '농민백암왕순대',
-      storeAddress: '강남역',
-      storeStar: '4.7',
-      storeMenu: '탕 / 찌개 / 전골',
-    },
-    {
-      storeName: '농민백암왕순대',
-      storeAddress: '강남역',
-      storeStar: '4.7',
-      storeMenu: '탕 / 찌개 / 전골',
-    },
-    {
-      storeName: '농민백암왕순대',
-      storeAddress: '강남역',
-      storeStar: '4.7',
-      storeMenu: '탕 / 찌개 / 전골',
-    },
-    {
-      storeName: '농민백암왕순대',
-      storeAddress: '강남역',
-      storeStar: '4.7',
-      storeMenu: '탕 / 찌개 / 전골',
-    },
-    {
-      storeName: '농민백암왕순대',
-      storeAddress: '강남역',
-      storeStar: '4.7',
-      storeMenu: '탕 / 찌개 / 전골',
-    },
-    {
-      storeName: '농민백암왕순대',
-      storeAddress: '강남역',
-      storeStar: '4.7',
-      storeMenu: '탕 / 찌개 / 전골',
-    },
-    {
-      storeName: '농민백암왕순대',
-      storeAddress: '강남역',
-      storeStar: '4.7',
-      storeMenu: '탕 / 찌개 / 전골',
-    },
-    {
-      storeName: '농민백암왕순대',
-      storeAddress: '강남역',
-      storeStar: '4.7',
-      storeMenu: '탕 / 찌개 / 전골',
-    },
-    {
-      storeName: '농민백암왕순대',
-      storeAddress: '강남역',
-      storeStar: '4.7',
-      storeMenu: '탕 / 찌개 / 전골',
-    },
-    {
-      storeName: '농민백암왕순대',
-      storeAddress: '강남역',
-      storeStar: '4.7',
-      storeMenu: '탕 / 찌개 / 전골',
-    },
-    {
-      storeName: '농민백암왕순대',
-      storeAddress: '강남역',
-      storeStar: '4.7',
-      storeMenu: '탕 / 찌개 / 전골',
-    },
-    {
-      storeName: '농민백암왕순대',
-      storeAddress: '강남역',
-      storeStar: '4.7',
-      storeMenu: '탕 / 찌개 / 전골',
-    },
-    {
-      storeName: '농민백암왕순대',
-      storeAddress: '강남역',
-      storeStar: '4.7',
-      storeMenu: '탕 / 찌개 / 전골',
-    },
-    {
-      storeName: '농민백암왕순대',
-      storeAddress: '강남역',
-      storeStar: '4.7',
-      storeMenu: '탕 / 찌개 / 전골',
-    },
-  ];
+  const { query } = useParams();
+
+  const { data: restaurants, isLoading } = useQuery('getRestaurantSearchList', () =>
+    RestaurantService.getRestaurantSearchList(query)
+  );
 
   // const { kakao } = window;
 
@@ -232,10 +142,6 @@ const SearchResultPage = () => {
   //   marker.setMap(map);
   // };
 
-  const onClickTest = async () => {
-    const res = await Axios.get('mypage/review/3');
-    console.log(res);
-  };
   return (
     <Grid
       h={'calc(100vh - 60px)'}
@@ -248,9 +154,7 @@ const SearchResultPage = () => {
       gap={0.4}
     >
       {isFilterOpen && <SearchFilter setIsFilterOpen={setIsFilterOpen} />}
-      <GridItem pt={4} ml={'auto'} rowSpan={1} colSpan={2} minW={'400px'}>
-        <Button onClick={onClickTest}>테스트</Button>
-        {/* <Text>{!isFetching && data[0].restaurantName}</Text> */}
+      <GridItem pt={4} ml={'auto'} rowSpan={1} colSpan={2} minW={'450px'}>
         <Stack spacing={4}>
           <Stack direction={'row'} alignItems={'center'}>
             <Text
@@ -284,6 +188,7 @@ const SearchResultPage = () => {
             </Stack>
           </Stack>
           <Stack
+            alignItems={'center'}
             h={'calc(100vh - 160px)'}
             overflowY={'scroll'}
             sx={{
@@ -308,15 +213,17 @@ const SearchResultPage = () => {
             }}
             divider={<StackDivider borderColor={'gray.100'} />}
           >
-            {stores.map((store, idx) => (
-              <RestaurantCard
-                key={idx}
-                storeName={store.storeName}
-                storeMenu={store.storeMenu}
-                storeAddress={store.storeAddress}
-                storeStar={store.storeStar}
-              />
-            ))}
+            {!isLoading &&
+              restaurants.map((restaurant, idx) => (
+                <RestaurantCard
+                  key={idx}
+                  restaurantName={restaurant.restaurantName}
+                  restaurantAddress={restaurant.restaurantAddress}
+                  restaurantStar={restaurant.restaurantStar}
+                  restaurantDetail={restaurant.restaurantDetail}
+                  restaurantPhotoDir={restaurant.restaurantPhotoDir}
+                />
+              ))}
           </Stack>
         </Stack>
       </GridItem>
@@ -330,7 +237,7 @@ const SearchResultPage = () => {
       >
         {/* 지도 들어갈 곳*/}
         {/* <div id="map" style={{ width: '100%', height: '100%' }}></div> */}
-        <KakaoMap />
+        {!isLoading && <KakaoMap restaurants={restaurants} />}
       </GridItem>
     </Grid>
   );

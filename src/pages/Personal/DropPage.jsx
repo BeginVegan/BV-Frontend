@@ -17,22 +17,29 @@ const DropPage = () => {
       title: '정말 탈퇴하시겠습니까?',
       text: '탈퇴 요청은 되돌릴 수 없습니다',
       showCancelButton: true,
-    }).then(res => {
+    }).then(async res => {
       if (res.isConfirmed) {
-        Swal.fire({
-          icon: 'success',
-          title: '회원 탈퇴 성공',
-          text: '그동안 이용해 주셔서 감사합니다',
-        }).then(res => {
-          if (res.isConfirmed) {
-            /**
-             * 회원 삭제 쿼리 보내는곳
-             */
-            setIsAuthenticated(false);
-            setUserStatus(null);
-            navigate(ROUTES.HOME);
-          }
-        });
+        const result = await Axios.delete('member')
+        if (result.status === 200 ) {
+          Swal.fire({
+            icon: 'success',
+            title: '회원 탈퇴 성공',
+            text: '그동안 이용해 주셔서 감사합니다',
+          }).then(res => {
+            if (res.isConfirmed) {
+              setIsAuthenticated(false);
+              setUserStatus(null);
+              navigate(ROUTES.HOME);
+            }
+          });
+        }
+        else {
+          Swal.fire({
+            icon:'error',
+            title:'회원 탈퇴 실패',
+            text: '다시 시도해 주세요'
+          })
+        }
       }
     });
   };

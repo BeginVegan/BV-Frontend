@@ -11,6 +11,16 @@ const RestaurantService = {
     return response.data;
   },
 
+  getBestRestaurantList: async () => {
+    const response = await Axios.get('/restaurant/best');
+    return response.data;
+  },
+
+  getRestaurantSearchList: async keyword => {
+    const response = await Axios.get(`/restaurant/search?keyword=${keyword}`);
+    return response.data;
+  },
+
   addRestaurant: async ({ restaurantInfo, restaurantImages, options }) => {
     const formData = new FormData();
 
