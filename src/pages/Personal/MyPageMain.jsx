@@ -37,8 +37,22 @@ const MyPageMain = () => {
     getReview();
   }, []);
 
+  const getFetchUserInfo = async () => {
+    const res = await Axios.get(`member/${userStatus.email}`);
+    if (res.status === 200) {
+      setUserStatus({
+        email: res.data.memberEmail,
+        name: res.data.memberName,
+        point: res.data.memberPoint,
+        role: res.data.memberRole,
+      });
+    }
+  }
   useEffect(()=>{
-    if (reviewList && reservationList) setLoading(false)
+    if (reviewList && reservationList){
+      setLoading(false)   
+    }
+    if (userStatus && userStatus.email)getFetchUserInfo();
   }, [reviewList, reservationList])
 
   //예약중인 리스트 추출
@@ -66,27 +80,32 @@ const MyPageMain = () => {
       });
     }
     return [];
+
+    
   },[doneReservationList, reviewList])
   
   const getGradeIcon = () => {
-    if (!userStatus)
+    if (!userStatus || userStatus.point === null || userStatus.point === undefined) {
+      console.log("!!!", userStatus)
       return "-"
-    if (userStatus < 10000)
+    }
+    if (userStatus.point < 10000)
       return '🌱'
-    if (userStatus < 50000)
+    if (userStatus.point < 50000)
       return '🌿'
-    if (userStatus < 100000)
+    if (userStatus.point < 100000)
       return '🪴'
     return '🌳'
   }
   const getGradeName = () => {
-    if (!userStatus)
+    if (!userStatus || userStatus.point === null || userStatus.point === undefined) {
       return " "
-    if (userStatus < 10000)
+    }
+    if (userStatus.point < 10000)
       return '새싹'
-    if (userStatus < 50000)
+    if (userStatus.point < 50000)
       return '풀잎'
-    if (userStatus < 100000)
+    if (userStatus.point < 100000)
       return '화분'
     return '나무'
   }
@@ -113,7 +132,7 @@ const MyPageMain = () => {
         <Wrap  spacing={"5rem"}>
           <MyPageMainCard title="예약중" value={onReadyReservationList.length} list={onReadyReservationList}/>
           <MyPageMainCard title="리뷰대기" value={reservationsWithoutReview.length} list={reservationsWithoutReview}/>
-          <MyPageMainCard title="포인트" value={userStatus && userStatus.point ? userStatus.point : '-'}/>
+          <MyPageMainCard title="포인트" value={userStatus && userStatus.point != null ? userStatus.point : '-'}/>
         </Wrap>
       </Flex>
       

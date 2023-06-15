@@ -103,7 +103,7 @@ const RestaurantCards = ({reservationNo, reviewList, restaurant, id }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [isReviewable, setIsReviewable] = useState(false)
   const navigate = useNavigate();
-  
+  const [s3ImageList,setS3ImageList] = useState(null)
 
   useEffect(()=>{
     if (reviewList && data) {
@@ -115,6 +115,18 @@ const RestaurantCards = ({reservationNo, reviewList, restaurant, id }) => {
     }
   },[data])
 
+  const getS3ImageList = async () => {
+    const res = await Axios.get(`restaurant/img/${restaurantPhotoDir}`)
+    if (res.status === 200) {
+      console.log("Images", res)
+      setS3ImageList(res.data);
+    }
+  }
+  useEffect(()=>{
+    if (restaurantPhotoDir){
+      getS3ImageList();
+    }
+  },[restaurantPhotoDir])
 
   return (
     <div key={restaurant.id}>
@@ -142,7 +154,7 @@ const RestaurantCards = ({reservationNo, reviewList, restaurant, id }) => {
                   w={'100%'}
                   h={'100%'}
                   pointerEvents="none"
-                  src={restaurantPhotoDir ? `https://bv-image.s3.ap-northeast-2.amazonaws.com/${restaurantPhotoDir}/1.png` : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/logoSVG.svg'}
+                  src={s3ImageList && s3ImageList[0] ? s3ImageList[0] : null}
                   alt={"레스토랑 이미지"}
                   borderRadius="lg"
                 />
