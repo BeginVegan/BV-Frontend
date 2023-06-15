@@ -63,7 +63,7 @@ const LoginPage = () => {
         title: '로그인 성공',
         text: userStatus && userStatus.name ? `${userStatus.name} 님 반가워요` : null,
       });
-      navigate('/main');
+      navigate(-1)
     }
   }, [userStatus]);
 
