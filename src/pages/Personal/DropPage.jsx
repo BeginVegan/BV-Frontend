@@ -1,3 +1,4 @@
+import Axios from '@/api/apiConfig';
 import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
