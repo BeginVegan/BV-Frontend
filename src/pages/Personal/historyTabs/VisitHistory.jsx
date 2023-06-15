@@ -1,6 +1,7 @@
 import Axios from '@/api/apiConfig';
 import { COLORS } from '@/constants/colors';
 import {
+  Box,
   Button,
   ButtonGroup,
   Card,
@@ -8,6 +9,7 @@ import {
   CardFooter,
   Divider,
   Flex,
+  Grid,
   HStack,
   Heading,
   Image,
@@ -27,6 +29,7 @@ import { useRestaurantDetail } from './hooks/useRestaurantDetail';
 const VisitHistory = () => {
   const [reservationList, setReservationList] = useState(null);
   const [sortBy, setSortBy] = useState('2');
+  const [reviewList, setReviewList] = useState(null);
 
   useEffect(() => {
     const getReservations = async () => {
@@ -35,8 +38,17 @@ const VisitHistory = () => {
         setReservationList(res.data);
       }
     };
+    const getReview = async () => {
+      const res = await Axios.get('mypage/review/userEmail');
+
+      if (res.status === 200) {
+        setReviewList(res.data);
+
+      }
+    }
     getReservations();
-  }, []);
+    getReview();
+  },[]);
 
   const sortedReservationList = useMemo(() => {
     if (reservationList) {
@@ -54,6 +66,7 @@ const VisitHistory = () => {
     }
     return [];
   }, [reservationList, sortBy]);
+  const templateColumns = useBreakpointValue({ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' });
 
   return (
     <VStack align={'flex-start'}>
@@ -68,10 +81,14 @@ const VisitHistory = () => {
         </Stack>
       </RadioGroup>
       <Flex height={'80vh'} overflowY={'auto'}>
-        <VStack marginTop={'2rem'} align={'start'}>
+        <VStack w="100%" marginTop={'2rem'} align={'start'}>
+          <Grid w={"100%"} templateColumns={templateColumns} gap={4} height={'80vh'} overflowY={'auto'} padding={4}>
+
           {sortedReservationList.map((restaurant, idx) => {
-            return <RestaurantCards key={idx} id={idx} restaurant={restaurant} />;
+            return <RestaurantCards reservationNo={restaurant.reservationNo} reviewList={reviewList} key={idx} id={idx} restaurant={restaurant} />;
           })}
+          
+          </Grid>
         </VStack>
       </Flex>
     </VStack>
@@ -80,12 +97,25 @@ const VisitHistory = () => {
 
 export default VisitHistory;
 
-const RestaurantCards = ({ restaurant, id }) => {
+const RestaurantCards = ({reservationNo, reviewList, restaurant, id }) => {
   const { data } = useRestaurantDetail(restaurant.restaurantNo);
-  const { restaurantName, restaurantDetail, restaurantPhotoDir, restaurantStar } = data || {};
+  const { restaurantName, restaurantDetail, restaurantPhotoDir, restaurantStar,restaurantNo } = data || {};
   const isMobile = useBreakpointValue({ base: true, md: false });
+  const [isReviewable, setIsReviewable] = useState(false)
   const navigate = useNavigate();
   
+
+  useEffect(()=>{
+    if (reviewList && data) {
+      const hasReview = reviewList.find(review => review.restaurantNo === restaurantNo && review.reservationNo === reservationNo);
+      if (!hasReview) {
+        setIsReviewable(true)
+      }
+      
+    }
+  },[data])
+
+
   return (
     <div key={restaurant.id}>
       {data && (
@@ -104,20 +134,23 @@ const RestaurantCards = ({ restaurant, id }) => {
             variant="outline"
             shadow={'sm'}
             direction={{ base: 'column', md: 'row' }}
+            w="100%"
           >
-            <CardBody w={isMobile ? '100%' : '30%'}>
-              <Image
-                w={'100rem'}
-                h={'100%'}
-                pointerEvents="none"
-                src={restaurantPhotoDir}
-                alt={restaurant.alt}
-                borderRadius="lg"
-              />
+            <CardBody w="100%">
+              <Box ml="2rem" mt={"1rem"} p="1rem" w="15rem" h="15rem">
+                <Image
+                  w={'100%'}
+                  h={'100%'}
+                  pointerEvents="none"
+                  src={restaurantPhotoDir ? `https://bv-image.s3.ap-northeast-2.amazonaws.com/${restaurantPhotoDir}/1.png` : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/logoSVG.svg'}
+                  alt={"레스토랑 이미지"}
+                  borderRadius="lg"
+                />
+              </Box>
             </CardBody>
             <Divider orientation="vertical" />
-            <VStack w={'70%'}>
-              <Stack ml={isMobile ? '2rem' : 0} w={'100%'} mt="6" spacing="3">
+            <VStack w={'350px'}>
+              <Stack ml={'3rem'} w={'100%'} mt="6" spacing="3">
                 <Heading size="md">{restaurantName}</Heading>
                 {/* 상세정보 */}
                 <Text>{restaurantDetail}</Text>
@@ -130,7 +163,7 @@ const RestaurantCards = ({ restaurant, id }) => {
               </Stack>
               <Spacer />
               <CardFooter w={'100%'}>
-                <ButtonGroup spacing="2">
+                <ButtonGroup spacing="4">
                   {/* 여기에 상세페이지로 링크 */}
                   <Button
                     variant="solid"
@@ -139,6 +172,16 @@ const RestaurantCards = ({ restaurant, id }) => {
                   >
                     상세 페이지
                   </Button>
+                  {isReviewable && <Button
+                    variant="solid"
+                    colorScheme="teal"
+                    onClick={() => navigate(`/mypage/review`,{state :{
+                      reservationNo : reservationNo,
+                      restaurantNo : restaurantNo
+                    }})}
+                  >
+                    리뷰 작성
+                  </Button>}
                 </ButtonGroup>
               </CardFooter>
             </VStack>

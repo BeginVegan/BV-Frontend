@@ -73,7 +73,7 @@ const ControllBar = () => {
           >
             로그인
           </Button>
-          <Button
+          {/* <Button
             as={'a'}
             fontSize={'sm'}
             fontWeight={600}
@@ -85,7 +85,7 @@ const ControllBar = () => {
             cursor={'pointer'}
           >
             회원가입
-          </Button>
+          </Button> */}
         </>
       )}
       {isAuthenticated ? (

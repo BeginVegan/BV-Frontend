@@ -2,6 +2,8 @@ import DefaultLayout from '@/components/Layout/DefaultLayout';
 import MainLayout from '@/components/Layout/MainLayout';
 import MypageLayout from '@/components/Layout/MypageLayout';
 import AdminPage from '@/pages/Admin/AdminPage';
+import RegisterMenu from '@/pages/Admin/Register/RegisterMenu';
+import RestaurantRegistration from '@/pages/Admin/Register/RestaurantRegistration';
 import AuthPage from '@/pages/Auth/AuthPage';
 import BestPage from '@/pages/Best/BestPage';
 import ErrorPage from '@/pages/Error/ErrorPage';
@@ -12,15 +14,16 @@ import BookmarkPage from '@/pages/Personal/BookmarkPage';
 import DropPage from '@/pages/Personal/DropPage';
 import HistoryPage from '@/pages/Personal/HistoryPage';
 import MyPageMain from '@/pages/Personal/MyPageMain';
+import SubmitReviewPage from '@/pages/Personal/SubmitReviewPage';
 import RestaurantDetailPage from '@/pages/Restaurant/RestaurantDetailPage';
 import SearchResultPage from '@/pages/SearchResult/SearchResultPage';
-import RestaurantRegistration from '@/pages/Admin/Register/RestaurantRegistration';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { useToast } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './ROUTES';
-import RegisterMenu from '@/pages/Admin/Register/RegisterMenu';
+import ReservationManagementPage from '@/pages/Admin/Reservation/ReservationManagementPage';
+import ReservationRestaurant from '@/pages/Restaurant/ReservationRestaurant';
 
 const AppRoutes = () => {
   const toast = useToast();
@@ -48,6 +51,7 @@ const AppRoutes = () => {
             <Route path={ROUTES.ADMIN} element={<AdminPage />} />
             <Route path={ROUTES.RESTAURANT_REGISTRATION} element={<RestaurantRegistration />} />
             <Route path={ROUTES.RESTAURANTMENU_REGISTRATION} element={<RegisterMenu />} />
+            <Route path={ROUTES.RESERVATION_MANAGEMENT} element={<ReservationManagementPage />} />
           </Route>
           {/* DefaultLayout은 검색창 있는 헤더 만 있는 레이아웃*/}
           <Route element={<DefaultLayout />}>
@@ -57,6 +61,7 @@ const AppRoutes = () => {
           {/* DefaultLayout 레이아웃에서 푸터가 있는 레이아웃*/}
           <Route element={<DefaultLayout hasFooter={true} />}>
             <Route path={ROUTES.RESTAURANT} element={<RestaurantDetailPage />} />
+            <Route path={ROUTES.RESTAURANT_RESERVATION} element={<ReservationRestaurant />} />
           </Route>
           {/* Mypage는 검색창있는 헤더와 사이드바가 있는 레이아웃 */}
           <Route element={<MypageLayout />}>
@@ -65,6 +70,7 @@ const AppRoutes = () => {
             <Route path={ROUTES.MYPAGE_HISTORY} element={<HistoryPage />} />
             <Route path={ROUTES.MYPAGE_BOOKMARK} element={<BookmarkPage />} />
             <Route path={ROUTES.MYPAGE_DROP} element={<DropPage />} />
+            <Route path={ROUTES.MYPAGE_REVIEW} element={<SubmitReviewPage />} />
           </Route>
           <Route path={ROUTES.AUTH} element={<AuthPage />} />
           <Route path={ROUTES.OTHERS} element={<NotFoundPage />} />
