@@ -64,7 +64,7 @@ const ReservationAndCancelChart = ({ data }) => {
   const connectedCanceledReservationsData = connectClosestDots(canceledReservationsData);
 
   return (
-    <Card pl={'2px'} pt={'55px'} pb={'55px'}>
+    <Card shadow={'none'} pl={'2px'} pt={'55px'} pb={'55px'}>
       <CardBody>
         <ApexChart
           type="line"

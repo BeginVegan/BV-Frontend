@@ -48,7 +48,7 @@ const DataTable = ({ columns, data }) => {
 
   return (
     <VStack>
-      <TableContainer>
+      <TableContainer h={'70vh'}>
         <Table variant="simple" {...getTableProps()}>
           <Thead>
             {headerGroups.map(headerGroup => (
@@ -85,7 +85,7 @@ const DataTable = ({ columns, data }) => {
           </Tbody>
         </Table>
       </TableContainer>
-      <HStack pt={6}>
+      <HStack pt={1}>
         <Flex gap={4}>
           <Flex>
             <Tooltip label="First Page">

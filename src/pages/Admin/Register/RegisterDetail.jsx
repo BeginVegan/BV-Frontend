@@ -42,7 +42,7 @@ const RegisterDetail = ({ register, control, setValue, errors }) => {
         <Input {...register('restaurantName', { required: true })} w={'200px'} />
         {errors.restaurantName && <FormHelperText>업체명을 입력해주세요.</FormHelperText>}
       </FormControl>
-      {/* <FormControl as={HStack} w={'660px'}>
+      <FormControl as={HStack} w={'660px'}>
         <FormLabel w={'120px'}>전화번호</FormLabel>
         <Select {...register('phoneNum1', { required: true })} w={'100px'}>
           <option value="010">010</option>
@@ -62,7 +62,7 @@ const RegisterDetail = ({ register, control, setValue, errors }) => {
         {(errors.phoneNum2 || errors.phoneNum3) && (
           <FormHelperText>8자리를 입력해 주세요.</FormHelperText>
         )}
-      </FormControl> */}
+      </FormControl>
       <FormControl as={HStack} w={'660px'}>
         <FormLabel w={'120px'}>주소</FormLabel>
         <VStack>

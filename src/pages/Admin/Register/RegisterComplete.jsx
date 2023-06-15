@@ -21,14 +21,14 @@ const RegisterComplete = () => {
           {data.restaurantName}
         </Text>
       </HStack>
-      {/* <HStack>
+      <HStack>
         <Text w={'120px'} fontWeight={600} color={'gray.600'} fontSize="2xl">
           전화번호
         </Text>
         <Text fontWeight={400} color={'gray.400'} fontSize="2xl">
-          010-1111-1111
+          {`${data.phoneNum1}-${data.phoneNum2}-${data.phoneNum3}`}
         </Text>
-      </HStack> */}
+      </HStack>
       <HStack>
         <Text w={'120px'} fontWeight={600} color={'gray.600'} fontSize="2xl">
           주소
@@ -46,10 +46,14 @@ const RegisterComplete = () => {
         </Text>
       </HStack>
       <HStack pt={4} alignSelf={'center'} gap={4}>
-        <Button onClick={() => navigate(`${ROUTES.RESTAURANT_RAW}${data.restaurantNo}`)}>
-          가게 이동
+        <Button
+          onClick={() => navigate(`${ROUTES.RESTAURANTMENU_REGISTRATION_RAW}/${data.restaurantNo}`)}
+        >
+          메뉴 등록
         </Button>
-        <Button>가게 수정</Button>
+        <Button onClick={() => navigate(`${ROUTES.ADMIN_RAW}/restaurant`)}>
+          식당 관리 페이지로
+        </Button>
       </HStack>
     </Flex>
   );
