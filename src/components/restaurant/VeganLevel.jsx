@@ -8,16 +8,16 @@ import meatIcon from '@/assets/icons/icons-meat.png';
 import chickenIcon from '@/assets/icons/icon-thanksgiving.png';
 
 const VeganLevel = ({ setValue, level }) => {
-  const [veganLevel, setVeganLevel] = useState(level ? level : 1);
+  const [veganLevel, setVeganLevel] = useState(level ? level : 0);
 
   useEffect(() => {
     if (level) setVeganLevel(level);
   }, [level]);
 
-  const changeVeganLevel = level => {
+  const changeVeganLevel = num => {
     if (!level) {
-      setVeganLevel(level);
-      setValue('restaurantVeganLevel', level);
+      setVeganLevel(num);
+      setValue('restaurantVeganLevel', num);
     }
   };
 

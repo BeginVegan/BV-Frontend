@@ -21,8 +21,9 @@ const KakaoMap = ({ restaurants }) => {
       });
     });
     setLocations(newLocations);
+    setCurrentLocation({ lat: newLocations[0].latlng.lat, lng: newLocations[0].latlng.lng });
     navigator.geolocation.getCurrentPosition(successHandler, errorHandler); // 성공시 successHandler, 실패시 errorHandler 함수가 실행된다.
-  }, []);
+  }, [restaurants]);
 
   useEffect(() => {
     console.log('locations: ', locations);

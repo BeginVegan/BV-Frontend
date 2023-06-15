@@ -17,6 +17,7 @@ const RestaurantCard = ({
   restaurantAddress,
   restaurantDetail,
   restaurantPhotoDir,
+  restaurantVeganLevel,
 }) => {
   return (
     <Stack
@@ -47,6 +48,8 @@ const RestaurantCard = ({
       >
         <Heading fontSize={'xl'}>
           {restaurantName}
+          {'###'}
+          {restaurantVeganLevel}
           <StarIcon ml={4} boxSize={4} color={'yellow.500'} />
           {` ${restaurantStar}`}
         </Heading>
