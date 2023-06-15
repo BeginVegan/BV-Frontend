@@ -25,6 +25,7 @@ const SearchBar = ({ isMain }) => {
     const query = inputRef.current.value;
 
     navigate(ROUTES.SEARCH_RAW + query);
+    window.location.reload();
   };
 
   return (

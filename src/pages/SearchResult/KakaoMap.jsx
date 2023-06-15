@@ -3,13 +3,19 @@ import { useEffect, useState } from 'react';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useNavigate } from 'react-router-dom';
 
-const KakaoMap = ({ restaurants }) => {
+const KakaoMap = ({
+  restaurants,
+  currentLocation,
+  setCurrentLocation,
+  mapCenter,
+  setMapCenter,
+  clickedMarker,
+  isPanto,
+}) => {
   const { kakao } = window;
-  const [level, setLevel] = useState(3);
+  const [level, setLevel] = useState(5);
   const [locations, setLocations] = useState([]);
-  const [currentLocation, setCurrentLocation] = useState({ lat: 33.5563, lng: 126.79581 });
-
-  // const [location, setLoacation] = useState({ latitude: 33.5563, longitude: 126.79581 }); // 현재 위치를 저장할 상태
+  // const [currentLocation, setCurrentLocation] = useState({ lat: 33.5563, lng: 126.79581 }); // 상위 컴포넌트로 꺼냄
 
   useEffect(() => {
     let newLocations = [];
@@ -21,15 +27,13 @@ const KakaoMap = ({ restaurants }) => {
       });
     });
     setLocations(newLocations);
+    setMapCenter(newLocations[0].latlng);
+    setCurrentLocation({ lat: newLocations[0].latlng.lat, lng: newLocations[0].latlng.lng });
     navigator.geolocation.getCurrentPosition(successHandler, errorHandler); // 성공시 successHandler, 실패시 errorHandler 함수가 실행된다.
-  }, []);
-
-  useEffect(() => {
-    console.log('locations: ', locations);
-  }, [locations]);
+  }, [restaurants]);
 
   const successHandler = response => {
-    console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
+    // console.log(response); // coords: GeolocationCoordinates {latitude: 위도, longitude: 경도, …} timestamp: 1673446873903
     const { latitude, longitude } = response.coords;
     setCurrentLocation({ latitude, longitude });
   };
@@ -42,9 +46,10 @@ const KakaoMap = ({ restaurants }) => {
     <>
       {locations.length != 0 && (
         <Map
-          center={{ lat: locations[0].latlng.lat, lng: locations[0].latlng.lng }} // 지도의 중심 좌표
+          center={mapCenter}
           style={{ position: 'relative', width: '100%', height: '100%' }} // 지도 크기
           level={level} // 지도 확대 레벨
+          isPanto={isPanto}
         >
           <MapMarker
             position={{ lat: currentLocation.latitude, lng: currentLocation.longitude }}
@@ -53,6 +58,7 @@ const KakaoMap = ({ restaurants }) => {
           {locations.map((loc, idx) => (
             <CustomMapMarker loc={loc} key={idx} />
           ))}
+          {clickedMarker && <CustomMapMarker isOpenMarker={true} loc={clickedMarker} />}
           <Button
             variant="unstyled"
             display="flex"
@@ -101,8 +107,8 @@ const KakaoMap = ({ restaurants }) => {
 
 export default KakaoMap;
 
-const CustomMapMarker = ({ loc }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const CustomMapMarker = ({ loc, isOpenMarker }) => {
+  const [isOpen, setIsOpen] = useState(isOpenMarker ? true : false);
   const [address, setAddress] = useState(null);
   const navigate = useNavigate();
   const markerStyle = {
@@ -131,9 +137,10 @@ const CustomMapMarker = ({ loc }) => {
   useEffect(() => {
     getAddress(loc.latlng.lat, loc.latlng.lng);
   }, []);
+
   return (
     <MapMarker
-      key={`${loc.title}-${loc.latlng}`}
+      key={`${loc.title}-${loc.latlng.lat}`}
       position={loc.latlng}
       image={{
         src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
@@ -157,7 +164,9 @@ const CustomMapMarker = ({ loc }) => {
           <div style={markerStyle}>
             <span style={{ fontSize: '18px', textAlign: 'center' }}>{loc.title}</span>
             <br />
-            <span style={{ fontSize: '14px', textAlign: 'center' }}>{address.address_name}</span>
+            <span style={{ fontSize: '14px', textAlign: 'center' }}>
+              {address && address.address_name}
+            </span>
             <br />
             <span style={{ fontSize: '8px' }}>클릭시 이동합니다</span>
           </div>
