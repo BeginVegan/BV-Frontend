@@ -45,7 +45,7 @@ const BestPage = () => {
             lineHeight={1.2}
             fontSize={useBreakpointValue({ base: '2xl', md: '3xl' })}
           >
-            {pageDetail.title} 베스트 5곳
+            {pageDetail.title} 베스트 10곳
           </Text>
         </Flex>
         <Stack py={4} spacing={4}>
@@ -53,12 +53,12 @@ const BestPage = () => {
             bestList[category].map((restaurant, index) => (
               <BestRestaurantCard
                 key={restaurant.restaurantNo}
-                storeId={restaurant.restaurantNo}
-                storeImg={restaurant.restaurantPhotoDir}
-                storeName={index + 1 + '. ' + restaurant.restaurantName}
-                storeAddress={restaurant.restaurantAddress}
-                storeStar={restaurant.restaurantStar}
-                reviewDetail={restaurant.restaurantDetail}
+                restaurantId={restaurant.restaurantNo}
+                restaurantImg={restaurant.restaurantPhotoDir}
+                restaurantName={index + 1 + '. ' + restaurant.restaurantName}
+                restaurantAddress={restaurant.restaurantAddress}
+                restaurantStar={restaurant.restaurantStar}
+                restaurantDetail={restaurant.restaurantDetail}
               />
             ))
           ) : (

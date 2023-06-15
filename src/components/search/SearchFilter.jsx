@@ -4,7 +4,14 @@ import VeganLevel from '@/components/restaurant/VeganLevel';
 import { useForm } from 'react-hook-form';
 import Axios from '@/api/apiConfig';
 
-const SearchFilter = ({ setIsFilterOpen, setRestaurants, query, setIsLoading }) => {
+const SearchFilter = ({
+  setIsFilterOpen,
+  setRestaurants,
+  query,
+  setIsLoading,
+  currentLocation,
+  setIsRestaurantsNull,
+}) => {
   const {
     register,
     handleSubmit,
@@ -42,13 +49,32 @@ const SearchFilter = ({ setIsFilterOpen, setRestaurants, query, setIsLoading }) 
     return res.data;
   };
 
+  // 현재위치와 식당위치 사이의 거리를 구한다.
+  const distance = (currentLocation, restaurant) => {
+    const R = 6371; // 지구 반지름 (단위: km)
+    const dLat = deg2rad(currentLocation.latitude - restaurant.restaurantX); // 경도(x)
+    const dLon = deg2rad(currentLocation.longitude - restaurant.restaurantY); // 위도(y)
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(currentLocation.latitude)) *
+        Math.cos(deg2rad(restaurant.restaurantX)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // 두 지점 간의 거리 (단위: km)
+    return distance;
+  };
+
+  const deg2rad = deg => {
+    return deg * (Math.PI / 180);
+  };
+
   //data: 필터에서 선택한 값
   const filterSet = async data => {
-    // console.log(data);
-
     setIsLoading(true);
     const newRestaurants = await setNewData();
 
+    //조건에 맞는 데이터를 걸러 줌
     let filterRestaurants = newRestaurants.filter(rest => {
       if (data.gu != '') {
         return (
@@ -60,16 +86,18 @@ const SearchFilter = ({ setIsFilterOpen, setRestaurants, query, setIsLoading }) 
       }
     });
 
-    if (filterRestaurants) {
+    //정렬함
+    if (filterRestaurants != null && filterRestaurants.length > 0) {
       filterRestaurants = filterRestaurants.sort(function (a, b) {
         if (data.order == '평점순') {
           return b.restaurantStar - a.restaurantStar;
-        } // 인기순 정렬!!!!
+        } else if (data.order == '거리순') {
+          return distance(currentLocation, a) - distance(currentLocation, b);
+        }
       });
     } else {
-      return null;
+      setIsRestaurantsNull(true);
     }
-
     setRestaurants(filterRestaurants);
     setIsFilterOpen(false);
     setIsLoading(false);
@@ -90,7 +118,7 @@ const SearchFilter = ({ setIsFilterOpen, setRestaurants, query, setIsLoading }) 
     '중구',
   ];
 
-  const orders = ['평점순', '인기순'];
+  const orders = ['평점순', '거리순'];
 
   return (
     <GridItem
@@ -176,7 +204,7 @@ const SearchFilter = ({ setIsFilterOpen, setRestaurants, query, setIsLoading }) 
             display={'none'}
             value={7}
           ></Input>
-          <VeganLevel setValue={setValue} />
+          <VeganLevel setValue={setValue} isClickable={true} />
         </Stack>
         <SimpleGrid columns={2} spacing={5}>
           <Button

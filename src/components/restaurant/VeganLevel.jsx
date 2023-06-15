@@ -7,8 +7,8 @@ import eggIcon from '@/assets/icons/icons-egg.png';
 import meatIcon from '@/assets/icons/icons-meat.png';
 import chickenIcon from '@/assets/icons/icon-thanksgiving.png';
 
-const VeganLevel = ({ setValue, level }) => {
-  const [veganLevel, setVeganLevel] = useState(level ? level : 0);
+const VeganLevel = ({ setValue, level, isClickable = false }) => {
+  const [veganLevel, setVeganLevel] = useState(level ? level : 7);
 
   useEffect(() => {
     if (level) setVeganLevel(level);
@@ -25,39 +25,39 @@ const VeganLevel = ({ setValue, level }) => {
     <Stack direction={'row'} justifyContent={'center'} gap={3}>
       <IconButton
         bg={'white'}
-        opacity={veganLevel === 1 ? '1' : '0.5'}
+        opacity={veganLevel != 7 && veganLevel >= 1 ? '1' : '0.4'}
         icon={<Img src={broccoliIcon} />}
-        onClick={() => !level && changeVeganLevel(1)}
+        onClick={() => (isClickable ? !level && changeVeganLevel(1) : null)}
       />
       <IconButton
         bg={'white'}
-        opacity={veganLevel === 2 ? '1' : '0.5'}
+        opacity={veganLevel != 7 && veganLevel >= 2 ? '1' : '0.4'}
         icon={<Img src={milkIcon} />}
-        onClick={() => !level && changeVeganLevel(2)}
+        onClick={() => (isClickable ? !level && changeVeganLevel(2) : null)}
       />
       <IconButton
         bg={'white'}
-        opacity={veganLevel === 3 ? '1' : '0.5'}
+        opacity={veganLevel != 7 && veganLevel >= 3 ? '1' : '0.4'}
         icon={<Img src={eggIcon} />}
-        onClick={() => !level && changeVeganLevel(3)}
+        onClick={() => (isClickable ? !level && changeVeganLevel(3) : null)}
       />
       <IconButton
         bg={'white'}
-        opacity={veganLevel === 4 ? '1' : '0.5'}
+        opacity={veganLevel != 7 && veganLevel >= 4 ? '1' : '0.4'}
         icon={<Img src={fishIcon} />}
-        onClick={() => !level && changeVeganLevel(4)}
+        onClick={() => (isClickable ? !level && changeVeganLevel(4) : null)}
       />
       <IconButton
         bg={'white'}
-        opacity={veganLevel === 5 ? '1' : '0.5'}
+        opacity={veganLevel != 7 && veganLevel >= 5 ? '1' : '0.4'}
         icon={<Img src={chickenIcon} />}
-        onClick={() => !level && changeVeganLevel(5)}
+        onClick={() => (isClickable ? !level && changeVeganLevel(5) : null)}
       />
       <IconButton
         bg={'white'}
-        opacity={veganLevel === 6 ? '1' : '0.5'}
+        opacity={veganLevel != 7 && veganLevel >= 6 ? '1' : '0.4'}
         icon={<Img src={meatIcon} />}
-        onClick={() => !level && changeVeganLevel(6)}
+        onClick={() => (isClickable ? !level && changeVeganLevel(6) : null)}
       />
     </Stack>
   );
