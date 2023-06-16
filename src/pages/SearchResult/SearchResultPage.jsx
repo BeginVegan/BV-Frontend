@@ -257,14 +257,7 @@ const SearchResultPage = () => {
               restaurants.map((restaurant, idx) => (
                 <RestaurantCard
                   key={idx}
-                  restaurantNo={restaurant.restaurantNo}
-                  restaurantName={restaurant.restaurantName}
-                  restaurantAddress={restaurant.restaurantAddress}
-                  restaurantStar={restaurant.restaurantStar}
-                  restaurantDetail={restaurant.restaurantDetail}
-                  restaurantPhotoDir={restaurant.restaurantPhotoDir}
-                  restaurantX={restaurant.restaurantX}
-                  restaurantY={restaurant.restaurantY}
+                  restaurant={restaurant}
                   mapCenter={mapCenter}
                   setMapCenter={setMapCenter}
                   setClickedMarker={setClickedMarker}

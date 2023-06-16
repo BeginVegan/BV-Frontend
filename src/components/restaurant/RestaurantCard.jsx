@@ -13,21 +13,13 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
-const RestaurantCard = ({
-  restaurantNo,
-  restaurantName,
-  restaurantStar,
-  restaurantAddress,
-  restaurantDetail,
-  restaurantPhotoDir,
-  restaurantX,
-  restaurantY,
-  setMapCenter,
-  setClickedMarker,
-  setIsPanto,
-}) => {
+const RestaurantCard = ({ restaurant, setMapCenter, setClickedMarker, setIsPanto }) => {
   const navigate = useNavigate();
-  const size = restaurantName.length > 8 ? 'lg' : 'xl';
+  const size = restaurant.restaurantName.length > 8 ? 'lg' : 'xl';
+
+  // console.log(restaurant.restaurantDetail);
+  // const restaurantOpen = restaurant.restaurantOpen.substr(0, 5);
+  // const restaurantClose = restaurant.restaurantClose.substr(0, 5);
 
   return (
     <Stack
@@ -38,22 +30,23 @@ const RestaurantCard = ({
       direction={'row'}
       bg={useColorModeValue('white', 'gray.900')}
       onClick={() => {
-        setMapCenter({ lat: restaurantX, lng: restaurantY });
+        setMapCenter({ lat: restaurant.restaurantX, lng: restaurant.restaurantY });
         setClickedMarker({
-          restaurantNo: restaurantNo,
-          title: restaurantName,
-          latlng: { lat: restaurantX, lng: restaurantY },
+          restaurantNo: restaurant.restaurantNo,
+          title: restaurant.restaurantName,
+          latlng: { lat: restaurant.restaurantX, lng: restaurant.restaurantY },
         });
         setIsPanto(true);
       }}
     >
       <Flex flex={2}>
         <Image
+          boxShadow={'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'}
           objectFit="cover"
           boxSize="100%"
           src={
-            restaurantPhotoDir
-              ? `${restaurantPhotoDir}`
+            restaurant.restaurantPhotoDir
+              ? `${restaurant.restaurantPhotoDir}`
               : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/restaurant/default.png'
           }
         />
@@ -72,18 +65,21 @@ const RestaurantCard = ({
               cursor: 'pointer',
               color: 'blue.500',
             }}
-            onClick={() => navigate(`/restaurant/${restaurantNo}`)}
+            onClick={() => navigate(`/restaurant/${restaurant.restaurantNo}`)}
             fontSize={size}
           >
-            {restaurantName}
+            {restaurant.restaurantName}
           </Heading>
           <StarIcon ml={4} boxSize={4} color={'yellow.500'} />
           <Text fontSize={'lg'} color={'gray.500'} fontWeight={600}>
-            {restaurantStar}
+            {restaurant.restaurantStar}
           </Text>
         </HStack>
-        <Text fontWeight={400} color={'gray.500'} size="sm" mb={4}>
-          {restaurantAddress} - {restaurantDetail}
+        <Text fontWeight={400} color={'gray.500'} fontSize={'md'}>
+          {restaurant.restaurantAddress}
+        </Text>
+        <Text fontWeight={300} color={'gray.500'} fontSize={'sm'}>
+          전화번호: {restaurant.restaurantPhone}
         </Text>
       </Stack>
     </Stack>
