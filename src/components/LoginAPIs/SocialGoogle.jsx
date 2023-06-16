@@ -4,7 +4,6 @@ import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
 import { useGoogleLogin } from '@react-oauth/google';
-import axios from 'axios';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -15,20 +14,20 @@ const SocialGoogle = () => {
    * 프론트에서도 직접 Oauth 이용해서 테스트 및 검증해보는 부분
    * 정상작동할때는 사용안함
    */
-  const CheckAuth = async accessToken => {
-    await axios
-      .get('https://www.googleapis.com/oauth2/v2/userinfo', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then(res => {
-        console.log('front !!!!', res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
+  // const CheckAuth = async accessToken => {
+  //   await axios
+  //     .get('https://www.googleapis.com/oauth2/v2/userinfo', {
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //     })
+  //     .then(res => {
+  //       console.log('front !!!!', res);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // };
 
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
@@ -53,6 +52,21 @@ const SocialGoogle = () => {
     console.log(error);
   };
 
+  const checkBeforeLogin = () => {
+    Swal.fire({
+      icon: 'info',
+      title: '로그인 공지',
+      text: '최초 로그인 시 자동으로 회원가입이 이루어집니다.',
+      confirmButtonText: '로그인',
+      showCancelButton: true,
+      cancelButtonText: '돌아가기',
+    }).then(result => {
+      if (result.isConfirmed) {
+        login();
+      }
+    });
+  };
+
   const login = useGoogleLogin({
     onSuccess: googleOnSuccess,
     onFailure: googleOnFailure,
@@ -65,6 +79,7 @@ const SocialGoogle = () => {
       });
 
       if (res.status === 200) {
+        navigate(ROUTES.HOME);
         Swal.fire({
           icon: 'success',
           title: '로그인 성공',
@@ -77,7 +92,6 @@ const SocialGoogle = () => {
             point: res.data.memberPoint,
             role: res.data.memberRole,
           });
-          navigate(ROUTES.HOME);
         });
       } else {
         Swal.fire({
@@ -93,13 +107,16 @@ const SocialGoogle = () => {
   }, [token]);
   return (
     <>
-      <GoogleLoginButton 
-      onMouseDown={handleMouseDown} 
-      onMouseUp={handleMouseUp} 
-      style={{cursor: 'pointer', 
-      transform: isActive ? 'translateY(-4px)' : null, 
-      boxShadow: isActive ? 'lg' : null}} 
-      onClick={() => login()}/>
+      <GoogleLoginButton
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        style={{
+          cursor: 'pointer',
+          transform: isActive ? 'translateY(-4px)' : null,
+          boxShadow: isActive ? 'lg' : null,
+        }}
+        onClick={() => checkBeforeLogin()}
+      />
     </>
   );
 };
