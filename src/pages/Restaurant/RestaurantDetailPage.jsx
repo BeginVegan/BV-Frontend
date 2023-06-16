@@ -1,6 +1,5 @@
 import {
   Heading,
-  Button,
   Box,
   Stack,
   HStack,
@@ -12,9 +11,8 @@ import {
 } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Axios from '@/api/apiConfig';
-import { ROUTES } from '@/routes/ROUTES';
 import VeganLevel from '@/components/restaurant/VeganLevel';
 import Loading from '@/components/common/Loading';
 import RestaurantImg from '@/pages/Restaurant/RestaurantImg';
@@ -22,9 +20,9 @@ import RestaurantMenu from '@/pages/Restaurant/RestaurantMenu';
 import BookmarkCheck from '@/pages/Restaurant/BookmarkCheck';
 import RestaurntReview from '@/pages/Restaurant/RestaurntReview';
 import FormatTime12Hour from '@/pages/Restaurant/FormatTime12Hour';
+import BookButton from '@/pages/Restaurant//BookButton';
 
 const RestaurantDetailPage = () => {
-  const navigator = useNavigate();
   const [restaurantInfo, setRestaurantInfo] = useState(null);
   const _hereIAm = useLocation();
   const restaurantNo = _hereIAm.pathname.split('/')[2];
@@ -79,16 +77,7 @@ const RestaurantDetailPage = () => {
                   </Text>
                 </Box>
                 <Box display={'flex'} alignItems={'center'} gap={4}>
-                  <Button
-                    color={'white'}
-                    bgColor={'green.400'}
-                    _hover={{ bgColor: 'green.300', transform: 'scale(1.2)' }}
-                    onClick={() =>
-                      navigator(`${ROUTES.RESTAURANT_RESERVATION_RAW}/${restaurantNo}`)
-                    }
-                  >
-                    주문하기
-                  </Button>
+                  <BookButton restaurantNo={restaurantNo} />
                   <BookmarkCheck restaurantNo={restaurantNo} />
                 </Box>
               </HStack>
