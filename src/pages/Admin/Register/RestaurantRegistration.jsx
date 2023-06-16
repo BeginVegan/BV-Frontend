@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Card,
   Divider,
   Flex,
   HStack,
@@ -103,54 +104,56 @@ const RestaurantRegistration = () => {
   };
 
   return (
-    <Flex direction={'column'} py={12}>
-      <Stepper w={'900px'} pb={12} size="lg" index={stepno}>
-        {steps.map((step, index) => (
-          <Step key={index}>
-            <StepIndicator>
-              <StepStatus
-                complete={<StepIcon />}
-                incomplete={<StepNumber />}
-                active={<StepNumber />}
-              />
-            </StepIndicator>
+    <Flex w={'100%'} alignItems={'center'} direction={'column'} py={5}>
+      <Card shadow={'none'} p={8} borderRadius={'xl'}>
+        <Stepper w={'900px'} pb={12} size="lg" index={stepno}>
+          {steps.map((step, index) => (
+            <Step key={index}>
+              <StepIndicator>
+                <StepStatus
+                  complete={<StepIcon />}
+                  incomplete={<StepNumber />}
+                  active={<StepNumber />}
+                />
+              </StepIndicator>
 
-            <Box flexShrink="0">
-              <StepTitle>{step.title}</StepTitle>
-              <StepDescription>{step.description}</StepDescription>
-            </Box>
+              <Box flexShrink="0">
+                <StepTitle>{step.title}</StepTitle>
+                <StepDescription>{step.description}</StepDescription>
+              </Box>
 
-            <StepSeparator />
-          </Step>
-        ))}
-      </Stepper>
+              <StepSeparator />
+            </Step>
+          ))}
+        </Stepper>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <VStack gap={6} w={'900px'}>
-          <Divider mb={8} borderColor={'gray.400'} />
-          {pageStep[stepno]}
-        </VStack>
-        <HStack w={'900px'} justifyContent={'flex-end'} pt={12} gap={4} pr={8}>
-          {stepno == 1 && (
-            <ButtonGroup>
-              <Button
-                bgColor={'green.200'}
-                _hover={{ bgColor: 'green.400', color: 'white' }}
-                type="submit"
-              >
-                생성하기
-              </Button>
-              <Button
-                onClick={() => navigate(ROUTES.ADMIN)}
-                _hover={{ bgColor: 'red.400', color: 'white' }}
-                bgColor={'red.200'}
-              >
-                취소
-              </Button>
-            </ButtonGroup>
-          )}
-        </HStack>
-      </form>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <VStack gap={6} w={'900px'}>
+            <Divider mb={8} borderColor={'gray.400'} />
+            {pageStep[stepno]}
+          </VStack>
+          <HStack w={'900px'} justifyContent={'flex-end'} pt={12} gap={4} pr={8}>
+            {stepno == 1 && (
+              <ButtonGroup>
+                <Button
+                  bgColor={'green.200'}
+                  _hover={{ bgColor: 'green.400', color: 'white' }}
+                  type="submit"
+                >
+                  생성하기
+                </Button>
+                <Button
+                  onClick={() => navigate(ROUTES.ADMIN)}
+                  _hover={{ bgColor: 'red.400', color: 'white' }}
+                  bgColor={'red.200'}
+                >
+                  취소
+                </Button>
+              </ButtonGroup>
+            )}
+          </HStack>
+        </form>
+      </Card>
     </Flex>
   );
 };

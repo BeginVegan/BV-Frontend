@@ -2,13 +2,17 @@ import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/routes/ROUTES';
 import DataTable from '@/components/common/DataTable';
-import { columns, restaurants } from '@/data/demmy';
-import { Box, Button, Card, Flex, Heading, VStack } from '@chakra-ui/react';
+import { columns } from '@/data/demmy';
+import { Button, Card, Flex, Heading, useDisclosure } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import RestaurantService from '@/api/RestaurantService';
+import LoadingPage from '@/pages/Loading/LoadingPage';
+import CustomModal from '@/components/common/CustomModal';
+import RegisterMenu from './RegisterMenu';
 
-const RegisterMenagement = () => {
+const RegisterManagement = () => {
   const navigator = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: restaurants, isLoading } = useQuery(
     'getRestaurantList',
     RestaurantService.getRestaurantList
@@ -30,10 +34,21 @@ const RegisterMenagement = () => {
     }));
   }, [isLoading]);
 
+  if (isLoading) return <LoadingPage />;
+
   return (
-    <Flex w={'100%'}>
+    <>
+      <Heading display={'flex'} alignSelf={'flex-start'} color={'#323232'} mb={5}>
+        식당 관리
+      </Heading>
       <Card shadow={'none'} bg={'white'} p={5}>
         <Flex w={'100%'} justifyContent={'flex-end'}>
+          <CustomModal title={'메뉴 수정'} isOpen={isOpen} onOpen={onOpen} onClose={onClose}>
+            <RegisterMenu restaurantno={1} />
+          </CustomModal>
+          <Button mt={4} onClick={onOpen}>
+            메뉴 수정
+          </Button>
           <Button
             w={'140px'}
             mr={6}
@@ -45,10 +60,10 @@ const RegisterMenagement = () => {
             식당등록
           </Button>
         </Flex>
-        {!isLoading && <DataTable columns={columns} data={data}></DataTable>}
+        <DataTable columns={columns} data={data}></DataTable>
       </Card>
-    </Flex>
+    </>
   );
 };
 
-export default RegisterMenagement;
+export default RegisterManagement;
