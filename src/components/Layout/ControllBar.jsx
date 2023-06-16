@@ -17,15 +17,12 @@ const ControllBar = () => {
     if (res.status === 200) {
       setIsAuthenticated(false);
       setUserStatus(null);
-      /**
-       * localStorage에서 토큰정보 삭제 해야함
-       */
+      navigate(ROUTES.HOME);
       Swal.fire({
         icon: 'success',
         title: '로그아웃 성공',
         text: '메인으로 돌아갑니다',
       });
-      navigate(ROUTES.HOME);
     } else {
       Swal.fire({
         icon: 'error',
@@ -35,15 +32,22 @@ const ControllBar = () => {
     }
   };
 
-  const handleSessionTest = async () => {
-    const res = await Axios.get('member/session');
-    console.log(res);
-  };
+  // const handleSessionTest = async () => {
+  //   const res = await Axios.get('member/session');
+  //   console.log(res);
+  // };
   return (
     <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={6}>
       {isAuthenticated ? (
         <>
-          <Text width={'5rem'} textAlign={'center'} pt={'0.5rem'}>
+          <Text
+            width={'10rem'}
+            textAlign={'end'}
+            pt={'0.5rem'}
+            overflow={'hidden'}
+            textOverflow={'ellipsis'}
+            whiteSpace={'nowrap'}
+          >
             {userStatus.name}
           </Text>
           <Button
@@ -116,7 +120,7 @@ const ControllBar = () => {
           관리페이지
         </Button>
       )}
-      <Button onClick={() => handleSessionTest()}>세션 테스트버튼</Button>
+      {/* <Button onClick={() => handleSessionTest()}>세션 테스트버튼</Button> */}
     </Stack>
   );
 };

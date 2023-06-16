@@ -38,7 +38,6 @@ const LoginPage = () => {
     if (res.status === 200) {
       if (userType === 'admin') {
         setUserStatus({
-         
           email: emailIputRef.current.value,
           name: '관리자',
           point: 49300,
@@ -46,7 +45,6 @@ const LoginPage = () => {
         });
       } else {
         setUserStatus({
-   
           email: emailIputRef.current.value,
           name: '일반유저',
           point: 56000,
@@ -63,9 +61,23 @@ const LoginPage = () => {
         title: '로그인 성공',
         text: userStatus && userStatus.name ? `${userStatus.name} 님 반가워요` : null,
       });
-      navigate(-1)
+      navigate(-1);
     }
   }, [userStatus]);
+
+  // useEffect(() => {
+  //   // Check if Kakao SDK is loaded
+  //   if (!window.Kakao) {
+  //     // Create a script element
+  //     const scriptElement = document.createElement('script');
+  //     const API_KEY = import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY;
+  //     // Set its src attribute to the URL of the SDK
+  //     scriptElement.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${API_KEY}&libraries=services`;
+
+  //     // Add the script element to the document's head
+  //     document.head.appendChild(scriptElement);
+  //   }
+  // }, []);
 
   return (
     <>
@@ -85,10 +97,9 @@ const LoginPage = () => {
             </Text>
           </Stack>
           <Box rounded={'lg'} bg={'green.200'} boxShadow={'2xl'} p={8}>
-            <VStack spacing={"1rem"}>
+            <VStack spacing={'1rem'}>
               <SocialKakao />
               <SocialGoogle />
-             
               <Input bgColor={'white'} ref={emailIputRef} />
               <Button onClick={() => submitLogin('normal')}>일반 로그인</Button>
               <Button onClick={() => submitLogin('admin')}>관리자 로그인</Button>

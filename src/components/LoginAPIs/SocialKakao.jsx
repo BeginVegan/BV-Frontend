@@ -22,7 +22,6 @@ const SocialKakao = () => {
     setIsActive(false);
   };
 
-
   const kakaoClientId = import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY;
 
   const kakaoOnSuccess = async data => {
@@ -33,6 +32,7 @@ const SocialKakao = () => {
     });
 
     if (res.status === 200) {
+      navigate(ROUTES.HOME);
       Swal.fire({
         icon: 'success',
         title: '로그인 성공',
@@ -45,7 +45,6 @@ const SocialKakao = () => {
           point: res.data.memberPoint,
           role: res.data.memberRole,
         });
-        navigate(ROUTES.HOME);
       });
     } else {
       Swal.fire({
@@ -60,19 +59,48 @@ const SocialKakao = () => {
     console.log(error);
   };
 
+  const checkBeforeLogin = onClick => {
+    Swal.fire({
+      icon: 'info',
+      title: '로그인 공지',
+      text: '최초 로그인 시 자동으로 회원가입이 이루어집니다.',
+      confirmButtonText: '로그인',
+      showCancelButton: true,
+      cancelButtonText: '돌아가기',
+    }).then(result => {
+      if (result.isConfirmed) {
+        // console.log(onClick);
+        // console.log(window);
+        // console.log(window.kakao);
+        onClick();
+      }
+    });
+  };
+
   return (
     <>
-      <KakaoLogin 
-      style={{width:"100%", height:"100%"}}
-      token={kakaoClientId} onSuccess={kakaoOnSuccess} onFail={kakaoOnFailure}>
-      <KakaoLoginButton
-       onMouseDown={handleMouseDown} 
-       onMouseUp={handleMouseUp} 
-       style={{cursor: 'pointer', 
-       transform: isActive ? 'translateY(-4px)' : null, 
-       boxShadow: isActive ? 'lg' : null}} 
-      />
-      </KakaoLogin>
+      <KakaoLogin
+        style={{ width: '100%', height: '100%' }}
+        token={kakaoClientId}
+        onSuccess={kakaoOnSuccess}
+        onFail={kakaoOnFailure}
+        render={({ onClick }) => (
+          <KakaoLoginButton
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
+            onClick={e => {
+              e.preventDefault();
+              // onClick();
+              checkBeforeLogin(onClick);
+            }}
+            style={{
+              cursor: 'pointer',
+              transform: isActive ? 'translateY(-4px)' : null,
+              boxShadow: isActive ? 'lg' : null,
+            }}
+          />
+        )}
+      ></KakaoLogin>
     </>
   );
 };
