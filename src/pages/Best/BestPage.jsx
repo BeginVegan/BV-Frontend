@@ -5,6 +5,7 @@ import { COLORS } from '@/constants/colors';
 import BestRestaurantCard from '@/components/restaurant/BestRestaurantCard';
 import { useQuery } from 'react-query';
 import RestaurantService from '@/api/RestaurantService';
+import Loading from '@/components/common/Loading';
 
 const categoryDetail = {
   reservation: {
@@ -26,6 +27,10 @@ const BestPage = () => {
     RestaurantService.getBestRestaurantList
   );
 
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
+
   return (
     <>
       <Stack justify={'center'} align={'center'}>
@@ -43,13 +48,13 @@ const BestPage = () => {
             color={'white'}
             fontWeight={400}
             lineHeight={1.2}
-            fontSize={useBreakpointValue({ base: '2xl', md: '3xl' })}
+            fontSize={{ base: '2xl', md: '3xl' }}
           >
             {pageDetail.title} 베스트 10곳
           </Text>
         </Flex>
         <Stack py={4} spacing={4}>
-          {!isLoading ? (
+          {!isLoading &&
             bestList[category].map((restaurant, index) => (
               <BestRestaurantCard
                 key={restaurant.restaurantNo}
@@ -60,10 +65,7 @@ const BestPage = () => {
                 restaurantStar={restaurant.restaurantStar}
                 restaurantDetail={restaurant.restaurantDetail}
               />
-            ))
-          ) : (
-            <div>loading</div>
-          )}
+            ))}
         </Stack>
       </Stack>
     </>

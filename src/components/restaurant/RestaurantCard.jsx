@@ -66,7 +66,7 @@ const RestaurantCard = ({
         p={1}
         pt={2}
       >
-        <HStack onClick={() => navigate(`/restaurant/${restaurantNo}`)}>
+        <HStack>
           <Heading
             _hover={{
               cursor: 'pointer',
