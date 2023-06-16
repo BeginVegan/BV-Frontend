@@ -4,21 +4,24 @@ import { useNavigate } from 'react-router-dom';
 import wideLogo from '@/assets/images/logo_wide_black.png';
 import { ROUTES } from '@/routes/ROUTES';
 
-const Header = ({ children }) => {
+const MainHeader = ({ children }) => {
   const navigate = useNavigate();
 
   return (
-    <Box>
+    <Flex
+      justifyContent={'center'}
+      borderBottom={1}
+      borderStyle={'solid'}
+      borderColor={useColorModeValue('gray.200', 'gray.900')}
+    >
       <Flex
+        maxW={'1220px'}
+        w={'1220px'}
         bg={useColorModeValue('white', 'gray.800')}
         color={useColorModeValue('gray.600', 'white')}
         minH={'60px'}
-        maxH={'60px'}
         py={{ base: 2 }}
         px={{ base: 4 }}
-        borderBottom={1}
-        borderStyle={'solid'}
-        borderColor={useColorModeValue('gray.200', 'gray.900')}
         align={'center'}
       >
         <Flex flex={{ base: 1 }} align={'center'}>
@@ -36,8 +39,8 @@ const Header = ({ children }) => {
         </Flex>
         <ControllBar />
       </Flex>
-    </Box>
+    </Flex>
   );
 };
 
-export default Header;
+export default MainHeader;
