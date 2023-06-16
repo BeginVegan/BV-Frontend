@@ -1,4 +1,4 @@
-import { Flex, Image, HStack, Spinner } from '@chakra-ui/react';
+import { Box, Spinner } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import SimpleImageSlider from 'react-simple-image-slider';
 import Axios from '@/api/apiConfig';
@@ -26,17 +26,16 @@ const RestaurantImg = ({ imageDir }) => {
   if (restaurantImg === null) {
     return <Spinner />;
   }
-  console.log(restaurantImg);
   return (
-    <Flex w={600} h={400}>
+    <Box>
       <SimpleImageSlider
-        width={'100%'}
+        width={600}
         height={400}
         images={restaurantImg}
         showBullets={true}
         showNavs={true}
       />
-    </Flex>
+    </Box>
   );
 };
 

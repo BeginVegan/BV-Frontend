@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/routes/ROUTES';
 import { useAtom } from 'jotai';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
-import Swal from 'sweetalert2';
 
 const CustomRiHeart3Line = chakra(RiHeart3Line);
 const CustomRiHeart3Fill = chakra(RiHeart3Fill);
@@ -33,15 +32,6 @@ const BookmarkCheck = ({ restaurantNo }) => {
     if (isAuthenticated === true) getBookmarkStatus();
     else setIsBookmark(false);
   }, [restaurantNo, isAuthenticated]);
-
-  const showSwalMessage = title => {
-    Swal.fire({
-      icon: 'success',
-      title: title,
-      showConfirmButton: false,
-      timer: 1500,
-    });
-  };
 
   const bookmarkRestaurant = async () => {
     const bookmark = async () => {
@@ -77,7 +67,7 @@ const BookmarkCheck = ({ restaurantNo }) => {
     }
   };
 
-  if (isAuthenticated === false) {
+  if (isAuthenticated != true) {
     return (
       <Tooltip hasArrow label="로그인 후 즐겨찾기 추가해보세요!" bg="red.400" placement="top">
         <Box position="relative" display="inline-block">
