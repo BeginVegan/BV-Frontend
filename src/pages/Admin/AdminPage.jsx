@@ -1,8 +1,8 @@
 import React from 'react';
-import { Flex, Heading } from '@chakra-ui/react';
-import RegisterMenagement from './Register/RegisterMenagement';
-import ReservationManagementPage from './Reservation/ReservationManagementPage';
+import { Flex } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
+import ReservationManagementPage from '@/pages/Admin/Reservation/ReservationManagementPage';
+import RegisterManagement from '@/pages/Admin/Register/RegisterManagement';
 
 const categoryDetail = {
   user: {
@@ -15,7 +15,7 @@ const categoryDetail = {
   },
   restaurant: {
     title: '식당',
-    outlet: <RegisterMenagement />,
+    outlet: <RegisterManagement />,
   },
 };
 
@@ -23,10 +23,7 @@ const AdminPage = () => {
   const { category } = useParams();
 
   return (
-    <Flex m={'auto'} p={5} direction={'column'}>
-      <Heading color={'#323232'} mb={5}>
-        {`${categoryDetail[category].title} 관리`}
-      </Heading>
+    <Flex m={'auto'} p={5} h={'100%'} alignItems={'center'} direction={'column'}>
       {categoryDetail[category].outlet}
     </Flex>
   );

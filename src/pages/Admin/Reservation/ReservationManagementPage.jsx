@@ -3,6 +3,7 @@ import { Flex, Heading, VStack, Card, CardBody, Box } from '@chakra-ui/react';
 import Axios from '@/api/apiConfig';
 import React, { useEffect, useState } from 'react';
 import Loading from '@/components/common/Loading';
+import LoadingPage from '@/pages/Loading/LoadingPage';
 
 const generateDummyData = () => {
   const reservations = [];
@@ -135,11 +136,14 @@ const ReservationManagementPage = () => {
 
   if (!reservationList) {
     // reservationList 존재하지 않으면 Loading 화면 렌더링 처리
-    return <Loading />;
+    return <LoadingPage />;
   }
 
   return (
-    <Flex w={'100%'}>
+    <>
+      <Heading display={'flex'} alignSelf={'flex-start'} color={'#323232'} mb={5}>
+        예약 관리
+      </Heading>
       <Card bg="#f8f8ff" boxShadow={'none'}>
         <CardBody p={0}>
           <VStack>
@@ -147,7 +151,7 @@ const ReservationManagementPage = () => {
           </VStack>
         </CardBody>
       </Card>
-    </Flex>
+    </>
   );
 };
 

@@ -2,7 +2,6 @@ import DefaultLayout from '@/components/Layout/DefaultLayout';
 import MainLayout from '@/components/Layout/MainLayout';
 import MypageLayout from '@/components/Layout/MypageLayout';
 import AdminPage from '@/pages/Admin/AdminPage';
-import RegisterMenu from '@/pages/Admin/Register/RegisterMenu';
 import RestaurantRegistration from '@/pages/Admin/Register/RestaurantRegistration';
 import AuthPage from '@/pages/Auth/AuthPage';
 import BestPage from '@/pages/Best/BestPage';
@@ -48,8 +47,6 @@ const AppRoutes = () => {
             <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.MAIN} />} />
             <Route path={ROUTES.MAIN} element={<MainPage />} />
             <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-            <Route path={ROUTES.RESTAURANT_REGISTRATION} element={<RestaurantRegistration />} />
-            <Route path={ROUTES.RESTAURANTMENU_REGISTRATION} element={<RegisterMenu />} />
           </Route>
           {/* DefaultLayout은 검색창 있는 헤더 만 있는 레이아웃*/}
           <Route element={<DefaultLayout />}>
@@ -63,7 +60,9 @@ const AppRoutes = () => {
           </Route>
           {/* MainLayout은 검색창 없는 헤더 만 있는 레이아웃*/}
           <Route element={<AdminLayout />}>
+            <Route path={ROUTES.ADMIN_RAW} element={<Navigate to={`${ROUTES.ADMIN_RAW}/user`} />} />
             <Route path={ROUTES.ADMIN} element={<AdminPage />} />
+            <Route path={ROUTES.RESTAURANT_REGISTRATION} element={<RestaurantRegistration />} />
           </Route>
           {/* Mypage는 검색창있는 헤더와 사이드바가 있는 레이아웃 */}
           <Route element={<MypageLayout />}>
