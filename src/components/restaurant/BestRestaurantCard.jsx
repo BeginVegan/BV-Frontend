@@ -31,7 +31,12 @@ const BestRestaurantCard = ({
         boxShadow: 'lg',
       }}
     >
-      <Flex cursor={'pointer'} flex={2} bg="blue.200" onClick={moveDetailPage}>
+      <Flex
+        cursor={'pointer'}
+        flex={2}
+        boxShadow={'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'}
+        onClick={moveDetailPage}
+      >
         <Image objectFit="cover" boxSize="100%" src={restaurantImg} />
       </Flex>
       <Stack
