@@ -1,12 +1,15 @@
 import Storage from '@/utils/storage/storage';
-import { Button, Flex, HStack, Text } from '@chakra-ui/react';
+import { Button, Flex, HStack, Text, useDisclosure } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { ROUTES } from '@/routes/ROUTES';
 import Loading from '@/components/common/Loading';
+import RegisterMenu from './RegisterMenu';
+import CustomModal from '@/components/common/CustomModal';
 
 const RegisterComplete = () => {
   const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const data = Storage.getJsonItem('rastaurantInfo');
 
   if (!data) return <Loading />;
@@ -46,11 +49,10 @@ const RegisterComplete = () => {
         </Text>
       </HStack>
       <HStack pt={4} alignSelf={'center'} gap={4}>
-        <Button
-          onClick={() => navigate(`${ROUTES.RESTAURANTMENU_REGISTRATION_RAW}/${data.restaurantNo}`)}
-        >
-          메뉴 등록
-        </Button>
+        <CustomModal title={'메뉴 수정'} isOpen={isOpen} onOpen={onOpen} onClose={onClose}>
+          <RegisterMenu restaurantno={data.restaurantNo} />
+        </CustomModal>
+        <Button onClick={onOpen}>메뉴 등록</Button>
         <Button onClick={() => navigate(`${ROUTES.ADMIN_RAW}/restaurant`)}>
           식당 관리 페이지로
         </Button>
