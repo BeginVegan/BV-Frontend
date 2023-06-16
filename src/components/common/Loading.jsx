@@ -5,10 +5,9 @@ const Loading = () => {
   return (
     <Flex
       bgColor={'rgba(0, 0, 0, 0.534)'}
-      w={'100%'}
+      w={'100vw'}
       height={'100vh'}
-      position={'fixed'}
-      top={-2}
+      position={'absolute'}
       justifyContent={'center'}
       alignItems={'center'}
     >
