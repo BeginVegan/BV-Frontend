@@ -17,7 +17,7 @@ const MypageLayout = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    if ((isAuthenticated = !true)) {
+    if (isAuthenticated != true) {
       Swal.fire({
         icon: 'error',
         title: '로그인이 필요합니다',
