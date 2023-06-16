@@ -2,7 +2,6 @@ import MenuService from '@/api/MenuService';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { HStack, IconButton, Image, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import { RiEditBoxLine } from 'react-icons/ri';
 import { useMutation } from 'react-query';
 import Swal from 'sweetalert2';
 
@@ -11,6 +10,7 @@ const RestaurantMenuCard = ({ menuNo, menuName, menuPrice, menuDetail, menuImage
 
   const deleteMenu = () => {
     Swal.fire({
+      toast: true,
       icon: 'warning',
       title: `${menuName}을 삭제 하시겠습니까?`,
       showCancelButton: true,
@@ -19,6 +19,11 @@ const RestaurantMenuCard = ({ menuNo, menuName, menuPrice, menuDetail, menuImage
       confirmButtonText: '삭제',
       cancelButtonText: '취소',
       reverseButtons: true, // 버튼 순서 거꾸로
+      didOpen: () => {
+        // 팝업 창이 열릴 때 실행되는 함수
+        // 팝업 창의 스타일을 조정하여 맨 위로 올림.
+        document.querySelector('.swal2-container').style.zIndex = 20000;
+      },
     }).then(result => {
       if (result.isConfirmed) {
         onDeleteMenu(menuNo, {
