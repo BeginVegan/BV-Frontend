@@ -1,7 +1,7 @@
 import Chart from 'react-apexcharts';
 import Axios from '@/api/apiConfig';
 import React, { useState, useEffect } from 'react';
-import { Card, CardBody, Spinner } from '@chakra-ui/react';
+import { Flex, Card, CardBody, Spinner } from '@chakra-ui/react';
 
 const ReservationRankingChart = ({ dataList }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -146,7 +146,11 @@ const ReservationRankingChart = ({ dataList }) => {
   }, [dataList]);
 
   if (isLoading) {
-    return <Spinner size="xs" />;
+    return (
+      <Flex w={492} h={520} justifyContent="center" alignItems="center">
+        <Spinner size="xs" />
+      </Flex>
+    );
   }
 
   return (

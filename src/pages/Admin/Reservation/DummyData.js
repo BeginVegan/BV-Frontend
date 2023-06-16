@@ -1,12 +1,4 @@
-import ReservationInfo from '@/pages/Admin/Reservation/ReservationInfo';
-import { Flex, VStack, Card, CardBody, Spinner } from '@chakra-ui/react';
-import Axios from '@/api/apiConfig';
-import React, { useEffect, useState } from 'react';
-<<<<<<< Updated upstream
-import Loading from '@/components/common/Loading';
-import LoadingPage from '@/pages/Loading/LoadingPage';
-
-const generateDummyData = () => {
+export const generateDummyData = () => {
   const reservations = [];
   const memberEmails = [
     'john123@example.com',
@@ -107,7 +99,7 @@ const generateDummyData = () => {
   return reservations;
 };
 
-const getRandomDateTime = () => {
+export const getRandomDateTime = () => {
   const startDate = new Date(2023, 1, 1).getTime();
   const endDate = new Date(2023, 5, 13).getTime();
   const randomTime = Math.random() * (endDate - startDate) + startDate;
@@ -120,51 +112,3 @@ const getRandomDateTime = () => {
 
   return `${formattedDate} ${formattedTime}`;
 };
-=======
-import { generateDummyData } from '@/pages/Admin/Reservation/DummyData';
->>>>>>> Stashed changes
-
-const ReservationManagementPage = () => {
-  const [reservationList, setReservationList] = useState(null);
-
-  useEffect(() => {
-    const getReservations = async () => {
-      const res = await Axios.get('reservation/list');
-      if (res.status === 200) {
-        //setReservationList(res.data);
-        setReservationList(generateDummyData);
-      }
-    };
-    getReservations();
-  }, []);
-
-  if (!reservationList) {
-<<<<<<< Updated upstream
-    // reservationList 존재하지 않으면 Loading 화면 렌더링 처리
-    return <LoadingPage />;
-=======
-    return (
-      <Flex w={1288} h={1000} justifyContent="center" alignItems="center">
-        <Spinner size="xl" />
-      </Flex>
-    );
->>>>>>> Stashed changes
-  }
-
-  return (
-    <>
-      <Heading display={'flex'} alignSelf={'flex-start'} color={'#323232'} mb={5}>
-        예약 관리
-      </Heading>
-      <Card bg="#f8f8ff" boxShadow={'none'}>
-        <CardBody p={0}>
-          <VStack>
-            <ReservationInfo data={reservationList}></ReservationInfo>
-          </VStack>
-        </CardBody>
-      </Card>
-    </>
-  );
-};
-
-export default ReservationManagementPage;
