@@ -9,7 +9,8 @@ const KakaoMap = ({
   setCurrentLocation,
   mapCenter,
   setMapCenter,
-  clickedMarker,
+  openMarker,
+  setOpenMarker,
   isPanto,
 }) => {
   const { kakao } = window;
@@ -25,6 +26,12 @@ const KakaoMap = ({
         latlng: { lat: restaurant.restaurantX, lng: restaurant.restaurantY },
         restaurantNo: restaurant.restaurantNo,
       });
+    });
+    setOpenMarker({
+      restaurantNo: restaurants[0].restaurantNo,
+      title: restaurants[0].restaurantName,
+      latlng: { lat: restaurants[0].restaurantX, lng: restaurants[0].restaurantY },
+      isOpen: true,
     });
     setLocations(newLocations);
     setMapCenter(newLocations[0].latlng);
@@ -55,10 +62,12 @@ const KakaoMap = ({
             position={{ lat: currentLocation.latitude, lng: currentLocation.longitude }}
             title="현재위치"
           />
+
           {locations.map((loc, idx) => (
-            <CustomMapMarker loc={loc} key={idx} />
+            <CustomMapMarker loc={loc} setOpenMarker={setOpenMarker} key={idx} />
           ))}
-          {clickedMarker && <CustomMapMarker isOpenMarker={true} loc={clickedMarker} />}
+          {openMarker && <CustomMapMarker loc={openMarker} setOpenMarker={setOpenMarker} />}
+
           <Button
             variant="unstyled"
             display="flex"
@@ -107,8 +116,11 @@ const KakaoMap = ({
 
 export default KakaoMap;
 
-const CustomMapMarker = ({ loc, isOpenMarker }) => {
-  const [isOpen, setIsOpen] = useState(isOpenMarker ? true : false);
+const CustomMapMarker = ({ loc, setOpenMarker }) => {
+  // const [isOpen, setIsOpen] = useState(loc.isOpen == true ? true : false);
+
+  // console.log('@@@loc: ', loc);
+
   const [address, setAddress] = useState(null);
   const navigate = useNavigate();
   const markerStyle = {
@@ -136,7 +148,7 @@ const CustomMapMarker = ({ loc, isOpenMarker }) => {
 
   useEffect(() => {
     getAddress(loc.latlng.lat, loc.latlng.lng);
-  }, []);
+  }, [loc]);
 
   return (
     <MapMarker
@@ -150,16 +162,26 @@ const CustomMapMarker = ({ loc, isOpenMarker }) => {
       // 마커에 마우스오버 이벤트를 등록합니다
       onMouseOver={
         // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
-        () => setIsOpen(true)
+        () => {
+          setOpenMarker({
+            restaurantNo: loc.restaurantNo,
+            title: loc.title,
+            latlng: loc.latlng,
+            isOpen: true,
+          });
+          console.log('###########', loc);
+        }
       }
       onClick={() => navigate(`/restaurant/${loc.restaurantNo}`)}
       // 마커에 마우스아웃 이벤트를 등록합니다
       onMouseOut={
         // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
-        () => setIsOpen(false)
+        () => {
+          setOpenMarker(null);
+        }
       }
     >
-      {isOpen && (
+      {loc.isOpen == true && (
         <CustomOverlayMap position={loc.latlng} yAnchor={1.5} zIndex={500}>
           <div style={markerStyle}>
             <span style={{ fontSize: '18px', textAlign: 'center' }}>{loc.title}</span>

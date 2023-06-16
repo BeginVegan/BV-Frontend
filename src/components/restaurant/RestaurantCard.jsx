@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
-const RestaurantCard = ({ restaurant, setMapCenter, setClickedMarker, setIsPanto }) => {
+const RestaurantCard = ({ restaurant, setMapCenter, setOpenMarker, setIsPanto }) => {
   const navigate = useNavigate();
   const size = restaurant.restaurantName.length > 8 ? 'lg' : 'xl';
 
@@ -31,10 +31,11 @@ const RestaurantCard = ({ restaurant, setMapCenter, setClickedMarker, setIsPanto
       bg={useColorModeValue('white', 'gray.900')}
       onClick={() => {
         setMapCenter({ lat: restaurant.restaurantX, lng: restaurant.restaurantY });
-        setClickedMarker({
+        setOpenMarker({
           restaurantNo: restaurant.restaurantNo,
           title: restaurant.restaurantName,
           latlng: { lat: restaurant.restaurantX, lng: restaurant.restaurantY },
+          isOpen: true,
         });
         setIsPanto(true);
       }}
