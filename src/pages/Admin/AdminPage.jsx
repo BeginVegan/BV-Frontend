@@ -3,11 +3,12 @@ import { Flex } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 import ReservationManagementPage from '@/pages/Admin/Reservation/ReservationManagementPage';
 import RegisterManagement from '@/pages/Admin/Register/RegisterManagement';
+import MemberManagementPage from '@/pages/Admin/Member/MemberManagement';
 
 const categoryDetail = {
   user: {
     title: '회원',
-    outlet: <div></div>,
+    outlet: <MemberManagementPage />,
   },
   reservation: {
     title: '예약',
