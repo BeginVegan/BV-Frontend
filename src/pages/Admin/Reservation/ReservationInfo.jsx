@@ -33,7 +33,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ReservationDetail from '@/pages/Admin/Reservation/ReservationDetail';
 import ReservationAndCancleChart from '@/pages/Admin/Reservation/ReservationAndCancleChart';
 import ReservationRankingChart from '@/pages/Admin/Reservation/ReservationRankingChart';
-import { ko } from 'date-fns/esm/locale';
 
 const columns = [
   {
