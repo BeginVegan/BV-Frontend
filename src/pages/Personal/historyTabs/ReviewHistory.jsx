@@ -9,6 +9,7 @@ import {
   CardBody,
   CardFooter,
   Divider,
+  Flex,
   Grid,
   HStack,
   Heading,
@@ -46,23 +47,32 @@ const ReviewHistory = () => {
   const templateColumns = useBreakpointValue({ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' });
 
   return (
-    <VStack align={'flex-start'}>
-      <Grid w={"100%"} templateColumns={templateColumns} gap={4} height={'80vh'} overflowY={'auto'} padding={4}>
-        {reviewList &&
-          reviewList.map((review, idx) => (
-            <RestaurantReviewCard
-              key={idx}
-              idx={idx}
-              restaurantNo={review.restaurantNo}
-              img={review.reviewPhotoDir}
-              reviewNo={review.reviewNo}
-              content={review.reviewContent}
-              refresh={() => setForceUpdate(!forceUpdate)}
-            />
-          ))}
-      </Grid>
-    </VStack>
-  );
+    reviewList && reviewList.length > 0 ?
+      (
+        <VStack align={'flex-start'}>
+          <Grid w={"100%"} templateColumns={templateColumns} gap={4} height={'80vh'} overflowY={'auto'} padding={4}>
+            {reviewList.map((review, idx) => (
+              <RestaurantReviewCard
+                key={idx}
+                idx={idx}
+                restaurantNo={review.restaurantNo}
+                img={review.reviewPhotoDir}
+                reviewNo={review.reviewNo}
+                content={review.reviewContent}
+                refresh={() => setForceUpdate(!forceUpdate)}
+              />
+            ))}
+          </Grid> 
+        </VStack>
+      )
+      : 
+      (
+        <Flex justifyContent="center" mt={'2rem'} alignItems="center" height="100%">
+          <Text fontSize={'2xl'}>리뷰가 없습니다 😂</Text>
+        </Flex>
+      )
+  );  
+  
 
 };
 export default ReviewHistory;

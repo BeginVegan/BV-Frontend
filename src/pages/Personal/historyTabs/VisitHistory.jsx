@@ -81,8 +81,9 @@ const VisitHistory = () => {
   const templateColumns = useBreakpointValue({ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' });
 
   return (
-    <VStack align={'flex-start'}>
-      <RadioGroup defaultValue="2" onChange={setSortBy}>
+    <div >
+      <VStack align={'flex-start'}>
+      <RadioGroup  defaultValue="2" onChange={setSortBy}>
         <Stack spacing={5} direction="row">
           <Radio colorScheme="green" value="1">
             최신순
@@ -92,7 +93,9 @@ const VisitHistory = () => {
           </Radio>
         </Stack>
       </RadioGroup>
-      <Flex height={'80vh'} overflowY={'auto'}>
+      </VStack>
+     {sortedReservationList && sortedReservationList.length > 0? <Flex height={'80vh'} overflowY={'auto'}>
+        
         <VStack w="100%" marginTop={'2rem'} align={'start'}>
           <Grid w={"100%"} templateColumns={templateColumns} gap={4} height={'80vh'} overflowY={'auto'} padding={4}>
 
@@ -102,8 +105,16 @@ const VisitHistory = () => {
           
           </Grid>
         </VStack>
-      </Flex>
-    </VStack>
+      </Flex> : <VStack
+          width="100%"
+          height="100%"
+          justifyContent="center"
+          alignItems="center"
+          mt={"3rem"}
+        >
+          <Text fontSize={'2xl'}>방문한 가게가 없습니다 😂</Text>
+        </VStack>}
+    </div>
   );
 };
 

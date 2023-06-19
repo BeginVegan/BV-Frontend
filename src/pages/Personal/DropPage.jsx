@@ -2,7 +2,7 @@ import Axios from '@/api/apiConfig';
 import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
-import { Button } from '@chakra-ui/react';
+import { Button, Divider, Flex, Spacer, Text, VStack } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -45,19 +45,27 @@ const DropPage = () => {
     });
   };
   return (
-    <>
-      <Button
-        size="md"
-        height="48px"
-        width="200px"
-        border="2px"
-        borderColor="green.500"
-        onClick={dropUser}
-        _hover={{ bgColor: 'red', color: 'white', border: 'none' }}
-      >
-        회원탈퇴
-      </Button>
-    </>
+    <Flex direction="column" alignItems="center" w={"80%"} justifyContent="flex-start" height="100vh">
+      <VStack width={'100%'} spacing={'2rem'} h={"80%"}>
+        <Text fontSize={'3xl'} mt={"2rem"} fontWeight={'extrabold'}>
+          회원탈퇴
+        </Text>
+        <Divider />
+        <Spacer />
+        <Button
+          size="md"
+          height="48px"
+          width="200px"
+          border="2px"
+          borderColor="green.500"
+          onClick={dropUser}
+          _hover={{ bgColor: 'red', color: 'white', border: 'none' }}
+        >
+          회원탈퇴
+        </Button>
+      </VStack>
+    </Flex>
   );
+  
 };
 export default DropPage;

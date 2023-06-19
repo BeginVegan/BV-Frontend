@@ -2,10 +2,12 @@ import Axios from '@/api/apiConfig';
 import { COLORS } from '@/constants/colors';
 import {
   Button,
+  Flex,
   Table,
   TableContainer,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
@@ -88,42 +90,45 @@ const PurchaseHistory = () => {
   }
   return (
     <TableContainer marginTop={'1rem'}>
-      <Table size={isMobile ? 'sm' : 'lg'}>
-        <Thead>
-          <Tr>
-            <CustomTh>번호</CustomTh>
-            <CustomTh>가게명</CustomTh>
-            <CustomTh>결제금액</CustomTh>
-            <CustomTh>결제일자</CustomTh>
-            <CustomTh>상태</CustomTh>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {paymentList &&
-            paymentList.map((payment, idx) => {
+      {paymentList && paymentList.length > 0 ?
+        <Table size={isMobile ? 'sm' : 'lg'}>
+          <Thead>
+            <Tr>
+              <CustomTh>번호</CustomTh>
+              <CustomTh>가게명</CustomTh>
+              <CustomTh>결제금액</CustomTh>
+              <CustomTh>결제일자</CustomTh>
+              <CustomTh>상태</CustomTh>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {paymentList.map((payment, idx) => {
               return (
                 <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
                   <CustomTd>{idx + 1}</CustomTd>
                   <CustomTd>
                     <RestaurantName reservationNo={payment.reservationNo}
                       refresh={() => setForceUpdate(!forceUpdate)}
-                    
                     />
                   </CustomTd>
                   <CustomTd>{Number(payment.paymentPrice).toLocaleString()}</CustomTd>
                   <CustomTd>{payment.paymentTime.split(' ')[0]}</CustomTd>
                   <CustomTd>
                     {isCancellable(new Date()) ? <Button size={isMobile ? 'xs' : 'sm'} colorScheme='red'
-                    onClick={()=>cancelPayment(payment.impUid)}
+                      onClick={() => cancelPayment(payment.impUid)}
                     >결제 취소</Button> : '취소불가'}
                   </CustomTd>
                 </Tr>
               );
             })}
-        </Tbody>
-      </Table>
+          </Tbody>
+        </Table> :
+        <Flex justifyContent="center" mt={'2rem'} alignItems="center" height="100%">
+          <Text fontSize={'2xl'}>결제 내역이 없습니다 😂</Text>
+        </Flex>
+      }
     </TableContainer>
-  );
+  );  
 };
 export default PurchaseHistory;
 
