@@ -26,6 +26,7 @@ const Header = ({ children }) => {
             onClick={() => navigate(ROUTES.HOME)}
             objectFit="cover"
             src={wideLogo}
+            h={'50px'}
             alt="logo"
             cursor={'pointer'}
             onDragStart={e => e.preventDefault()}

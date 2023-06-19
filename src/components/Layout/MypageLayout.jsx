@@ -14,6 +14,7 @@ const MypageLayout = () => {
 
   const navigate = useNavigate();
 
+
   // useEffect(() => {
   //   if (isAuthenticated !== true) {
   //     Swal.fire({
@@ -24,6 +25,7 @@ const MypageLayout = () => {
   //     navigate(ROUTES.HOME);
   //   }
   // }, [isAuthenticated]);
+
   return (
     <>
       <Header>
