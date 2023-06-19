@@ -196,6 +196,14 @@ const MyPageMainCard = ({title, value, list}) => {
     return name.length > 6 ? name.substring(0, 6) + '...' : name;
   };
   
+  const levelInfo = [
+    { icon: "🌱", point: 10000, description: "까지" },
+    { icon: "🌿", point: 50000, description: "까지" },
+    { icon: "🪴", point: 100000, description: "까지" },
+    { icon: "🌳", point: 100000, description: "부터" },
+  ];
+  
+  
   return (
     <>
       <VStack>
@@ -245,32 +253,37 @@ const MyPageMainCard = ({title, value, list}) => {
                       )}
                     </VStack>
                   ): 
-                        <>
-                        
-                          <VStack width={"100%"}>
-                            <HStack width={"70%"}>
-                              <Text>🌱 :</Text>
-                              <Spacer />
-                              <Text> ~10000</Text>
-                            </HStack>
-                            <HStack width={"70%"}>
-                              <Text>🌿 :</Text>
-                              <Spacer />
-                              <Text> ~50000</Text>
-                            </HStack>
-                            <HStack width={"70%"}>
-                              <Text>🪴 :</Text>
-                              <Spacer />
-                              <Text> ~100000</Text>
-                            </HStack>
-                            <HStack width={"70%"}>
-                              <Text>🌳 :</Text>
-                              <Spacer />
-                              <Text> 100000~</Text>
-                            </HStack>
-                            
-                          </VStack>
-                        </>
+                  <>
+                    <VStack width={"100%"}>
+                      {levelInfo.map((info, index) => {
+                        let isInRange = false;
+                        if (index === 0) {
+                          isInRange = value < info.point;
+                        } else if (index === levelInfo.length - 1) {
+                          isInRange = value >= info.point;
+                        } else {
+                          isInRange = value >= levelInfo[index - 1].point && value < info.point;
+                        }
+                        const bgColor = isInRange ? COLORS.GREEN100 : "transparent";
+                        const borderColor = isInRange ? COLORS.GREEN100 : "transparent";
+                        return (
+                          <HStack  
+                            width={"90%"} 
+                            px={2} // padding 적용
+                            bgColor={bgColor}
+                            borderRadius={"lg"}
+                            borderColor={borderColor}
+                          >
+                            <Text>{info.icon} :</Text>
+                            <Spacer />
+                            <Text>
+                              {info.point} {info.description}
+                            </Text>
+                          </HStack>
+                        );
+                      })}
+                    </VStack>
+                </>
                   }
                   </>
                 }
