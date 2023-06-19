@@ -3,7 +3,7 @@ import Axios from "@/api/apiConfig";
 import { COLORS } from "@/constants/colors";
 import { userAtom } from "@/utils/atoms/userAtom";
 import { TriangleDownIcon } from "@chakra-ui/icons";
-import { Box, Button, Card, CardBody, CardHeader, Divider, Flex, HStack, Heading, Popover, PopoverContent, PopoverTrigger, Portal, Spacer, Text, VStack, Wrap } from "@chakra-ui/react";
+import { Box, Button, Card, CardBody, CardHeader, Divider, Flex, HStack, Heading, Popover, PopoverContent, PopoverTrigger, Portal, Spacer, Text, VStack, Wrap, WrapItem } from "@chakra-ui/react";
 import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -132,8 +132,8 @@ const MyPageMain = () => {
   if (loading )
   return <LoadingPage />
   return (
-    <>
-      <Flex mb={"5rem"}>
+    <VStack pb={"8rem"}>
+      <Flex mb={"2rem"}>
         <VStack>
           <HStack>
             <Text fontSize={"4xl"} fontWeight={"bold"}>{userStatus && userStatus.name ? userStatus.name : '-'}</Text>
@@ -148,18 +148,21 @@ const MyPageMain = () => {
           </HStack>
         </VStack>
       </Flex>
-      <Flex  ml={{ base: "20rem", md: 0 }}>
-        <Wrap bgColor={COLORS.GREEN100} p={"2rem"} spacing={"5rem"} borderRadius={"2xl"}>
-          
-          <MyPageMainCard title="예약중" value={onReadyReservationList.length} list={onReadyReservationList}/>
-          <MyPageMainCard title="리뷰대기" value={reservationsWithoutReview.length} list={reservationsWithoutReview}/>
-          <MyPageMainCard title="포인트" value={userStatus && userStatus.point != null ? userStatus.point : '-'}/>
-          
-          
+      <Flex flexDirection={{base:"column", md:"row"}} alignItems={"center"} justifyContent={"center"} pr={"0.5rem"}>
+        <Wrap bgColor={COLORS.GREEN100}  p={"2rem"} pl={{base:"7rem", md:"2rem"}} spacing={"5rem"} borderRadius={"2xl"}>
+          <WrapItem>
+            <MyPageMainCard title="예약중" value={onReadyReservationList.length} list={onReadyReservationList}/>
+          </WrapItem>
+          <WrapItem>
+            <MyPageMainCard title="리뷰대기" value={reservationsWithoutReview.length} list={reservationsWithoutReview}/>
+          </WrapItem>
+          <WrapItem>
+            <MyPageMainCard title="포인트" value={userStatus && userStatus.point != null ? userStatus.point : '-'}/>
+          </WrapItem>
         </Wrap>
       </Flex>
       
-    </>
+    </VStack>
   )
 }
 export default MyPageMain;
@@ -214,7 +217,7 @@ const MyPageMainCard = ({title, value, list}) => {
             
           </PopoverTrigger>
             <Portal>
-              <PopoverContent alignItems={"center"} width={"200px"} p="1rem" borderColor={COLORS.GREEN300}>
+              <PopoverContent alignItems={"center"} width={"220px"} placement='bottom' p="1rem" borderColor={COLORS.GREEN300}>
                 {!restaurantDetails.length && (title === '예약중' || title === '리뷰대기') ? <Text>목록이 없어요😂</Text> :
                   <>
                   
