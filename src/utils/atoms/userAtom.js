@@ -9,4 +9,4 @@ import { atomWithStorage } from 'jotai/utils';
  * role: 'admin',
  * }
  */
-export const userAtom = atomWithStorage(null);
+export const userAtom = atomWithStorage("userStatus",null);

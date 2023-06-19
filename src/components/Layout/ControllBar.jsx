@@ -24,16 +24,17 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 function ControllBarContent({
-  isAuthenticated,
-  userStatus,
   isUserMenuOpen,
   navigate,
   logout,
   setIsUserMenuOpen,
 }) {
+  
+  const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
+  const [userStatus, setUserStatus] = useAtom(userAtom);
   return (
     <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={6}>
-      {isAuthenticated && (
+      {isAuthenticated && userStatus && (
         <HStack
           width={'144px'}
           spacing={{ base: '0', md: '6' }}
@@ -124,6 +125,8 @@ const ControllBar = () => {
   const logout = async () => {
     const res = await Axios.get('member/logout');
     if (res.status === 200) {
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('userStatus');  
       setIsAuthenticated(false);
       setUserStatus(null);
       Swal.fire({
@@ -145,8 +148,6 @@ const ControllBar = () => {
     <>
       {!isLoading && (
         <ControllBarContent
-          isAuthenticated={isAuthenticated}
-          userStatus={userStatus}
           isUserMenuOpen={isUserMenuOpen}
           navigate={navigate}
           logout={logout}
