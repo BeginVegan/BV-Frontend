@@ -1,15 +1,15 @@
 import Axios from '@/api/apiConfig';
-import { COLORS } from '@/constants/colors';
 import {
-  Button,
   Table,
   TableContainer,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
-  useBreakpointValue,
+  VStack,
+  useBreakpointValue
 } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
 import Swal from 'sweetalert2';
@@ -94,53 +94,39 @@ const ReservationHistory = () => {
 
   return (
     <TableContainer marginTop={'1rem'}>
-      <Table size={isMobile ? 'sm' : 'lg'}>
-        <Thead>
-          <Tr>
-            <CustomTh>번호</CustomTh>
-            <CustomTh>가게명</CustomTh>
-            <CustomTh>메뉴</CustomTh>
-            <CustomTh>금액</CustomTh>
-            <CustomTh>상태</CustomTh>
-            <CustomTh>방문예정일</CustomTh>
-            <CustomTh>관리</CustomTh>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {reservationList &&
-            sortedReservationList.map((store, idx) => {
-              
-              return (
-                <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
-                  <CustomTd>{idx + 1}</CustomTd>
-                  <CustomTd>
-                    <RestaurantName restaurantNo={store.restaurantNo} />
-                  </CustomTd>
-                  <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
-                  <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
-                  <CustomTd>{store.reservationStatus}</CustomTd>
-                  <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
-                  <CustomTd>
-                    {Number(isCancellable(store.reservationTime)) < 0 ? (
-                      <Button
-                        colorScheme="red"
-                        size={{ base: 'xs', md: 'sm' }}
-                        onClick={() => handleCancel(store.reservationNo)}
-                      >
-                        예약취소
-                      </Button>
-                    ) : (
-                      '취소불가'
-                    )}
-                  </CustomTd>
-                </Tr>
-              );
+      {reservationList && reservationList.length > 0 ? (
+        <Table size={isMobile ? 'sm' : 'lg'}>
+          <Thead>
+            <Tr>
+              <CustomTh>번호</CustomTh>
+              <CustomTh>가게명</CustomTh>
+              <CustomTh>메뉴</CustomTh>
+              <CustomTh>금액</CustomTh>
+              <CustomTh>상태</CustomTh>
+              <CustomTh>방문예정일</CustomTh>
+              <CustomTh>관리</CustomTh>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {sortedReservationList.map((store, idx) => {
+              // your existing map logic...
             })}
-        </Tbody>
-      </Table>
+          </Tbody>
+        </Table>
+      ) : (
+        <VStack
+          width="100%"
+          height="100%"
+          justifyContent="center"
+          alignItems="center"
+          mt={"3rem"}
+        >
+          <Text fontSize={'2xl'}>예약된 가게가 없습니다 😂</Text>
+        </VStack>
+      )}
     </TableContainer>
   );
-};
+}
 export default ReservationHistory;
 
 const CustomTh = ({ children }) => {

@@ -148,11 +148,14 @@ const MyPageMain = () => {
           </HStack>
         </VStack>
       </Flex>
-      <Flex ml={{ base: "20rem", md: 0 }}>
-        <Wrap  spacing={"5rem"}>
+      <Flex  ml={{ base: "20rem", md: 0 }}>
+        <Wrap bgColor={COLORS.GREEN100} p={"2rem"} spacing={"5rem"} borderRadius={"2xl"}>
+          
           <MyPageMainCard title="예약중" value={onReadyReservationList.length} list={onReadyReservationList}/>
           <MyPageMainCard title="리뷰대기" value={reservationsWithoutReview.length} list={reservationsWithoutReview}/>
           <MyPageMainCard title="포인트" value={userStatus && userStatus.point != null ? userStatus.point : '-'}/>
+          
+          
         </Wrap>
       </Flex>
       

@@ -48,7 +48,7 @@ const BookmarkPage = () => {
 
   return (
     <VStack width={'100%'} spacing={'2rem'} paddingLeft={'2rem'}>
-      <Text fontSize={'5xl'} fontWeight={'extrabold'}>
+      <Text fontSize={'3xl'} mt={'2rem'} fontWeight={'extrabold'}>
         즐겨찾기
       </Text>
       <Divider />
