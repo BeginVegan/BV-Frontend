@@ -78,7 +78,7 @@ function ControllBarContent({
                 <MenuItem onClick={() => navigate(ROUTES.MYPAGE_HISTORY)}>히스토리</MenuItem>
                 <MenuItem onClick={() => navigate(ROUTES.MYPAGE_BOOKMARK)}>즐겨찾기</MenuItem>
                 <MenuDivider />
-                <MenuItem onClick={logout}>로그아웃</MenuItem>
+                <MenuItem onClick={()=>logout()}>로그아웃</MenuItem>
               </MenuList>
             </Menu>
           </Flex>
