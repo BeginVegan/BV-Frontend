@@ -6,6 +6,7 @@ import BestRestaurantCard from '@/components/restaurant/BestRestaurantCard';
 import { useQuery } from 'react-query';
 import RestaurantService from '@/api/RestaurantService';
 import Loading from '@/components/common/Loading';
+import LoadingPage from '../Loading/LoadingPage';
 
 const categoryDetail = {
   reservation: {
@@ -28,7 +29,7 @@ const BestPage = () => {
   );
 
   if (isLoading) {
-    return <Loading></Loading>;
+    return <LoadingPage></LoadingPage>;
   }
 
   return (

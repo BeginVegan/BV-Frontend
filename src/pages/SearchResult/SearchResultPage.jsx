@@ -7,6 +7,7 @@ import KakaoMap from './KakaoMap';
 import RestaurantCard from '@/components/restaurant/RestaurantCard';
 import { useParams } from 'react-router-dom';
 import Loading from '@/components/common/Loading';
+import LoadingPage from '../Loading/LoadingPage';
 
 const SearchResultPage = () => {
   // const { query } = useParams();
@@ -18,7 +19,7 @@ const SearchResultPage = () => {
   const [mapCenter, setMapCenter] = useState({ lat: 37.571848, lng: 127.00116 });
   const [isPanto, setIsPanto] = useState(false);
   const [currentLocation, setCurrentLocation] = useState({ lat: 37.571848, lng: 127.00116 });
-  const [clickedMarker, setClickedMarker] = useState(null);
+  const [openMarker, setOpenMarker] = useState(null);
 
   // const { data, isFetching } = useRestaurantQuery();
   // useEffect(() => {
@@ -57,7 +58,7 @@ const SearchResultPage = () => {
   };
 
   if (isLoading) {
-    return <Loading></Loading>;
+    return <LoadingPage></LoadingPage>;
   }
 
   // const { kakao } = window;
@@ -257,17 +258,10 @@ const SearchResultPage = () => {
               restaurants.map((restaurant, idx) => (
                 <RestaurantCard
                   key={idx}
-                  restaurantNo={restaurant.restaurantNo}
-                  restaurantName={restaurant.restaurantName}
-                  restaurantAddress={restaurant.restaurantAddress}
-                  restaurantStar={restaurant.restaurantStar}
-                  restaurantDetail={restaurant.restaurantDetail}
-                  restaurantPhotoDir={restaurant.restaurantPhotoDir}
-                  restaurantX={restaurant.restaurantX}
-                  restaurantY={restaurant.restaurantY}
+                  restaurant={restaurant}
                   mapCenter={mapCenter}
                   setMapCenter={setMapCenter}
-                  setClickedMarker={setClickedMarker}
+                  setOpenMarker={setOpenMarker}
                   setIsPanto={setIsPanto}
                 />
               ))}
@@ -302,7 +296,8 @@ const SearchResultPage = () => {
             setCurrentLocation={setCurrentLocation}
             mapCenter={mapCenter}
             setMapCenter={setMapCenter}
-            clickedMarker={clickedMarker}
+            openMarker={openMarker}
+            setOpenMarker={setOpenMarker}
             isPanto={isPanto}
           />
         )}
