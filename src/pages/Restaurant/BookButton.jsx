@@ -5,7 +5,7 @@ import { useAtom } from 'jotai';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { Button } from '@chakra-ui/react';
 
-const BookButton = () => {
+const BookButton = ({ restaurantNo }) => {
   const [isAuthenticated] = useAtom(isAuthenticatedAtom);
   const navigator = useNavigate();
 

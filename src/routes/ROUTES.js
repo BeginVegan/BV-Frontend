@@ -5,6 +5,8 @@ export const ROUTES = {
   AUTH: '/auth',
   ADMIN: '/admin/:category',
   ADMIN_RAW: '/admin',
+  ADMIN_RESTAURANT_DETAIL: '/admin/restaurant/:restaurantNo',
+  ADMIN_RESTAURANT_DETAIL_RAW: '/admin/restaurant',
   SEARCH_RAW: '/search/',
   SEARCH: '/search/:query',
   BEST_RAW: '/best/',
