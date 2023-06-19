@@ -6,7 +6,7 @@ import { Box, Button, Card, Flex, Heading, useDisclosure } from '@chakra-ui/reac
 import { useQuery } from 'react-query';
 import RestaurantService from '@/api/RestaurantService';
 import LoadingPage from '@/pages/Loading/LoadingPage';
-import CustomModal from '@/components/common/CustomModal';
+// import CustomModal from '@/components/common/CustomModal';
 import RegisterMenu from './RegisterMenu';
 
 const columns = [
