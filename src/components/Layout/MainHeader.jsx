@@ -19,14 +19,14 @@ const MainHeader = ({ children }) => {
         w={'1220px'}
         bg={useColorModeValue('white', 'gray.800')}
         color={useColorModeValue('gray.600', 'white')}
-        minH={'60px'}
+        minH={'72px'}
         py={{ base: 2 }}
         px={{ base: 4 }}
         align={'center'}
       >
         <Flex flex={{ base: 1 }} align={'center'}>
           <Image
-            h="32px"
+            h="50px"
             onClick={() => navigate(ROUTES.HOME)}
             objectFit="cover"
             src={wideLogo}
