@@ -12,8 +12,8 @@ const Header = ({ children }) => {
       <Flex
         bg={useColorModeValue('white', 'gray.800')}
         color={useColorModeValue('gray.600', 'white')}
-        minH={'60px'}
-        maxH={'60px'}
+        minH={'72px'}
+        maxH={'72px'}
         py={{ base: 2 }}
         px={{ base: 4 }}
         borderBottom={1}
@@ -23,7 +23,6 @@ const Header = ({ children }) => {
       >
         <Flex flex={{ base: 1 }} align={'center'}>
           <Image
-            h="32px"
             onClick={() => navigate(ROUTES.HOME)}
             objectFit="cover"
             src={wideLogo}

@@ -9,7 +9,7 @@ const MainLayout = () => {
       <MainHeader />
       <Flex
         position={'relative'}
-        minH={'calc(100vh - 222px)'}
+        minH={'calc(100vh - 235px)'}
         direction={'column'}
         justifyContent={'center'}
         alignItems={'center'}
