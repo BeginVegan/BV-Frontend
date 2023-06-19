@@ -119,8 +119,6 @@ export default KakaoMap;
 const CustomMapMarker = ({ loc, setOpenMarker }) => {
   // const [isOpen, setIsOpen] = useState(loc.isOpen == true ? true : false);
 
-  // console.log('@@@loc: ', loc);
-
   const [address, setAddress] = useState(null);
   const navigate = useNavigate();
   const markerStyle = {
@@ -169,7 +167,6 @@ const CustomMapMarker = ({ loc, setOpenMarker }) => {
             latlng: loc.latlng,
             isOpen: true,
           });
-          console.log('###########', loc);
         }
       }
       onClick={() => navigate(`/restaurant/${loc.restaurantNo}`)}

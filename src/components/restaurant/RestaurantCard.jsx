@@ -17,10 +17,6 @@ const RestaurantCard = ({ restaurant, setMapCenter, setOpenMarker, setIsPanto })
   const navigate = useNavigate();
   const size = restaurant.restaurantName.length > 8 ? 'lg' : 'xl';
 
-  // console.log(restaurant.restaurantDetail);
-  // const restaurantOpen = restaurant.restaurantOpen.substr(0, 5);
-  // const restaurantClose = restaurant.restaurantClose.substr(0, 5);
-
   return (
     <Stack
       cursor={'pointer'}
