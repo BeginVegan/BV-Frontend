@@ -55,7 +55,7 @@ const LoginPage = () => {
     }
   };
   useEffect(() => {
-    if (userStatus && userStatus.name) {
+    if (isAuthenticated &&userStatus && userStatus.name) {
       Swal.fire({
         icon: 'success',
         title: '로그인 성공',
