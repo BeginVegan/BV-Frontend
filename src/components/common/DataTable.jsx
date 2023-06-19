@@ -18,6 +18,8 @@ import {
 } from '@chakra-ui/react';
 import { ArrowRightIcon, ArrowLeftIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { usePagination, useTable } from 'react-table';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/routes/ROUTES';
 
 const DataTable = ({ columns, data }) => {
   const {
@@ -46,9 +48,11 @@ const DataTable = ({ columns, data }) => {
     usePagination
   );
 
+  const navigator = useNavigate();
+
   return (
-    <VStack>
-      <TableContainer h={'70vh'}>
+    <VStack gap={4}>
+      <TableContainer>
         <Table variant="simple" {...getTableProps()}>
           <Thead>
             {headerGroups.map(headerGroup => (
@@ -65,7 +69,14 @@ const DataTable = ({ columns, data }) => {
             {page.map(row => {
               prepareRow(row);
               return (
-                <Tr {...row.getRowProps()}>
+                <Tr
+                  _hover={{ bgColor: 'gray.400' }}
+                  cursor={'pointer'}
+                  onClick={() =>
+                    navigator(`${ROUTES.ADMIN_RESTAURANT_DETAIL_RAW}/${row.original.no}`)
+                  }
+                  {...row.getRowProps()}
+                >
                   {row.cells.map(cell => {
                     return (
                       <Td textAlign={'center'} {...cell.getCellProps()}>
@@ -73,12 +84,9 @@ const DataTable = ({ columns, data }) => {
                       </Td>
                     );
                   })}
-                  <Th textAlign={'center'}>
-                    <Button mr={4}>수정</Button>
-                    <Button color={'white'} bgColor={'red.300'} _hover={{ bgColor: 'red.400' }}>
-                      삭제
-                    </Button>
-                  </Th>
+                  {/* <Th textAlign={'center'}>
+                    <Button mr={4}>상세보기</Button>
+                  </Th> */}
                 </Tr>
               );
             })}

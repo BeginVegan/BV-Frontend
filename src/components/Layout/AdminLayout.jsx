@@ -1,16 +1,25 @@
-import Footer from '@/components/Layout/Footer';
 import Header from '@/components/Layout/Header';
 import { ROUTES } from '@/routes/ROUTES';
-import { Box, Flex, Icon, Link, Heading } from '@chakra-ui/react';
+import { Box, Flex, Icon, Link } from '@chakra-ui/react';
 import { useState } from 'react';
 import { FiHome, FiTrendingUp, FiUser } from 'react-icons/fi';
 import { RiMenuFoldLine, RiMenuUnfoldLine } from 'react-icons/ri';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
 
 const LinkItems = [
-  { name: '회원 관리', icon: FiUser, href: `${ROUTES.ADMIN_RAW}/user` },
-  { name: '예약 관리', icon: FiTrendingUp, href: `${ROUTES.ADMIN_RAW}/reservation` },
-  { name: '식당 관리', icon: FiHome, href: `${ROUTES.ADMIN_RAW}/restaurant` },
+  { name: '회원 관리', category: 'user', icon: FiUser, href: `${ROUTES.ADMIN_RAW}/user` },
+  {
+    name: '예약 관리',
+    category: 'reservation',
+    icon: FiTrendingUp,
+    href: `${ROUTES.ADMIN_RAW}/reservation`,
+  },
+  {
+    name: '식당 관리',
+    category: 'restaurant',
+    icon: FiHome,
+    href: `${ROUTES.ADMIN_RAW}/restaurant`,
+  },
 ];
 
 const AdminLayout = () => {
@@ -43,7 +52,10 @@ const AdminLayout = () => {
 export default AdminLayout;
 
 const SidebarContent = ({ isOpen, onClose, onOpen, ...rest }) => {
+  const { category: categoryParam } = useParams();
+  const [selectedCategory, setSelectedCategory] = useState(categoryParam);
   const widthPx = isOpen ? '230px' : '100px';
+
   return (
     <Flex direction={'column'} bg={'white'} minW={widthPx} maxW={widthPx} {...rest}>
       <Box w={widthPx} position={'fixed'}>
@@ -55,7 +67,15 @@ const SidebarContent = ({ isOpen, onClose, onOpen, ...rest }) => {
           )}
         </Flex>
         {LinkItems.map(link => (
-          <NavItem isOpen={isOpen} key={link.name} icon={link.icon} href={link.href}>
+          <NavItem
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            isOpen={isOpen}
+            category={link.category}
+            key={link.name}
+            icon={link.icon}
+            href={link.href}
+          >
             {link.name}
           </NavItem>
         ))}
@@ -64,7 +84,17 @@ const SidebarContent = ({ isOpen, onClose, onOpen, ...rest }) => {
   );
 };
 
-const NavItem = ({ isOpen, icon, children, href, ...rest }) => {
+const NavItem = ({
+  selectedCategory,
+  setSelectedCategory,
+  isOpen,
+  category,
+  icon,
+  children,
+  href,
+  ...rest
+}) => {
+  const { category: categoryParam } = useParams();
   return (
     <Link href={href} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
       <Flex
@@ -76,11 +106,10 @@ const NavItem = ({ isOpen, icon, children, href, ...rest }) => {
         borderRadius="lg"
         role="group"
         cursor="pointer"
-        color={'black'}
-        _hover={{
-          bg: 'green.400',
-          color: 'white',
-        }}
+        onMouseOver={() => setSelectedCategory(category)}
+        onMouseLeave={() => setSelectedCategory(categoryParam)}
+        bg={selectedCategory == category ? 'green.400' : 'none'}
+        color={selectedCategory == category ? 'white' : 'black'}
         {...rest}
       >
         {icon && (

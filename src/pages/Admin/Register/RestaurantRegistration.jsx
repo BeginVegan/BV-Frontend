@@ -17,7 +17,7 @@ import {
   Stepper,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '@/routes/ROUTES';
@@ -32,6 +32,11 @@ const RestaurantRegistration = () => {
   const { stepno } = useParams();
   const navigate = useNavigate();
   const { mutate: onAddRestaurant } = useMutation('addRestaurant', RestaurantService.addRestaurant);
+  const [restaurantImgs, setRestaurantImgs] = useState([]);
+
+  const handleChangeRestaurantImgs = imgs => {
+    setRestaurantImgs(imgs);
+  };
 
   const {
     register,
@@ -44,7 +49,17 @@ const RestaurantRegistration = () => {
   const steps = [{ title: '필수정보 입력' }, { title: '등록완료' }];
 
   const pageStep = {
-    1: <RegisterDetail register={register} control={control} setValue={setValue} errors={errors} />,
+    1: (
+      <RegisterDetail
+        isModify={true}
+        restaurantImgs={restaurantImgs}
+        handleChangeRestaurantImgs={imgs => handleChangeRestaurantImgs(imgs)}
+        register={register}
+        control={control}
+        setValue={setValue}
+        errors={errors}
+      />
+    ),
     2: <RegisterComplete />,
   };
 
@@ -72,7 +87,7 @@ const RestaurantRegistration = () => {
               restaurantAddress:
                 data.addressDetail.length === 0
                   ? data.address
-                  : `${data.address},${data.addressDetail}`,
+                  : `${data.address}&${data.addressDetail}`,
               restaurantAddressGu: data.restaurantAddressGu,
               restaurantX: data.restaurantX,
               restaurantY: data.restaurantY,
@@ -85,7 +100,7 @@ const RestaurantRegistration = () => {
               restaurantAvgPrice: data.restaurantAvgPrice,
               restaurantVeganLevel: data.restaurantVeganLevel,
             },
-            restaurantImages: data.restaurantImages,
+            restaurantImages: restaurantImgs,
             options: {
               headers: {
                 'Content-Type': 'multipart/form-data',
@@ -104,9 +119,9 @@ const RestaurantRegistration = () => {
   };
 
   return (
-    <Flex w={'100%'} alignItems={'center'} direction={'column'} py={5}>
-      <Card shadow={'none'} p={8} borderRadius={'xl'}>
-        <Stepper w={'900px'} pb={12} size="lg" index={stepno}>
+    <Flex m={'auto'} p={5} h={'100%'} alignItems={'center'} direction={'column'}>
+      <Card w={'900px'} shadow={'none'} p={8} borderRadius={'xl'}>
+        <Stepper pb={12} size="lg" index={stepno}>
           {steps.map((step, index) => (
             <Step key={index}>
               <StepIndicator>
@@ -128,11 +143,8 @@ const RestaurantRegistration = () => {
         </Stepper>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <VStack gap={6} w={'900px'}>
-            <Divider mb={8} borderColor={'gray.400'} />
-            {pageStep[stepno]}
-          </VStack>
-          <HStack w={'900px'} justifyContent={'flex-end'} pt={12} gap={4} pr={8}>
+          <VStack gap={6}>{pageStep[stepno]}</VStack>
+          <HStack justifyContent={'flex-end'} pt={12} gap={4} pr={8}>
             {stepno == 1 && (
               <ButtonGroup>
                 <Button
