@@ -20,6 +20,8 @@ import {
   Input,
   chakra,
   Link,
+  InputRightElement,
+  InputGroup,
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
@@ -39,6 +41,8 @@ import { userAtom } from '@/utils/atoms/userAtom';
 import Swal from 'sweetalert2';
 import { ROUTES } from '@/routes/ROUTES';
 import ReservationService from '@/api/ReservationService';
+import { debounce } from 'lodash';
+import { FiTrash, FiTrash2 } from 'react-icons/fi';
 
 const CustomDatePicker = chakra(DatePicker);
 
@@ -62,10 +66,13 @@ const ReservationRestaurant = () => {
     formState: { errors },
     control,
     getValues,
+    setValue,
+    trigger,
+    watch,
     formState: { isSubmitting },
   } = useForm();
 
-  const [value, setValue] = useState('매장');
+  const [reservationType, setReservationType] = useState('매장');
   const [totalPrice, setTotalPrice] = useState(0);
   const [memberData, setMemeberData] = useAtom(userAtom);
   const [reservationMenus, setReservationMenus] = useState(new Map());
@@ -76,18 +83,69 @@ const ReservationRestaurant = () => {
   const navigator = useNavigate();
   const today = new Date();
 
-  const getPoint = useCallback(() => {
-    async () => {
-      const res = await Axios.get('member');
-      setMemeberData({ ...memberData, point: res.data.memberPoint });
-    };
-  }, [memberData]);
+  const getPoint = async () => {
+    const res = await Axios.get(`/member/${memberData.email}`);
+    if (res.data.memberPoint == memberData.point) return;
+    setMemeberData({ ...memberData, point: res.data.memberPoint });
+  };
+
+  const watchedDiscount = watch('reservationDiscount'); // 입력 요소의 값을 감시
+
+  useEffect(() => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'center-center',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: toast => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      },
+    });
+
+    let newPoint;
+    console.log(watchedDiscount);
+
+    if (watchedDiscount == undefined || watchedDiscount == 0) return;
+    if (totalPrice == 0) {
+      Toast.fire({
+        icon: 'error',
+        title: '음식을 최소 1개 선택해 주세요.',
+      });
+      setValue('reservationDiscount', 0);
+      return;
+    }
+
+    if (watchedDiscount < 0) {
+      newPoint = 0;
+    } else if (watchedDiscount > totalPrice - 10000) {
+      Toast.fire({
+        icon: 'error',
+        title: '최소 결제 금액은 만원입니다.',
+      });
+      newPoint = totalPrice - 10000;
+    } else if (watchedDiscount > memberData.point) {
+      // 보유 포인트보다 사용할 순 없다
+      Toast.fire({
+        icon: 'error',
+        title: `사용가능한 최대 포인트는, ${memberData.point} 포인트 입니다.`,
+      });
+      newPoint = memberData.point;
+    } else {
+      newPoint = watchedDiscount;
+    }
+
+    console.log(newPoint);
+    setValue('reservationDiscount', parseInt(newPoint, 10));
+  }, [watchedDiscount]);
 
   useEffect(() => {
     if (memberData) getPoint();
   }, [memberData]);
 
   useEffect(() => {
+    setValue('reservationDiscount', 0);
     if (reservationMenus.size === 0) {
       setTotalPrice(0);
       return;
@@ -123,13 +181,10 @@ const ReservationRestaurant = () => {
     return data.restaurant.menuList.filter(menu => menu.menuNo === menuNo)[0].menuPrice;
   };
 
-  const increaseNum = (menuNo, count) => {
-    setReservationMenus(prev => new Map(prev).set(menuNo, count + 1));
-  };
-
-  const decreaseNum = (menuNo, count) => {
-    setReservationMenus(prev => new Map(prev).set(menuNo, count === 1 ? 1 : count - 1));
-  };
+  const changeNum = debounce((menuNo, count) => {
+    const newCount = count < 1 ? 1 : count > 100 ? 100 : count;
+    setReservationMenus(prev => new Map(prev).set(menuNo, newCount));
+  }, 0);
 
   const deleteReservationMenu = menuNo => {
     setReservationMenus(prev => {
@@ -168,7 +223,7 @@ const ReservationRestaurant = () => {
             <Text>예약타입: ${data.reservationType}</Text>
             <Text>예약인원: ${data.reservationPeople}</Text>
             <Text>음식메뉴: ${paymentName}</Text>
-            <Text>결제금액: ${totalPrice.toLocaleString()}원</Text>
+            <Text>결제금액: ${(totalPrice - data.reservationDiscount).toLocaleString()}원</Text>
           </div>
         </div>
       `;
@@ -244,7 +299,7 @@ const ReservationRestaurant = () => {
             <Text>예약타입: ${data.reservationType}</Text>
             <Text>예약인원: ${data.reservationPeople}</Text>
             <Text>음식메뉴: ${paymentName}</Text>
-            <Text>결제금액: ${totalPrice.toLocaleString()}원</Text>
+            <Text>결제금액: ${(totalPrice - data.reservationDiscount).toLocaleString()}원</Text>
           </div>
         </div>
       `;
@@ -362,12 +417,12 @@ const ReservationRestaurant = () => {
               <Text w={'100px'} fontWeight={600} color={'gray.400'} fontSize="md">
                 식사방식
               </Text>
-              <RadioGroup onChange={setValue} value={value}>
+              <RadioGroup onChange={setReservationType} value={reservationType}>
                 <HStack>
                   <Radio value="매장" {...register('reservationType')}>
                     매장식사
                   </Radio>
-                  {value === '매장' && (
+                  {reservationType === '매장' && (
                     <>
                       <NumberInput
                         size="sm"
@@ -470,22 +525,34 @@ const ReservationRestaurant = () => {
                 {Array.from(reservationMenus.entries()).map(([key, value]) => (
                   <HStack w={'550px'} key={key} justifyContent={'space-between'}>
                     <Flex align={'center'}>
-                      <Text w={'150px'} mr={4}>
+                      <Text minW={'100px'} mr={4}>
                         {getMenuName(key)}
                       </Text>
-                      <NumberInput size="sm" maxW={14} value={value}>
-                        <NumberInputField />
+                      <NumberInput
+                        size="sm"
+                        maxW={'80px'}
+                        max={100}
+                        onChange={e => changeNum(key, e)}
+                        value={value}
+                        onKeyUp={e => {
+                          if (e.key === 'Enter') {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            changeNum(key, e.target.value);
+                            e.target.blur();
+                          }
+                        }}
+                      >
+                        <NumberInputField maxLength={100} />
                         <NumberInputStepper>
-                          <NumberIncrementStepper onClick={() => increaseNum(key, value)} />
-                          <NumberDecrementStepper onClick={() => decreaseNum(key, value)} />
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
                         </NumberInputStepper>
                       </NumberInput>
                     </Flex>
                     <Flex align={'center'}>
-                      <Text>{(getMenuPrice(key) * value).toLocaleString()}원</Text>
-                      <Button onClick={() => deleteReservationMenu(key)} bgColor={'transparent'}>
-                        X
-                      </Button>
+                      <Text mr={4}>{(getMenuPrice(key) * value).toLocaleString()}원</Text>
+                      <FiTrash2 cursor={'pointer'} onClick={() => deleteReservationMenu(key)} />
                     </Flex>
                   </HStack>
                 ))}
@@ -505,32 +572,47 @@ const ReservationRestaurant = () => {
                   <Text w={'100px'} fontWeight={600} color={'gray.600'} fontSize="md">
                     주문금액
                   </Text>
-                  <Text fontWeight={600} color={'gray.600'} fontSize="md">
+                  <Text pr={3} fontWeight={600} color={'gray.600'} fontSize="md">
                     {totalPrice.toLocaleString()} 원
                   </Text>
                 </HStack>
                 <HStack w={'550px'} justifyContent={'space-between'}>
-                  <Text w={'100px'} fontWeight={600} color={'gray.600'} fontSize="md">
-                    포인트
-                  </Text>
                   <HStack>
-                    <Input
-                      textAlign={'right'}
-                      w={'50px'}
-                      variant="flushed"
-                      placeholder={memberData.point.toLocaleString()}
-                      {...register('reservationDiscount')}
-                    />
-                    <Text fontWeight={600} color={'gray.600'} fontSize="md">
-                      원
+                    <Text w={'50px'} fontWeight={600} color={'gray.600'} fontSize="md">
+                      포인트
                     </Text>
+                    <Text w={'200px'} fontWeight={600} color={'gray.400'} fontSize="md">
+                      사용가능 포인트 : {memberData.point}
+                    </Text>
+                  </HStack>
+                  <HStack>
+                    <InputGroup w={'100px'}>
+                      <Input
+                        onKeyUp={e => {
+                          if (e.key === 'Enter') {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            e.target.blur();
+                          }
+                        }}
+                        type="number"
+                        textAlign={'right'}
+                        {...register('reservationDiscount', { valueAsNumber: true })}
+                      />
+                      <InputRightElement
+                        fontWeight={600}
+                        color={'gray.600'}
+                        fontSize="md"
+                        children="원"
+                      />
+                    </InputGroup>
                   </HStack>
                 </HStack>
                 <HStack w={'550px'} justifyContent={'space-between'}>
                   <Text w={'100px'} fontWeight={600} color={'gray.600'} fontSize="md">
                     결제금액
                   </Text>
-                  <Text fontWeight={600} color={'gray.600'} fontSize="md">
+                  <Text pr={3} fontWeight={600} color={'gray.600'} fontSize="md">
                     {getValues('reservationDiscount')
                       ? (totalPrice - getValues('reservationDiscount')).toLocaleString()
                       : totalPrice.toLocaleString()}{' '}

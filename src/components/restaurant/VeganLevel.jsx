@@ -15,10 +15,8 @@ const VeganLevel = ({ setValue, level, isClickable = false }) => {
   }, [level]);
 
   const changeVeganLevel = num => {
-    if (!level) {
-      setVeganLevel(num);
-      setValue('restaurantVeganLevel', num);
-    }
+    setVeganLevel(num);
+    setValue('restaurantVeganLevel', num);
   };
 
   return (
@@ -27,37 +25,37 @@ const VeganLevel = ({ setValue, level, isClickable = false }) => {
         bg={'white'}
         opacity={veganLevel != 7 && veganLevel >= 1 ? '1' : '0.4'}
         icon={<Img src={broccoliIcon} />}
-        onClick={() => (isClickable ? !level && changeVeganLevel(1) : null)}
+        onClick={() => isClickable && changeVeganLevel(1)}
       />
       <IconButton
         bg={'white'}
         opacity={veganLevel != 7 && veganLevel >= 2 ? '1' : '0.4'}
         icon={<Img src={milkIcon} />}
-        onClick={() => (isClickable ? !level && changeVeganLevel(2) : null)}
+        onClick={() => isClickable && changeVeganLevel(2)}
       />
       <IconButton
         bg={'white'}
         opacity={veganLevel != 7 && veganLevel >= 3 ? '1' : '0.4'}
         icon={<Img src={eggIcon} />}
-        onClick={() => (isClickable ? !level && changeVeganLevel(3) : null)}
+        onClick={() => isClickable && changeVeganLevel(3)}
       />
       <IconButton
         bg={'white'}
         opacity={veganLevel != 7 && veganLevel >= 4 ? '1' : '0.4'}
         icon={<Img src={fishIcon} />}
-        onClick={() => (isClickable ? !level && changeVeganLevel(4) : null)}
+        onClick={() => isClickable && changeVeganLevel(4)}
       />
       <IconButton
         bg={'white'}
         opacity={veganLevel != 7 && veganLevel >= 5 ? '1' : '0.4'}
         icon={<Img src={chickenIcon} />}
-        onClick={() => (isClickable ? !level && changeVeganLevel(5) : null)}
+        onClick={() => isClickable && changeVeganLevel(5)}
       />
       <IconButton
         bg={'white'}
         opacity={veganLevel != 7 && veganLevel >= 6 ? '1' : '0.4'}
         icon={<Img src={meatIcon} />}
-        onClick={() => (isClickable ? !level && changeVeganLevel(6) : null)}
+        onClick={() => isClickable && changeVeganLevel(6)}
       />
     </Stack>
   );

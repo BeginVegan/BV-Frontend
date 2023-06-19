@@ -26,6 +26,7 @@ import {
   CardBody,
   Card,
   Box,
+  chakra,
 } from '@chakra-ui/react';
 import { ArrowRightIcon, ArrowLeftIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { usePagination, useTable } from 'react-table';
@@ -34,6 +35,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ReservationDetail from '@/pages/Admin/Reservation/ReservationDetail';
 import ReservationAndCancleChart from '@/pages/Admin/Reservation/ReservationAndCancleChart';
 import ReservationRankingChart from '@/pages/Admin/Reservation/ReservationRankingChart';
+import { ko } from 'date-fns/esm/locale';
 
 const columns = [
   {
@@ -144,7 +146,7 @@ const ReservationInfo = ({ data }) => {
 
   return (
     <VStack>
-      <Box
+      <Flex
         mb={5}
         pr={6}
         pl={6}
@@ -155,91 +157,91 @@ const ReservationInfo = ({ data }) => {
         border={'none'}
       >
         {/* Filter Section */}
-        <Fade in={true} offsetY={-20}>
-          <HStack mt={5} mb={5} w={1240}>
-            <Input
-              placeholder="예약자 정보"
-              value={filterCriteria.booker}
-              onChange={e =>
-                setFilterCriteria(prevState => ({ ...prevState, booker: e.target.value }))
-              }
-            />
-            <Input
-              placeholder="식당 번호"
-              value={filterCriteria.storeNumber}
-              onChange={e =>
-                setFilterCriteria(prevState => ({ ...prevState, storeNumber: e.target.value }))
-              }
-            />
-            <DatePicker
-              selected={startDate}
-              onChange={date => setStartDate(date)}
-              selectsStart
-              startDate={startDate}
-              endDate={endDate}
-              placeholderText="시작일"
-              isClearable
-              customInput={
-                <Input
-                  placeholder="Start Date"
-                  borderWidth="1px"
-                  borderRadius="md"
-                  borderColor="gray.200"
-                  _hover={{ borderColor: 'gray.300' }}
-                  _focus={{ borderColor: 'white', boxShadow: 'outline' }}
-                  px={2}
-                  py={1}
-                />
-              }
-            />
-            <DatePicker
-              selected={endDate}
-              onChange={date => setEndDate(date)}
-              selectsEnd
-              startDate={startDate}
-              endDate={endDate}
-              placeholderText="종료일"
-              isClearable
-              customInput={
-                <Input
-                  placeholder="End Date"
-                  borderWidth="1px"
-                  borderRadius="md"
-                  borderColor="gray.200"
-                  _hover={{ borderColor: 'gray.300' }}
-                  _focus={{ borderColor: 'white', boxShadow: 'outline' }}
-                  px={2}
-                  py={1}
-                />
-              }
-            />
-            <Select
-              placeholder="예약 상태"
-              value={filterCriteria.status}
-              onChange={e =>
-                setFilterCriteria(prevState => ({ ...prevState, status: e.target.value }))
-              }
-            >
-              <option value="취소">취소</option>
-              <option value="예약">예약</option>
-            </Select>
+        <HStack mt={5} mb={5} w={1240}>
+          <Input
+            placeholder="예약자 정보"
+            value={filterCriteria.booker}
+            onChange={e =>
+              setFilterCriteria(prevState => ({ ...prevState, booker: e.target.value }))
+            }
+          />
+          <Input
+            placeholder="식당 번호"
+            value={filterCriteria.storeNumber}
+            onChange={e =>
+              setFilterCriteria(prevState => ({ ...prevState, storeNumber: e.target.value }))
+            }
+          />
+          <DatePicker
+            selected={startDate}
+            onChange={date => setStartDate(date)}
+            selectsStart
+            locale={ko}
+            dateFormat="yyyy년 MM월 dd일"
+            startDate={startDate}
+            endDate={endDate}
+            placeholderText="시작일"
+            isClearable
+            customInput={
+              <Input
+                placeholder="Start Date"
+                borderWidth="1px"
+                borderRadius="md"
+                borderColor="gray.200"
+                _hover={{ borderColor: 'gray.300' }}
+                _focus={{ borderColor: 'white', boxShadow: 'outline' }}
+                px={2}
+                py={1}
+              />
+            }
+          />
+          <DatePicker
+            selected={endDate}
+            onChange={date => setEndDate(date)}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            placeholderText="종료일"
+            isClearable
+            customInput={
+              <Input
+                placeholder="End Date"
+                borderWidth="1px"
+                borderRadius="md"
+                borderColor="gray.200"
+                _hover={{ borderColor: 'gray.300' }}
+                _focus={{ borderColor: 'white', boxShadow: 'outline' }}
+                px={2}
+                py={1}
+              />
+            }
+          />
+          <Select
+            placeholder="예약 상태"
+            value={filterCriteria.status}
+            onChange={e =>
+              setFilterCriteria(prevState => ({ ...prevState, status: e.target.value }))
+            }
+          >
+            <option value="취소">취소</option>
+            <option value="예약">예약</option>
+          </Select>
 
-            <Button
-              onClick={applyFilter}
-              bg="#48BB78"
-              color="white"
-              _hover={{ bg: '#3F995E' }}
-              mr={2}
-              width={320}
-            >
-              필터 적용
-            </Button>
-            <Button onClick={clearFilter} colorScheme="gray" width={320}>
-              필터 취소
-            </Button>
-          </HStack>
-        </Fade>
-      </Box>
+          <Button
+            onClick={applyFilter}
+            bg="#48BB78"
+            color="white"
+            _hover={{ bg: '#3F995E' }}
+            mr={2}
+            w={'200px'}
+          >
+            적용
+          </Button>
+          <Button w={'200px'} onClick={clearFilter} colorScheme="gray">
+            취소
+          </Button>
+        </HStack>
+      </Flex>
 
       <HStack pb={10}>
         <HStack pr={5}>

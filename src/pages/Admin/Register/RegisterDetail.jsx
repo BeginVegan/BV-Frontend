@@ -16,7 +16,15 @@ import usePostCode from '@/hooks/usePostCode';
 import { AddressToLatlng, getFullAddress } from '@/utils/address/addressUtil';
 import MultiImageFileUpload from '@/components/fileUpload/MultiImageFileUpload';
 
-const RegisterDetail = ({ register, control, setValue, errors }) => {
+const RegisterDetail = ({
+  isModify,
+  restaurantImgs,
+  handleChangeRestaurantImgs,
+  register,
+  control,
+  setValue,
+  errors,
+}) => {
   const handleComplete = async data => {
     setValue('address', getFullAddress(data), { shouldValidate: true });
     const newCenter = await AddressToLatlng(data.address);
@@ -30,9 +38,16 @@ const RegisterDetail = ({ register, control, setValue, errors }) => {
   return (
     <>
       <FormControl as={HStack} w={'660px'}>
-        <FormLabel w={'120px'}>매장사진</FormLabel>
+        <FormLabel w={'120px'}>
+          매장사진
+          <br />
+          <Text color={'gray.400'}>최대 5장</Text>
+        </FormLabel>
         <MultiImageFileUpload
           name={'restaurantImages'}
+          isModify={isModify}
+          restaurantImgs={restaurantImgs}
+          handleChangeRestaurantImgs={handleChangeRestaurantImgs}
           control={control}
           errors={errors}
         ></MultiImageFileUpload>

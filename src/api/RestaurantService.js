@@ -42,18 +42,29 @@ const RestaurantService = {
     return response;
   },
 
-  updateRestaurant: async RestaurantId => {
-    const response = await Axios.put('/restaurant', {
-      RestaurantId,
-    });
+  updateRestaurant: async ({ restaurantInfo, restaurantImages, options }) => {
+    const formData = new FormData();
+    console.log(restaurantImages);
 
+    if (restaurantImages) {
+      if (restaurantImages.length) {
+        for (let i = 0; i < restaurantImages.length; i++) {
+          formData.append('restaurantImages', restaurantImages[i]);
+        }
+      } else formData.append('restaurantImages', restaurantImages);
+    }
+
+    formData.append(
+      'restaurantDTO',
+      new Blob([JSON.stringify(restaurantInfo)], { type: 'application/json' })
+    );
+
+    const response = await Axios.put('/restaurant', formData, options);
     return response;
   },
 
-  deleteRestaurant: async RestaurantId => {
-    const response = await Axios.delete('/restaurant', {
-      RestaurantId,
-    });
+  deleteRestaurant: async restaurantNo => {
+    const response = await Axios.delete(`/restaurant/${restaurantNo}`);
 
     return response;
   },

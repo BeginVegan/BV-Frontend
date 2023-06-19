@@ -23,6 +23,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './ROUTES';
 import ReservationRestaurant from '@/pages/Restaurant/ReservationRestaurant';
 import AdminLayout from '@/components/Layout/AdminLayout';
+import RetaurantDetail from '@/pages/Admin/Restaurant/RetaurantDetail';
 
 const AppRoutes = () => {
   const toast = useToast();
@@ -58,10 +59,11 @@ const AppRoutes = () => {
             <Route path={ROUTES.RESTAURANT} element={<RestaurantDetailPage />} />
             <Route path={ROUTES.RESTAURANT_RESERVATION} element={<ReservationRestaurant />} />
           </Route>
-          {/* MainLayout은 검색창 없는 헤더 만 있는 레이아웃*/}
+          {/* AdminLayout은 관리자용 사이드와 검색창 없는 헤더 만 있는 레이아웃*/}
           <Route element={<AdminLayout />}>
             <Route path={ROUTES.ADMIN_RAW} element={<Navigate to={`${ROUTES.ADMIN_RAW}/user`} />} />
             <Route path={ROUTES.ADMIN} element={<AdminPage />} />
+            <Route path={ROUTES.ADMIN_RESTAURANT_DETAIL} element={<RetaurantDetail />} />
             <Route path={ROUTES.RESTAURANT_REGISTRATION} element={<RestaurantRegistration />} />
           </Route>
           {/* Mypage는 검색창있는 헤더와 사이드바가 있는 레이아웃 */}
