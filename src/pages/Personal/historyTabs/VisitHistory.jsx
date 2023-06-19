@@ -33,19 +33,31 @@ const VisitHistory = () => {
 
   useEffect(() => {
     const getReservations = async () => {
-      const res = await Axios.get('reservation/list/memberEmail');
-      if (res.status === 200) {
-        setReservationList(res.data);
-      }
-    };
-    const getReview = async () => {
-      const res = await Axios.get('mypage/review/userEmail');
-
-      if (res.status === 200) {
-        setReviewList(res.data);
-
-      }
-    }
+        try {
+          const res = await Axios.get('reservation/list/memberEmail');
+          if (res.status === 200) {
+            setReservationList(res.data);
+          } else {
+            setReservationList([]);
+          }
+        } catch (error) {
+          setReservationList([]);
+        }
+      };
+    
+      const getReview = async () => {
+        try {
+          const res = await Axios.get('mypage/review/userEmail');
+          if (res.status === 200) {
+            setReviewList(res.data);
+          } else {
+            setReviewList([]);
+          }
+        } catch (error) {
+          setReviewList([]);
+        }
+      };
+    
     getReservations();
     getReview();
   },[]);
@@ -110,16 +122,19 @@ const RestaurantCards = ({reservationNo, reviewList, restaurant, id }) => {
       const hasReview = reviewList.find(review => review.restaurantNo === restaurantNo && review.reservationNo === reservationNo);
       if (!hasReview) {
         setIsReviewable(true)
-      }
-      
+      } 
     }
   },[data])
 
   const getS3ImageList = async () => {
-    const res = await Axios.get(`restaurant/img/${restaurantPhotoDir}`)
-    if (res.status === 200) {
-      console.log("Images", res)
-      setS3ImageList(res.data);
+    try {
+        const res = await Axios.get(`restaurant/img/${restaurantPhotoDir}`)
+        if (res.status === 200) {
+        console.log("Images", res)
+        setS3ImageList(res.data);
+      } 
+    } catch (error ) {
+      setS3ImageList(null)
     }
   }
   useEffect(()=>{

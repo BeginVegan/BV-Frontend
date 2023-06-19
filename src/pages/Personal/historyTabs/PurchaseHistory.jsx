@@ -32,15 +32,24 @@ const PurchaseHistory = () => {
 
 
   const getPayments = async () => {
-    const res = await Axios.get('payment/list/memberEmail');
-    if (res.status === 200) {
-      setPaymentList(res.data);
+    try {
+      const res = await Axios.get('payment/list/memberEmail');
+      if (res.status === 200) {
+        setPaymentList(res.data);
+      } else {
+        console.log(`Unexpected status code ${res.status}`);
+        setPaymentList([]);
+      }
+    } catch (error) {
+      console.error('Error fetching payments', error);
+      setPaymentList([]);
     }
   };
 
   useEffect(() => {
     getPayments();
   }, []);
+
 
   const cancelPayment = (impUid) => {
     Swal.fire({
@@ -50,15 +59,23 @@ const PurchaseHistory = () => {
       showCancelButton: true,
     }).then(async res => {
       if (res.isConfirmed) {
-        const result = await Axios.delete(`payment?impUid=${impUid}`);
-        if (result.status === 200 ) {
-          Swal.fire({
-            icon: 'success',
-            title: '결제 취소 성공',
-            text: '그동안 이용해 주셔서 감사합니다',
-          })
-        }
-        else {
+        try {
+          const result = await Axios.delete(`payment?impUid=${impUid}`);
+          if (result.status === 200 ) {
+            Swal.fire({
+              icon: 'success',
+              title: '결제 취소 성공',
+              text: '그동안 이용해 주셔서 감사합니다',
+            })
+          }
+          else {
+            Swal.fire({
+              icon:'error',
+              title:'결제 취소 실패',
+              text: '다시 시도해 주세요'
+            })
+          }
+        } catch (error) {
           Swal.fire({
             icon:'error',
             title:'결제 취소 실패',
@@ -121,23 +138,39 @@ const CustomTh = ({ children }) => {
 const CustomTd = ({ children }) => {
   return <Td textAlign={'center'}>{children}</Td>;
 };
-
 const RestaurantName = ({ reservationNo, refresh }) => {
   const [name, setName] = useState(null);
   const [no, setNo] = useState(null)
 
   const fetchRestaurantName = async (restaurantNo) => {
-    const res = await Axios.get(`restaurant/${restaurantNo}`)
-    if (res.status === 200) {
-      const restaurantName = res.data.restaurant.restaurantName
-      setName(restaurantName)
+    try {
+      const res = await Axios.get(`restaurant/${restaurantNo}`)
+      if (res.status === 200) {
+        const restaurantName = res.data.restaurant.restaurantName
+        setName(restaurantName)
+      } else {
+        console.log(`Unexpected status code ${res.status}`);
+        setName(null)
+      }
+    } catch (error) {
+      console.error('Error fetching restaurant name', error);
+      setName(null)
     }
   }
+
   const fetchRestaurantNo = async () => {
-    const res = await Axios.get(`reservation/${reservationNo}`);
-    if (res.status === 200) {
-      const restaurantNo = res.data.restaurantNo;
-      setNo(restaurantNo)
+    try {
+      const res = await Axios.get(`reservation/${reservationNo}`);
+      if (res.status === 200) {
+        const restaurantNo = res.data.restaurantNo;
+        setNo(restaurantNo)
+      } else {
+        console.log(`Unexpected status code ${res.status}`);
+        setNo(null)
+      }
+    } catch (error) {
+      console.error('Error fetching restaurant number', error);
+      setNo(null)
     }
   };
 
@@ -146,7 +179,7 @@ const RestaurantName = ({ reservationNo, refresh }) => {
   }, [reservationNo]);
 
   useEffect(() => {
-    if (no)fetchRestaurantName(no);
+    if (no) fetchRestaurantName(no);
   }, [no]);
 
   useEffect(() => {
@@ -154,51 +187,6 @@ const RestaurantName = ({ reservationNo, refresh }) => {
       refresh();
     } 
   }, [name]);
+  
   return <div>{name}</div>;
 };
-
-// const RestaurantStar = ({ restaurantNo }) => {
-//   const [star, setStar] = useState(null);
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const res = await Axios.get(`restaurant/${restaurantNo}`);
-//       if (res.status === 200) {
-//         const data = res.data.restaurant.restaurantStar;
-
-//         setStar(data);
-//       }
-//     };
-
-//     fetchData();
-//   }, [restaurantNo]);
-
-//   return <StarRank number={star} color={'gold'} />;
-// };
-
-
-  // const getReservations = async () => {
-  //   const res = await Axios.get('reservation/list/memberEmail');
-  //   if (res.status === 200) {
-  //     setReservationList(res.data);
-  //   }
-  // };
-
-  
- 
-  // const filteredReservationList = useMemo(() => {
-  //   if (reservationList) {
-  //     return reservationList.filter(store => !isCancellable(store.reservationTime));
-  //   }
-  //   return [];
-  // }, [reservationList]);
-
-  // const sortedReservationList = useMemo(() => {
-  //   if (filteredReservationList) {
-  //     return [...filteredReservationList].sort(
-  //       (a, b) => new Date(a.reservationTime) - new Date(b.reservationTime)
-  //     );
-  //   }
-  //   return [];
-  // }, [filteredReservationList]);
-  

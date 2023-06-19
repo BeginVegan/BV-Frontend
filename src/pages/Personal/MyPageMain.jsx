@@ -16,26 +16,44 @@ const MyPageMain = () => {
   const [reservationList, setReservationList] = useState(null);
   const [reviewList, setReviewList] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  
+  const [isError,setIsError] = useState(false)
   useEffect(() => {
     const getReservations = async () => {
-      const res = await Axios.get('reservation/list/memberEmail');
-      if (res.status === 200) {
-        setReservationList(res.data);
-  
+      try {
+        if (isError) return;
+        const res = await Axios.get('reservation/list/memberEmail');
+        if (res.status === 200) {
+          setReservationList(res.data);
+        } else {
+          console.log(`Unexpected status code ${res.status}`);
+          setReservationList([]);
+        }
+      } catch (error) {
+        console.error('Error fetching reservations', error);
+        setReservationList([]);
+        setIsError(true)
       }
     };
     const getReview = async () => {
-      const res = await Axios.get('mypage/review/userEmail');
-
-      if (res.status === 200) {
-        setReviewList(res.data)
+      try {
+        if (isError) return;
+        const res = await Axios.get('mypage/review/userEmail');
+        if (res.status === 200) {
+          setReviewList(res.data)
+        } else {
+          console.log(`Unexpected status code ${res.status}`);
+          setReviewList([]);
+        }
+      } catch (error) {
+        console.error('Error fetching reviews', error);
+        setReviewList([]);
+        setIsError(true)
       }
     };
     getReservations();
     getReview();
   }, []);
+
 
   const getFetchUserInfo = async () => {
     const res = await Axios.get(`member/${userStatus.email}`);
@@ -49,11 +67,11 @@ const MyPageMain = () => {
     }
   }
   useEffect(()=>{
-    if (reviewList && reservationList){
+    if (reviewList && reservationList && userStatus){
       setLoading(false)   
     }
     if (userStatus && userStatus.email)getFetchUserInfo();
-  }, [reviewList, reservationList])
+  }, [reviewList, reservationList, userStatus])
 
   //예약중인 리스트 추출
   const onReadyReservationList = useMemo(() => {
@@ -155,7 +173,7 @@ const MyPageMainCard = ({title, value, list}) => {
   useEffect(() => {
     const fetchDetails = async () => {
       const details = [];
-      if(Array.isArray(list)) {
+      if(list && list.length >0 && Array.isArray(list)) {
         for (let store of list) {
           const data = await fetchRestaurantDetail(store.reservationNo);
           details.push({...{reservationNo : store.reservationNo},...data});

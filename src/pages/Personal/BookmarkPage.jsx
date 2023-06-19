@@ -27,15 +27,24 @@ const BookmarkPage = () => {
   const [forceUpdate, setForceUpdate] = useState(false); 
   
   const getBookmarks = async () => {
-    const res = await Axios.get('mypage/bookmark/userEmail');
-    if (res.status === 200) {
-      setBookmarks(res.data);
-      
+    try {
+      const res = await Axios.get('mypage/bookmark/userEmail');
+      if (res.status === 200) {
+        setBookmarks(res.data);
+      } else {
+        console.log(`Unexpected status code ${res.status}`);
+        setBookmarks([]);
+      }
+    } catch (error) {
+      console.error('Error fetching bookmarks', error);
+      setBookmarks([]);
     }
   };
+
   useEffect(() => {
     getBookmarks();
   }, [forceUpdate]);
+
 
   return (
     <VStack width={'100%'} spacing={'2rem'} paddingLeft={'2rem'}>

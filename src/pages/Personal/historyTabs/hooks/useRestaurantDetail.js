@@ -5,11 +5,14 @@ export const useRestaurantDetail = restaurantNo => {
   const [data, setData] = useState(null);
 
   const fetchData = async () => {
-    const res = await Axios.get(`restaurant/${restaurantNo}`);
-    if (res.status === 200) {
-      setData(res.data.restaurant);
+    try {
+      const res = await Axios.get(`restaurant/${restaurantNo}`);
+      if (res.status === 200) {
+        setData(res.data.restaurant);
+      }  
+    } catch (err) {
+      console.log(err);
     }
-    
   };
 
   useEffect(() => {

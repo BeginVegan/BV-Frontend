@@ -20,9 +20,15 @@ const ReservationHistory = () => {
   const [reservationList, setReservationList] = useState(null);
   useEffect(() => {
     const getReservations = async () => {
-      const res = await Axios.get('reservation/list/memberEmail');
-      if (res.status === 200) {
-        setReservationList(res.data);
+      try{
+        const res = await Axios.get('reservation/list/memberEmail');
+        if (res.status === 200) {
+          setReservationList(res.data);
+        } else {
+          setReservationList([]);
+        }
+      } catch (error) {
+        setReservationList([]);
       }
     };
     getReservations();
@@ -36,15 +42,28 @@ const ReservationHistory = () => {
       showCancelButton: true,
     }).then(async res => {
       if (res.isConfirmed) {
-        const result = await Axios.delete(`reservation/${reservationNo}`);
-        if (result.status === 200) {
+        try {
+          const result = await Axios.delete(`reservation/${reservationNo}`);
+          if (result.status === 200) {
+            Swal.fire({
+              icon: 'success',
+              title: '예약 취소 성공',
+              text: '그동안 이용해 주셔서 감사합니다',
+            })
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: '예약 취소 실패',
+              text: '다시 시도해 주세요',
+            })
+          }
+        } catch (error) {
           Swal.fire({
-            icon: 'success',
-            title: '예약 취소 성공',
-            text: '그동안 이용해 주셔서 감사합니다',
+            icon: 'error',
+            title: '예약 취소 실패',
+            text: '다시 시도해 주세요',
           })
-        }
-        
+        } 
       }
     });
   };
@@ -140,12 +159,16 @@ const RestaurantName = ({ restaurantNo }) => {
   const [name, setName] = useState(null);
 
   useEffect(() => {
+    
     const fetchData = async () => {
-      const res = await Axios.get(`restaurant/${restaurantNo}`);
-      if (res.status === 200) {
-        const data = res.data.restaurant.restaurantName;
-
-        setName(data);
+      try {
+        const res = await Axios.get(`restaurant/${restaurantNo}`);
+        if (res.status === 200) {
+          const data = res.data.restaurant.restaurantName;
+          setName(data);
+        }
+      } catch (error) {
+        setName('삭제된 가게입니다');
       }
     };
 

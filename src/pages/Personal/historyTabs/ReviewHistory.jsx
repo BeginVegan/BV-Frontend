@@ -28,10 +28,15 @@ const ReviewHistory = () => {
   const [reviewList, setReviewList] = useState(null);
   const [forceUpdate, setForceUpdate] = useState(false); 
   const getReview = async () => {
-    const res = await Axios.get('mypage/review/userEmail');
-
-    if (res.status === 200) {
-      setReviewList(res.data);
+    try {
+      const res = await Axios.get('mypage/review/userEmail');
+      if (res.status === 200) {
+        setReviewList(res.data);
+      } else {
+        setReviewList([]);
+      }
+    } catch (error) {
+      setReviewList([]);
     }
   };
 
@@ -86,16 +91,23 @@ const RestaurantReviewCard = ({ restaurantNo,idx, img, reviewNo, content, refres
       showCancelButton: true,
     }).then(async res => {
       if (res.isConfirmed) {
-        const result = await Axios.delete(`mypage/review/${reviewNo}`)
-        if (result.status === 200 ) {
-          Swal.fire({
-            icon: 'success',
-            title: '리뷰 삭제 성공',
-            text: '고객의 리뷰는 가게에 큰 힘이 됩니다',
-          })
-          refresh()
-        }
-        else {
+        try {
+          const result = await Axios.delete(`mypage/review/${reviewNo}`)
+          if (result.status === 200 ) {
+            Swal.fire({
+              icon: 'success',
+              title: '리뷰 삭제 성공',
+              text: '고객의 리뷰는 가게에 큰 힘이 됩니다',
+            })
+            refresh()
+          } else {
+            Swal.fire({
+              icon:'error',
+              title:'리뷰 삭제 실패',
+              text: '다시 시도해 주세요'
+            })
+          }
+        } catch (error) {
           Swal.fire({
             icon:'error',
             title:'리뷰 삭제 실패',
