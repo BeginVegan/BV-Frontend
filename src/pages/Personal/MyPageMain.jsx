@@ -70,9 +70,11 @@ const MyPageMain = () => {
     if (reviewList && reservationList && userStatus){
       setLoading(false)   
     }
-    if (userStatus && userStatus.email)getFetchUserInfo();
   }, [reviewList, reservationList, userStatus])
 
+  useEffect(()=>{
+    if (userStatus && userStatus.email)getFetchUserInfo();
+  },[])
   //예약중인 리스트 추출
   const onReadyReservationList = useMemo(() => {
     if (reservationList) {
