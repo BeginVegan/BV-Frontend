@@ -1,5 +1,5 @@
 import Axios from '@/api/apiConfig';
-import { Button, Flex } from '@chakra-ui/react';
+import { Button, Flex, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
@@ -49,6 +49,7 @@ const TimePicker = ({
           {time}:00
         </Button>
       ))}
+      {availableTimes.length === 0 && <Text color={'gray.600'}>예약가능한 시간이 없습니다.</Text>}
     </Flex>
   );
 };

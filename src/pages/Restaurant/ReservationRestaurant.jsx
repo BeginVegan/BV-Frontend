@@ -418,7 +418,10 @@ const ReservationRestaurant = () => {
                 식사방식
               </Text>
               <RadioGroup onChange={setReservationType} value={reservationType}>
-                <HStack>
+                <HStack gap={3} h={'30px'}>
+                  <Radio value="포장" {...register('reservationType')}>
+                    포장
+                  </Radio>
                   <Radio value="매장" {...register('reservationType')}>
                     매장식사
                   </Radio>
@@ -441,9 +444,6 @@ const ReservationRestaurant = () => {
                       <Text>명</Text>
                     </>
                   )}
-                  <Radio value="포장" {...register('reservationType')}>
-                    포장
-                  </Radio>
                 </HStack>
               </RadioGroup>
             </VStack>
@@ -452,9 +452,11 @@ const ReservationRestaurant = () => {
                 예약일시
               </Text>
               <VStack pl={2} gap={4} w={'600px'}>
-                <HStack p={3} borderBottom={'1px solid gray'}>
+                <HStack borderBottom={'1px solid gray'}>
+                  <RiCalendarCheckLine size={18} />
                   <CustomDatePicker
-                    w={'150px'}
+                    w={'180px'}
+                    cursor={'pointer'}
                     fontSize={'lg'}
                     textAlign={'center'}
                     locale={ko}
@@ -464,7 +466,6 @@ const ReservationRestaurant = () => {
                     maxDate={addMonths(today, 1)}
                     onChange={date => setSelectDate(date)}
                   />
-                  <RiCalendarCheckLine size={24} />
                 </HStack>
                 <TimePicker
                   selectDate={selectDate}
@@ -483,6 +484,7 @@ const ReservationRestaurant = () => {
               <VStack gap={3} py={2} h={'300px'} alignSelf={'center'} overflowY={'scroll'}>
                 {data.restaurant.menuList.map(menu => (
                   <HStack
+                    w={'500px'}
                     gap={4}
                     key={menu.menuNo}
                     cursor={'pointer'}
@@ -496,7 +498,7 @@ const ReservationRestaurant = () => {
                       maxW={'120px'}
                       src={menu.menuPhotoDir || 'http://placehold.it/120x90'}
                     />
-                    <VStack w={'250px'} alignItems={'flex-start'}>
+                    <VStack w={'500px'} alignItems={'flex-start'}>
                       <Text fontWeight={400} fontSize="lg">
                         {menu.menuName}
                         <Text
@@ -557,7 +559,7 @@ const ReservationRestaurant = () => {
                   </HStack>
                 ))}
                 {reservationMenus.size === 0 && (
-                  <Text fontWeight={600} color={'gray.400'} fontSize="md">
+                  <Text fontWeight={400} color={'gray.600'} fontSize="lg">
                     선택된 메뉴가 없습니다. 메뉴를 선택해 주세요.
                   </Text>
                 )}
@@ -581,7 +583,7 @@ const ReservationRestaurant = () => {
                     <Text w={'50px'} fontWeight={600} color={'gray.600'} fontSize="md">
                       포인트
                     </Text>
-                    <Text w={'200px'} fontWeight={600} color={'gray.400'} fontSize="md">
+                    <Text w={'200px'} fontWeight={400} color={'gray.400'} fontSize="md">
                       사용가능 포인트 : {memberData.point}
                     </Text>
                   </HStack>
@@ -620,7 +622,7 @@ const ReservationRestaurant = () => {
                   </Text>
                 </HStack>
                 <VStack gap={4}>
-                  <Link onClick={handleSubmit(addReservation)} fontSize={'lg'} color={'gray.400'}>
+                  <Link onClick={handleSubmit(addReservation)} fontSize={'lg'} color={'gray.600'}>
                     현장에서 결제할래요.
                   </Link>
                   <Button

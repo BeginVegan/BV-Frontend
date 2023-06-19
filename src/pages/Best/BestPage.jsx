@@ -5,7 +5,6 @@ import { COLORS } from '@/constants/colors';
 import BestRestaurantCard from '@/components/restaurant/BestRestaurantCard';
 import { useQuery } from 'react-query';
 import RestaurantService from '@/api/RestaurantService';
-import Loading from '@/components/common/Loading';
 import LoadingPage from '../Loading/LoadingPage';
 
 const categoryDetail = {
