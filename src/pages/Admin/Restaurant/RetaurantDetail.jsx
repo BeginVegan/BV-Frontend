@@ -279,7 +279,7 @@ const RetaurantDetail = () => {
             <Text fontSize={'sm'} color={'gray.400'}>
               최대 5장
             </Text>
-            <Link onClick={downloadImage} fontSize={'sm'} color={'gray.400'}>
+            <Link onClick={downloadImage} fontSize={'sm'} color={'green.500'}>
               사진파일 다운로드
             </Link>
           </FormLabel>

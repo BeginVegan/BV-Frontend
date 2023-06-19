@@ -5,17 +5,17 @@ import wideLogo from '@/assets/images/logo_wide.png';
 
 const Footer = () => {
   return (
-    <Box bottom={0} minH={'162px'} bg={COLORS.GREEN400} color={'white'}>
-      <Container as={Stack} maxW={'6xl'} py={4} spacing={4} justify={'center'} align={'center'}>
+    <Box bottom={0} minH={'165px'} bg={COLORS.GREEN400} color={'white'}>
+      <Container as={Stack} maxW={'6xl'} py={4} justify={'center'} align={'center'}>
         <Image
-          h="32px"
+          h="60px"
           objectFit="cover"
           src={wideLogo}
           alt="logo"
           onDragStart={e => e.preventDefault()}
           onContextMenu={e => e.preventDefault()}
         />
-        <Stack direction={'row'} spacing={6}>
+        <Stack mt={0} direction={'row'} spacing={6}>
           <Link>Home</Link>
           <Link>About</Link>
           <Link>Blog</Link>
@@ -27,14 +27,12 @@ const Footer = () => {
         <Container
           as={Stack}
           maxW={'6xl'}
-          py={4}
+          pt={2}
           direction={{ base: 'column', md: 'row' }}
-          spacing={4}
           justify={{ base: 'center', md: 'space-between' }}
           align={{ base: 'center', md: 'center' }}
         >
           <Text>© 2023 Begin Vegan. All rights reserved</Text>
-          <Stack direction={'row'} spacing={6}></Stack>
         </Container>
       </Box>
     </Box>

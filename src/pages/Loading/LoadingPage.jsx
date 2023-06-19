@@ -7,9 +7,8 @@ const LoadingPage = () => (
     justify="center"
     align="center"
     position={'absolute'}
-    top={'-60px'}
+    top={0}
     left={0}
-    spacing={8}
     bgColor={'rgba(0, 0, 0, 0.534)'}
   >
     <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="green.500" size="xl" />

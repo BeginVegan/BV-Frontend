@@ -22,7 +22,7 @@ const RestaurantCard = ({ restaurant, setMapCenter, setOpenMarker, setIsPanto })
       cursor={'pointer'}
       borderRadius="lg"
       w={'400px'}
-      height={'100px'}
+      h={'150px'}
       direction={'row'}
       bg={useColorModeValue('white', 'gray.900')}
       onClick={() => {
@@ -38,6 +38,7 @@ const RestaurantCard = ({ restaurant, setMapCenter, setOpenMarker, setIsPanto })
     >
       <Flex flex={2}>
         <Image
+          maxH={'100px'}
           boxShadow={'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'}
           objectFit="cover"
           boxSize="100%"
@@ -56,8 +57,13 @@ const RestaurantCard = ({ restaurant, setMapCenter, setOpenMarker, setIsPanto })
         p={1}
         pt={2}
       >
-        <HStack>
+        <HStack h={'25px'}>
+          <StarIcon boxSize={4} color={'yellow.500'} />
+          <Text h={'25px'} w={'35px'} fontSize={'lg'} color={'gray.500'} fontWeight={600}>
+            {restaurant.restaurantStar}
+          </Text>
           <Heading
+            h={'25px'}
             _hover={{
               cursor: 'pointer',
               color: 'blue.500',
@@ -67,13 +73,11 @@ const RestaurantCard = ({ restaurant, setMapCenter, setOpenMarker, setIsPanto })
           >
             {restaurant.restaurantName}
           </Heading>
-          <StarIcon ml={4} boxSize={4} color={'yellow.500'} />
-          <Text fontSize={'lg'} color={'gray.500'} fontWeight={600}>
-            {restaurant.restaurantStar}
-          </Text>
         </HStack>
         <Text fontWeight={400} color={'gray.500'} fontSize={'md'}>
-          {restaurant.restaurantAddress}
+          {restaurant.restaurantAddress.length > 20
+            ? restaurant.restaurantAddress.slice(0, 20) + '..'
+            : restaurant.restaurantAddress}
         </Text>
         <Text fontWeight={300} color={'gray.500'} fontSize={'sm'}>
           전화번호: {restaurant.restaurantPhone}

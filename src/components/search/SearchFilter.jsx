@@ -1,8 +1,18 @@
-import { Button, GridItem, Input, SimpleGrid, Stack, StackDivider, Text } from '@chakra-ui/react';
+import {
+  Button,
+  GridItem,
+  HStack,
+  Input,
+  SimpleGrid,
+  Stack,
+  StackDivider,
+  Text,
+} from '@chakra-ui/react';
 import React, { useState } from 'react';
 import VeganLevel from '@/components/restaurant/VeganLevel';
 import { useForm } from 'react-hook-form';
 import Axios from '@/api/apiConfig';
+import { RiCloseLine } from 'react-icons/ri';
 
 const SearchFilter = ({
   setIsFilterOpen,
@@ -130,17 +140,20 @@ const SearchFilter = ({
     >
       <Stack spacing={4} p={4} divider={<StackDivider borderColor={'gray.400'} />}>
         <Stack direction={'column'}>
-          <Text
-            textTransform={'uppercase'}
-            color={'green.400'}
-            fontWeight={600}
-            fontSize={'lg'}
-            p={2}
-            rounded={'md'}
-            display={'inline-block'}
-          >
-            검색 필터
-          </Text>
+          <HStack justifyContent={'space-between'}>
+            <Text
+              textTransform={'uppercase'}
+              color={'green.400'}
+              fontWeight={600}
+              fontSize={'lg'}
+              p={2}
+              rounded={'md'}
+              display={'inline-block'}
+            >
+              검색 필터
+            </Text>
+            <RiCloseLine size={24} onClick={() => setIsFilterOpen(false)} cursor={'pointer'} />
+          </HStack>
           <SimpleGrid columns={2} spacing={5}>
             <input {...register('order')} type="hidden" />
 
