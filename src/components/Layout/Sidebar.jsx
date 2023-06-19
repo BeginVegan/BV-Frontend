@@ -1,4 +1,6 @@
 import { ROUTES } from '@/routes/ROUTES';
+import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
+import { userAtom } from '@/utils/atoms/userAtom';
 import {
   Box,
   CloseButton,
@@ -10,9 +12,11 @@ import {
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
+import { useAtom } from 'jotai';
 import { FiCompass, FiHome, FiMenu, FiTrendingUp } from 'react-icons/fi';
 import { TiWarningOutline } from 'react-icons/ti';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 const LinkItems = [
   { name: '메인', icon: FiHome, route: ROUTES.MYPAGE_MAIN },
   { name: '히스토리', icon: FiTrendingUp, route: ROUTES.MYPAGE_HISTORY },
@@ -75,7 +79,41 @@ const NavItem = ({ icon, route, onClose, children, ...rest }) => {
   const navigate = useNavigate();
   const _hereIAm = useLocation();
   const hereIAm = _hereIAm.pathname.split('/')[2];
+  const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
+  const [userStatus, setUserStatus] = useAtom(userAtom);
 
+  const dropUser = () => {
+    Swal.fire({
+      icon: 'question',
+      title: '정말 탈퇴하시겠습니까?',
+      text: '탈퇴 요청은 되돌릴 수 없습니다',
+      showCancelButton: true,
+    }).then(async res => {
+      if (res.isConfirmed) {
+        const result = await Axios.delete('member')
+        if (result.status === 200 ) {
+          Swal.fire({
+            icon: 'success',
+            title: '회원 탈퇴 성공',
+            text: '그동안 이용해 주셔서 감사합니다',
+          }).then(res => {
+            if (res.isConfirmed) {
+              setIsAuthenticated(false);
+              setUserStatus(null);
+              navigate(ROUTES.HOME);
+            }
+          });
+        }
+        else {
+          Swal.fire({
+            icon:'error',
+            title:'회원 탈퇴 실패',
+            text: '다시 시도해 주세요'
+          })
+        }
+      }
+    });
+  };
   return (
     <Flex
       align="center"
@@ -92,8 +130,7 @@ const NavItem = ({ icon, route, onClose, children, ...rest }) => {
       bg={hereIAm === route.split('/')[2] ? 'green' : null}
       color={hereIAm === route.split('/')[2] ? 'white' : 'black'}
       {...rest}
-      onClick={() => {
-        navigate(route);
+      onClick={() => { route === ROUTES.MYPAGE_DROP ? dropUser(): navigate(route);
         onClose();
       }}
     >

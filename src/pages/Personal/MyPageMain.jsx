@@ -268,6 +268,7 @@ const MyPageMainCard = ({title, value, list}) => {
                         const borderColor = isInRange ? COLORS.GREEN100 : "transparent";
                         return (
                           <HStack  
+                            key={index}
                             width={"90%"} 
                             px={2} // padding 적용
                             bgColor={bgColor}
