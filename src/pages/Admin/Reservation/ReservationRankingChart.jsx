@@ -18,8 +18,8 @@ const ReservationRankingChart = ({ dataList }) => {
       }
       return restaurantName;
     } catch (error) {
-      console.error(error);
-      return null;
+      const restaurantName = '레스토랑';
+      return restaurantName;
     }
   };
 
