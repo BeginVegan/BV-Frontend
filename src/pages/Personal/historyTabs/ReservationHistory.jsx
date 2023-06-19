@@ -94,7 +94,7 @@ const ReservationHistory = () => {
 
   return (
     <TableContainer marginTop={'1rem'}>
-      {reservationList && reservationList.length > 0 ? (
+      {sortedReservationList && sortedReservationList.length > 0 ? (
         <Table size={isMobile ? 'sm' : 'lg'}>
           <Thead>
             <Tr>
@@ -109,7 +109,31 @@ const ReservationHistory = () => {
           </Thead>
           <Tbody>
             {sortedReservationList.map((store, idx) => {
-              // your existing map logic...
+                return (
+                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
+                    <CustomTd>{idx + 1}</CustomTd>
+                    <CustomTd>
+                      <RestaurantName restaurantNo={store.restaurantNo} />
+                    </CustomTd>
+                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
+                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
+                    <CustomTd>{store.reservationStatus}</CustomTd>
+                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                    <CustomTd>
+                      {Number(isCancellable(store.reservationTime)) < 0 ? (
+                        <Button
+                          colorScheme="red"
+                          size={{ base: 'xs', md: 'sm' }}
+                          onClick={() => handleCancel(store.reservationNo)}
+                        >
+                          예약취소
+                        </Button>
+                      ) : (
+                        '취소불가'
+                      )}
+                    </CustomTd>
+                  </Tr>
+                );
             })}
           </Tbody>
         </Table>
@@ -126,7 +150,7 @@ const ReservationHistory = () => {
       )}
     </TableContainer>
   );
-}
+      }  
 export default ReservationHistory;
 
 const CustomTh = ({ children }) => {

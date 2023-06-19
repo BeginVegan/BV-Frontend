@@ -88,7 +88,7 @@ const BookmarkCard = ({ restuarantNo, idx, refresh }) => {
     if (result.status === 200 ) {
       Swal.fire({
         icon: 'success',
-        title: '북마크 삭제 성공',
+        title: '즐겨찾기 삭제 성공',
         text: '더 나은 서비스로 만나 뵙겠습니다',
       })
       refresh()
@@ -96,7 +96,7 @@ const BookmarkCard = ({ restuarantNo, idx, refresh }) => {
     else {
       Swal.fire({
         icon:'error',
-        title:'북마크 삭제 실패',
+        title:'즐겨찾기 삭제 실패',
         text: '다시 시도해 주세요'
       })
     }
@@ -146,7 +146,7 @@ const BookmarkCard = ({ restuarantNo, idx, refresh }) => {
                 colorScheme="teal"
                 onClick={() => deleteBookmark(data.restaurantNo)}
               >
-                리뷰 삭제
+                즐겨찾기 삭제
               </Button>
             </ButtonGroup>
           </CardFooter>
