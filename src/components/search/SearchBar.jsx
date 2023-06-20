@@ -31,9 +31,8 @@ const SearchBar = ({ isMain }) => {
   return (
     <InputGroup
       ml={!isMain && 8}
-      size={isMain ? 'lg' : 'md'}
-      w={{ base: '300px', lg: '600px' }}
-      display={isMain ? 'flex' : { base: 'none', lg: 'flex' }}
+      w={{ base: '300px', md: '350px', lg: '400px' }}
+      display={isMain ? 'flex' : { base: 'none', md: 'flex' }}
     >
       <InputLeftElement
         pointerEvents="none"
