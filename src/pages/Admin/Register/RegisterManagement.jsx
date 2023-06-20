@@ -115,7 +115,7 @@ const RegisterManagement = () => {
       <Flex
         mb={5}
         p={6}
-        width={'1104px'}
+        width={'1180px'}
         justifyContent={'space-between'}
         alignItems={'center'}
         borderWidth="1px"
@@ -125,7 +125,7 @@ const RegisterManagement = () => {
         border={'none'}
       >
         {/* Filter Section */}
-        <HStack>
+        <HStack gap={2} w={'900px'} justifyContent={'center'}>
           <Input
             w={'200px'}
             placeholder="식당 이름"

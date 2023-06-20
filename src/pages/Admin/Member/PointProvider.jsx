@@ -86,9 +86,9 @@ const PointProvider = ({ setIsChange }) => {
         />
         <Button
           onClick={pointProviderAll}
-          bg="#48BB78"
           color="white"
-          _hover={{ bg: '#3F995E' }}
+          _hover={{ bg: 'blue.400' }}
+          bgColor={'blue.300'}
           mr={2}
           width={320}
         >

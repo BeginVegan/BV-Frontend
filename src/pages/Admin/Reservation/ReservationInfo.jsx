@@ -230,7 +230,14 @@ const ReservationInfo = ({ data }) => {
           >
             적용
           </Button>
-          <Button w={'200px'} onClick={clearFilter} colorScheme="gray">
+          <Button
+            bgColor={'red.300'}
+            _hover={{ bgColor: 'red.400' }}
+            color={'white'}
+            w={'200px'}
+            onClick={clearFilter}
+            colorScheme="gray"
+          >
             취소
           </Button>
         </HStack>
@@ -298,10 +305,10 @@ const ReservationInfo = ({ data }) => {
                       isDisabled={!canPreviousPage}
                       icon={<ArrowLeftIcon h={3} w={3} />}
                       mr={4}
-                      sx={{
-                        backgroundColor: 'black',
-                        color: 'white',
-                      }}
+                      // sx={{
+                      //   backgroundColor: 'black',
+                      //   color: 'white',
+                      // }}
                     />
                   </Tooltip>
                   <Tooltip label="이전 페이지">
@@ -309,10 +316,10 @@ const ReservationInfo = ({ data }) => {
                       onClick={previousPage}
                       isDisabled={!canPreviousPage}
                       icon={<ChevronLeftIcon h={6} w={6} />}
-                      sx={{
-                        backgroundColor: 'darkgray',
-                        color: 'white',
-                      }}
+                      // sx={{
+                      //   backgroundColor: 'darkgray',
+                      //   color: 'white',
+                      // }}
                     />
                   </Tooltip>
                 </Flex>
@@ -348,10 +355,10 @@ const ReservationInfo = ({ data }) => {
                       onClick={nextPage}
                       isDisabled={!canNextPage}
                       icon={<ChevronRightIcon h={6} w={6} />}
-                      sx={{
-                        backgroundColor: 'darkgray',
-                        color: 'white',
-                      }}
+                      // sx={{
+                      //   backgroundColor: 'darkgray',
+                      //   color: 'white',
+                      // }}
                     />
                   </Tooltip>
                   <Tooltip label="마지막 페이지">
@@ -359,10 +366,10 @@ const ReservationInfo = ({ data }) => {
                       onClick={() => gotoPage(pageCount - 1)}
                       isDisabled={!canNextPage}
                       icon={<ArrowRightIcon h={3} w={3} />}
-                      sx={{
-                        backgroundColor: 'black',
-                        color: 'white',
-                      }}
+                      // sx={{
+                      //   backgroundColor: 'black',
+                      //   color: 'white',
+                      // }}
                       ml={4}
                     />
                   </Tooltip>

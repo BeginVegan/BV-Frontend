@@ -14,6 +14,13 @@ const theme = extendTheme({
     heading: 'NanumSquareNeo-Variable',
     body: 'NanumSquareNeo-Variable',
   },
+  components: {
+    Button: {
+      baseStyle: {
+        fontWeight: 400,
+      },
+    },
+  },
 });
 
 function App() {

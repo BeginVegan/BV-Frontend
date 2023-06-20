@@ -177,7 +177,14 @@ const MemberInfo = ({ data, setIsChange }) => {
             >
               적용
             </Button>
-            <Button onClick={clearFilter} colorScheme="gray" width={220}>
+            <Button
+              onClick={clearFilter}
+              color="white"
+              _hover={{ bg: 'red.400' }}
+              bgColor={'red.300'}
+              colorScheme="gray"
+              width={220}
+            >
               취소
             </Button>
           </HStack>
@@ -212,11 +219,14 @@ const MemberInfo = ({ data, setIsChange }) => {
                     return (
                       <React.Fragment key={rowIndex}>
                         <Tr
+                          cursor={'pointer'}
                           onClick={() => handleRowClick(rowIndex)}
                           onMouseLeave={() => setSelectedIndex(null)}
                           {...row.getRowProps()}
                           _hover={{ backgroundColor: hoverColor }}
                           bg={rowColor}
+                          borderX={isExpanded && '2px solid gray'}
+                          borderTop={isExpanded && '2px solid gray'}
                         >
                           {row.cells.map((cell, cellIndex) => (
                             <Td key={cellIndex} textAlign="center" {...cell.getCellProps()}>
@@ -226,7 +236,12 @@ const MemberInfo = ({ data, setIsChange }) => {
                         </Tr>
                         {isExpanded && (
                           <tr>
-                            <Td bgColor={'gray.100'} colSpan={columns.length}>
+                            <Td
+                              borderX="2px solid gray"
+                              borderBottom="2px solid gray"
+                              bgColor={'white'}
+                              colSpan={columns.length}
+                            >
                               <VStack>
                                 <PointIndividualProvider
                                   setIsChange={setIsChange}
@@ -269,10 +284,6 @@ const MemberInfo = ({ data, setIsChange }) => {
                       isDisabled={!canPreviousPage}
                       icon={<ArrowLeftIcon h={3} w={3} />}
                       mr={4}
-                      sx={{
-                        backgroundColor: 'black',
-                        color: 'white',
-                      }}
                     />
                   </Tooltip>
                   <Tooltip label="이전 페이지">
@@ -280,10 +291,6 @@ const MemberInfo = ({ data, setIsChange }) => {
                       onClick={previousPage}
                       isDisabled={!canPreviousPage}
                       icon={<ChevronLeftIcon h={6} w={6} />}
-                      sx={{
-                        backgroundColor: 'darkgray',
-                        color: 'white',
-                      }}
                     />
                   </Tooltip>
                 </Flex>
@@ -319,10 +326,6 @@ const MemberInfo = ({ data, setIsChange }) => {
                       onClick={nextPage}
                       isDisabled={!canNextPage}
                       icon={<ChevronRightIcon h={6} w={6} />}
-                      sx={{
-                        backgroundColor: 'darkgray',
-                        color: 'white',
-                      }}
                     />
                   </Tooltip>
                   <Tooltip label="마지막 페이지">
@@ -330,10 +333,6 @@ const MemberInfo = ({ data, setIsChange }) => {
                       onClick={() => gotoPage(pageCount - 1)}
                       isDisabled={!canNextPage}
                       icon={<ArrowRightIcon h={3} w={3} />}
-                      sx={{
-                        backgroundColor: 'black',
-                        color: 'white',
-                      }}
                       ml={4}
                     />
                   </Tooltip>

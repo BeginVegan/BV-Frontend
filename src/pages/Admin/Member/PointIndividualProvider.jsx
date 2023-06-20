@@ -78,7 +78,7 @@ const PointIndividualProvider = ({ memberData, setIsChange }) => {
       border={'none'}
     >
       <HStack mt={5} mb={5}>
-        <Text w={'100px'} fontWeight={600} color={'black'} fontSize="sm">
+        <Text w={'100px'} fontWeight={600} color={'gray.600'} fontSize="md">
           포인트 지급
         </Text>
         <Select

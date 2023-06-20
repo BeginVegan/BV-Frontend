@@ -52,7 +52,7 @@ const DataTable = ({ columns, data }) => {
   const navigator = useNavigate();
 
   return (
-    <VStack width={'1024px'} gap={4}>
+    <VStack width={'1100px'} gap={4}>
       <TableContainer>
         <Table variant="simple" {...getTableProps()}>
           <Thead>
@@ -71,7 +71,7 @@ const DataTable = ({ columns, data }) => {
               prepareRow(row);
               return (
                 <Tr
-                  _hover={{ bgColor: 'gray.200' }}
+                  _hover={{ bgColor: 'gray.100' }}
                   cursor={'pointer'}
                   onClick={() =>
                     navigator(`${ROUTES.ADMIN_RESTAURANT_DETAIL_RAW}/${row.original.no}`)
@@ -98,7 +98,7 @@ const DataTable = ({ columns, data }) => {
       <HStack pt={1}>
         <Flex gap={4}>
           <Flex>
-            <Tooltip label="First Page">
+            <Tooltip label="첫 페이지">
               <IconButton
                 onClick={() => gotoPage(0)}
                 isDisabled={!canPreviousPage}
@@ -106,7 +106,7 @@ const DataTable = ({ columns, data }) => {
                 mr={4}
               />
             </Tooltip>
-            <Tooltip label="Previous Page">
+            <Tooltip label="이전 페이지">
               <IconButton
                 onClick={previousPage}
                 isDisabled={!canPreviousPage}
@@ -142,14 +142,14 @@ const DataTable = ({ columns, data }) => {
           </Flex>
 
           <Flex>
-            <Tooltip label="Next Page">
+            <Tooltip label="다음 페이지">
               <IconButton
                 onClick={nextPage}
                 isDisabled={!canNextPage}
                 icon={<ChevronRightIcon h={6} w={6} />}
               />
             </Tooltip>
-            <Tooltip label="Last Page">
+            <Tooltip label="마지막 페이지">
               <IconButton
                 onClick={() => gotoPage(pageCount - 1)}
                 isDisabled={!canNextPage}
