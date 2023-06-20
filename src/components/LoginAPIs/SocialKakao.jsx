@@ -32,7 +32,6 @@ const SocialKakao = () => {
     });
 
     if (res.status === 200) {
-      navigate(ROUTES.HOME);
       Swal.fire({
         icon: 'success',
         title: '로그인 성공',

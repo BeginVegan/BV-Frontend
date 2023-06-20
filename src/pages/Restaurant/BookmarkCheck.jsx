@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/routes/ROUTES';
 import { useAtom } from 'jotai';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
+import { loginMenuAtom } from '@/utils/atoms/loginMenuAtom';
 
 const CustomRiHeart3Line = chakra(RiHeart3Line);
 const CustomRiHeart3Fill = chakra(RiHeart3Fill);
@@ -14,6 +15,7 @@ const BookmarkCheck = ({ restaurantNo }) => {
   const navigator = useNavigate();
   const [isBookmark, setIsBookmark] = useState(null);
   const [isAuthenticated] = useAtom(isAuthenticatedAtom);
+  const [isLoginMenuOpen, setIisLoginMenuOpen] = useAtom(loginMenuAtom);
   const toast = useToast();
 
   useEffect(() => {
@@ -72,10 +74,11 @@ const BookmarkCheck = ({ restaurantNo }) => {
       <Tooltip hasArrow label="로그인 후 즐겨찾기 추가해보세요!" bg="red.400" placement="top">
         <Box position="relative" display="inline-block">
           <CustomRiHeart3Line
+            cursor={'pointer'}
             size={30}
             fill="red"
             _hover={{ fill: 'red.400', transform: 'scale(1.4)' }}
-            onClick={() => navigator(ROUTES.LOGIN)}
+            onClick={() => setIisLoginMenuOpen(true)}
           />
         </Box>
       </Tooltip>
@@ -90,6 +93,7 @@ const BookmarkCheck = ({ restaurantNo }) => {
     return (
       <CustomRiHeart3Fill
         size={30}
+        cursor={'pointer'}
         fill="red"
         _hover={{ fill: 'red.400', transform: 'scale(1.4)' }}
         onClick={bookmarkRestaurant}
@@ -100,6 +104,7 @@ const BookmarkCheck = ({ restaurantNo }) => {
   return (
     <CustomRiHeart3Line
       size={30}
+      cursor={'pointer'}
       fill="red"
       _hover={{ fill: 'red.400', transform: 'scale(1.4)' }}
       onClick={bookmarkRestaurant}
