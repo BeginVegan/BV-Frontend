@@ -25,6 +25,8 @@ const SearchFilter = ({
   setSelectedGu,
   selectedOrder,
   setSelectedOrder,
+  selectedLevel,
+  setSelectedLevel,
 }) => {
   const {
     register,
@@ -221,7 +223,12 @@ const SearchFilter = ({
             display={'none'}
             value={7}
           ></Input>
-          <VeganLevel setValue={setValue} isClickable={true} />
+          <VeganLevel
+            setValue={setValue}
+            isClickable={true}
+            level={selectedLevel}
+            setSelectedLevel={setSelectedLevel}
+          />
         </Stack>
         <SimpleGrid columns={2} spacing={5}>
           <Button

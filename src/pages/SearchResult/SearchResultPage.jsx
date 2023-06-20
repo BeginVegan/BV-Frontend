@@ -19,6 +19,7 @@ const SearchResultPage = () => {
   const [openMarker, setOpenMarker] = useState(null);
   const [selectedGu, setSelectedGu] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedLevel, setSelectedLevel] = useState(null);
 
   const { query } = useParams();
 
@@ -67,6 +68,8 @@ const SearchResultPage = () => {
           setSelectedGu={setSelectedGu}
           selectedOrder={selectedOrder}
           setSelectedOrder={setSelectedOrder}
+          selectedLevel={selectedLevel}
+          setSelectedLevel={setSelectedLevel}
         />
       )}
       <GridItem pt={4} ml={'auto'} rowSpan={1} colSpan={2} minW={'450px'}>
