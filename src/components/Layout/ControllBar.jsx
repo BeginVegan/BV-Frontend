@@ -23,21 +23,15 @@ import { RiArrowDownSLine, RiArrowUpSLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-function ControllBarContent({
-  isUserMenuOpen,
-  navigate,
-  logout,
-  setIsUserMenuOpen,
-}) {
-  
+function ControllBarContent({ isUserMenuOpen, navigate, logout, setIsUserMenuOpen }) {
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
   const [userStatus, setUserStatus] = useAtom(userAtom);
   return (
     <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={6}>
       {isAuthenticated && userStatus && (
         <HStack
-          width={'144px'}
-          spacing={{ base: '0', md: '6' }}
+          minW={{ base: '72px', md: '144px' }}
+          spacing={{ base: 0, md: 6 }}
           onClick={() => setIsUserMenuOpen(p => !p)}
         >
           <Flex>
@@ -46,6 +40,7 @@ function ControllBarContent({
                 <HStack gap={2}>
                   <Avatar size={'sm'} bg="teal.500" />
                   <VStack
+                    minW={'40px'}
                     display={{ base: 'none', md: 'flex' }}
                     alignItems="flex-start"
                     spacing="1px"
@@ -70,15 +65,25 @@ function ControllBarContent({
                 borderColor={useColorModeValue('gray.200', 'gray.700')}
               >
                 {userStatus && userStatus.role === 'admin' && (
-                  <MenuItem onClick={() => navigate(ROUTES.ADMIN_RAW)}>관리페이지</MenuItem>
+                  <>
+                    <MenuItem onClick={() => navigate(ROUTES.ADMIN_RAW)}>관리페이지</MenuItem>
+                    <MenuItem onClick={() => navigate(`${ROUTES.ADMIN_RAW}/reservation`)}>
+                      예약 관리
+                    </MenuItem>
+                    <MenuItem onClick={() => navigate(`${ROUTES.ADMIN_RAW}/restaurant`)}>
+                      식당 관리
+                    </MenuItem>
+                  </>
                 )}
                 {userStatus && userStatus.role === 'normal' && (
-                  <MenuItem onClick={() => navigate(ROUTES.MYPAGE_HOME)}>마이페이지</MenuItem>
-                )}
-                <MenuItem onClick={() => navigate(ROUTES.MYPAGE_HISTORY)}>히스토리</MenuItem>
-                <MenuItem onClick={() => navigate(ROUTES.MYPAGE_BOOKMARK)}>즐겨찾기</MenuItem>
+                  <>
+                    <MenuItem onClick={() => navigate(ROUTES.MYPAGE_HOME)}>마이페이지</MenuItem>
+                    <MenuItem onClick={() => navigate(ROUTES.MYPAGE_HISTORY)}>히스토리</MenuItem>
+                    <MenuItem onClick={() => navigate(ROUTES.MYPAGE_BOOKMARK)}>즐겨찾기</MenuItem>
+                  </>
+                )}{' '}
                 <MenuDivider />
-                <MenuItem onClick={()=>logout()}>로그아웃</MenuItem>
+                <MenuItem onClick={() => logout()}>로그아웃</MenuItem>
               </MenuList>
             </Menu>
           </Flex>
@@ -126,7 +131,7 @@ const ControllBar = () => {
     const res = await Axios.get('member/logout');
     if (res.status === 200) {
       localStorage.removeItem('isAuthenticated');
-      localStorage.removeItem('userStatus');  
+      localStorage.removeItem('userStatus');
       setIsAuthenticated(false);
       setUserStatus(null);
       Swal.fire({
