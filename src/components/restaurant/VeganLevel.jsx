@@ -7,7 +7,7 @@ import eggIcon from '@/assets/icons/icons-egg.png';
 import meatIcon from '@/assets/icons/icons-meat.png';
 import chickenIcon from '@/assets/icons/icon-thanksgiving.png';
 
-const VeganLevel = ({ setValue, level, isClickable = false }) => {
+const VeganLevel = ({ setValue, level, isClickable = false, setSelectedLevel }) => {
   const [veganLevel, setVeganLevel] = useState(level ? level : 7);
 
   useEffect(() => {
@@ -17,6 +17,7 @@ const VeganLevel = ({ setValue, level, isClickable = false }) => {
   const changeVeganLevel = num => {
     setVeganLevel(num);
     setValue('restaurantVeganLevel', num);
+    setSelectedLevel && setSelectedLevel(num);
   };
 
   return (

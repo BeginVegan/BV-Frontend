@@ -21,6 +21,12 @@ const SearchFilter = ({
   setIsLoading,
   currentLocation,
   setIsRestaurantsNull,
+  selectedGu,
+  setSelectedGu,
+  selectedOrder,
+  setSelectedOrder,
+  selectedLevel,
+  setSelectedLevel,
 }) => {
   const {
     register,
@@ -31,8 +37,8 @@ const SearchFilter = ({
   } = useForm();
 
   const [veganLevel, setVeganLevel] = useState(1);
-  const [selectedGu, setSelectedGu] = useState(null);
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  // const [selectedGu, setSelectedGu] = useState(null);
+  // const [selectedOrder, setSelectedOrder] = useState(null);
 
   const handleGuClick = value => {
     if (selectedGu === value) {
@@ -86,7 +92,7 @@ const SearchFilter = ({
 
     //조건에 맞는 데이터를 걸러 줌
     let filterRestaurants = newRestaurants.filter(rest => {
-      if (data.gu != '') {
+      if (data.gu != null && data.gu != '') {
         return (
           rest.restaurantAddressGu == data.gu &&
           rest.restaurantVeganLevel <= data.restaurantVeganLevel
@@ -217,7 +223,12 @@ const SearchFilter = ({
             display={'none'}
             value={7}
           ></Input>
-          <VeganLevel setValue={setValue} isClickable={true} />
+          <VeganLevel
+            setValue={setValue}
+            isClickable={true}
+            level={selectedLevel}
+            setSelectedLevel={setSelectedLevel}
+          />
         </Stack>
         <SimpleGrid columns={2} spacing={5}>
           <Button
