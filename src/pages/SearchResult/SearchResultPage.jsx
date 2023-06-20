@@ -24,11 +24,14 @@ const SearchResultPage = () => {
   const { query } = useParams();
 
   const searchData = async () => {
-    const res = await Axios.get(`/restaurant/search?keyword=${query}`);
-    if (!(res.data && res.data.length > 0)) {
+    try {
+      const res = await Axios.get(`/restaurant/search?keyword=${query}`);
+      setRestaurants(res.data);
+    } catch (error) {
+      console.error(error);
       setIsRestaurantsNull(true);
+      setRestaurants(null);
     }
-    setRestaurants(res.data);
     setIsLoading(false);
   };
 
