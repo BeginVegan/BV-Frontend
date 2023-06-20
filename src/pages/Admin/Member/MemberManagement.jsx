@@ -1,21 +1,23 @@
 import { Heading, Flex, VStack, Card, CardBody, Spinner } from '@chakra-ui/react';
 import Axios from '@/api/apiConfig';
 import React, { useEffect, useState } from 'react';
-import MemberList from '@/pages/Admin/Member/MemberInfo';
+import MemberInfo from '@/pages/Admin/Member/MemberInfo';
 
 const MemberManagement = () => {
   const [memberList, setMemberList] = useState(null);
+  const [isChange, setIsChange] = useState(false);
+
+  const getMembers = async () => {
+    const res = await Axios.get('member/list');
+    if (res.status === 200) {
+      setMemberList(res.data);
+    }
+  };
 
   useEffect(() => {
-    const getMembers = async () => {
-      const res = await Axios.get('member/list');
-      if (res.status === 200) {
-        setMemberList(res.data);
-        console.log(res.data);
-      }
-    };
+    setIsChange(false);
     getMembers();
-  }, []);
+  }, [isChange]);
 
   if (!memberList) {
     return (
@@ -34,7 +36,7 @@ const MemberManagement = () => {
         <Card bg="#f8f8ff" boxShadow={'none'}>
           <CardBody p={0}>
             <VStack>
-              <MemberList data={memberList}></MemberList>
+              <MemberInfo data={memberList} setIsChange={setIsChange}></MemberInfo>
             </VStack>
           </CardBody>
         </Card>

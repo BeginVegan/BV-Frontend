@@ -3,54 +3,62 @@ import Axios from '@/api/apiConfig';
 import { Box, Text, Select, Input, Button, HStack, useToast } from '@chakra-ui/react';
 import getCurrentTime from '@/pages/Admin/Member/getCurrentTime';
 
-const PointIndividualProvider = ({ memberData }) => {
+const PointIndividualProvider = ({ memberData, setIsChange }) => {
   const toast = useToast();
 
   const pointProvider = async () => {
-    if (pointProvide.point === '')
+    if (pointProvide.point === '') {
       toast({
         title: '포인트가 지급액을 선택하시오.',
         status: 'error',
         duration: 2000,
         isClosable: true,
       });
-    if (pointProvide.context === '')
+      return;
+    }
+    if (pointProvide.context === '') {
       toast({
         title: '포인트가 지급 내용을 작성하시오.',
         status: 'error',
         duration: 2000,
         isClosable: true,
       });
+      return;
+    }
 
-    if (pointProvide.point != '' && pointProvide.context != '')
-      try {
-        const res = await Axios.post(`mypage/point-history`, {
-          memberEmail: memberData.memberEmail,
+    let pointResult = 0;
+
+    try {
+      const res = await Axios.post(`mypage/point-history`, {
+        memberEmail: memberData.memberEmail,
+      });
+      pointResult = res.data[res.data.length - 1].pointResult;
+    } catch {
+      pointResult = 100;
+    }
+    try {
+      const response = await Axios.put(`member/modifyPoint`, {
+        memberEmail: memberData.memberEmail,
+        pointDiv: pointProvide.context,
+        pointTime: getCurrentTime(),
+        pointChange: pointProvide.point,
+        pointResult: parseFloat(pointResult) + parseFloat(pointProvide.point),
+      });
+
+      if (response.status === 200) {
+        toast({
+          title: '포인트가 지급되었습니다.',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
         });
-        const pointResult = res.data[res.data.length - 1].pointResult;
-
-        const response = await Axios.put(`member/modifyPoint`, {
-          memberEmail: memberData.memberEmail,
-          pointDiv: pointProvide.context,
-          pointTime: getCurrentTime(),
-          pointChange: pointProvide.point,
-          pointResult: parseFloat(pointResult) + parseFloat(pointProvide.point),
-        });
-
-        if (response.status === 200) {
-          toast({
-            title: '포인트가 지급되었습니다.',
-            status: 'success',
-            duration: 2000,
-            isClosable: true,
-          });
-          setPointProvide(prevState => ({ ...prevState, point: '' }));
-          setPointProvide(prevState => ({ ...prevState, context: '' }));
-        }
-      } catch (error) {
-        console.error(error);
-        return null;
+        setPointProvide(prevState => ({ ...prevState, point: '' }));
+        setPointProvide(prevState => ({ ...prevState, context: '' }));
+        setIsChange(true);
       }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const [pointProvide, setPointProvide] = useState({
@@ -67,14 +75,14 @@ const PointIndividualProvider = ({ memberData }) => {
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
-      bg="white"
       border={'none'}
     >
-      <HStack mt={5} mb={5} w={1232}>
-        <Text w={'150px'} fontWeight={600} color={'gray.400'} fontSize="sm">
+      <HStack mt={5} mb={5}>
+        <Text w={'100px'} fontWeight={600} color={'black'} fontSize="sm">
           포인트 지급
         </Text>
         <Select
+          bg={'white'}
           w={'160px'}
           placeholder="포인트"
           color={'gray.500'}
@@ -88,6 +96,7 @@ const PointIndividualProvider = ({ memberData }) => {
           <option value="5000">5,000 point</option>
         </Select>
         <Input
+          bg={'white'}
           w={'340px'}
           placeholder="지급 내용"
           value={pointProvide.context}

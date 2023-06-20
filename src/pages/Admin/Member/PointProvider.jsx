@@ -3,7 +3,7 @@ import Axios from '@/api/apiConfig';
 import { Box, Text, Select, Input, Button, HStack, useToast } from '@chakra-ui/react';
 import getCurrentTime from '@/pages/Admin/Member/getCurrentTime';
 
-const PointProvider = () => {
+const PointProvider = ({ setIsChange }) => {
   const toast = useToast();
 
   const pointProviderAll = async () => {
@@ -28,8 +28,6 @@ const PointProvider = () => {
           pointTime: getCurrentTime(),
           pointChange: pointProvide.point,
         });
-
-        console.log(response);
         if (response.status === 200) {
           toast({
             title: '포인트가 지급되었습니다.',
@@ -39,6 +37,7 @@ const PointProvider = () => {
           });
           setPointProvide(prevState => ({ ...prevState, point: '' }));
           setPointProvide(prevState => ({ ...prevState, context: '' }));
+          setIsChange(true);
         }
       } catch (error) {
         console.error(error);
