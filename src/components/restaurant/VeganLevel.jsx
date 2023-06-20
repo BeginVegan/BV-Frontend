@@ -17,7 +17,7 @@ const VeganLevel = ({ setValue, level, isClickable = false, setSelectedLevel }) 
   const changeVeganLevel = num => {
     setVeganLevel(num);
     setValue('restaurantVeganLevel', num);
-    setSelectedLevel(num);
+    setSelectedLevel && setSelectedLevel(num);
   };
 
   return (
