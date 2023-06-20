@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Table,
   Thead,
@@ -20,15 +20,13 @@ import {
   CardBody,
   Card,
   Box,
-  Accordion,
-  AccordionButton,
-  AccordionItem,
-  AccordionPanel,
 } from '@chakra-ui/react';
 import { ArrowRightIcon, ArrowLeftIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { usePagination, useTable } from 'react-table';
 import PointProvider from '@/pages/Admin/Member/PointProvider';
-import PointIndividualProvider from './Pointindividual Provider';
+import PointIndividualProvider from '@/pages/Admin/Member/PointIndividualProvider';
+import Withdrawal from '@/pages/Admin/Member/Withdrawal';
+import ChangeRole from './ChangeRole';
 
 const columns = [
   {
@@ -49,23 +47,29 @@ const columns = [
   },
 ];
 
-const MemberInfo = ({ data }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const MemberInfo = ({ data, setIsChange }) => {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [filteredData, setFilteredData] = useState(data);
+
+  useEffect(() => {
+    setFilteredData(data);
+  }, [data]);
+
+  const [expandedRowIndex, setExpandedRowIndex] = useState(null);
   const [filterCriteria, setFilterCriteria] = useState({
     memberEmail: '',
     memberName: '',
     memberRole: '',
   });
 
-  const handleRowClick = index => {
-    setSelectedIndex(index === selectedIndex ? null : index);
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-    setSelectedIndex(null);
+  const handleRowClick = rowIndex => {
+    const memberEmail = filteredData[rowIndex].memberEmail;
+    if (memberEmail === expandedRowIndex) {
+      setExpandedRowIndex(null);
+    } else {
+      setExpandedRowIndex(memberEmail);
+    }
+    setSelectedIndex(rowIndex);
   };
 
   const applyFilter = () => {
@@ -119,10 +123,9 @@ const MemberInfo = ({ data }) => {
   );
 
   return (
-    <VStack gap={5}>
+    <VStack gap={1}>
       {/* Point Provider Section */}
-      <PointProvider />
-
+      <PointProvider setIsChange={setIsChange} />
       {/* Filter Section */}
       <Box
         mb={5}
@@ -170,17 +173,16 @@ const MemberInfo = ({ data }) => {
               color="white"
               _hover={{ bg: '#3F995E' }}
               mr={2}
-              width={320}
+              width={220}
             >
               적용
             </Button>
-            <Button onClick={clearFilter} colorScheme="gray" width={320}>
+            <Button onClick={clearFilter} colorScheme="gray" width={220}>
               취소
             </Button>
           </HStack>
         </Fade>
       </Box>
-
       {/* Table */}
       <Card shadow={'none'}>
         <CardBody>
@@ -201,16 +203,56 @@ const MemberInfo = ({ data }) => {
                 <Tbody {...getTableBodyProps()}>
                   {page.map((row, rowIndex) => {
                     prepareRow(row);
-                    const index = pageIndex * pageSize + rowIndex;
+                    const memberEmail = filteredData[rowIndex].memberEmail;
+                    const isExpanded = memberEmail === expandedRowIndex;
+                    const isSelected = selectedIndex === rowIndex;
+                    const rowColor = isSelected ? 'gray.100' : isExpanded ? 'gray.100' : 'white';
+                    const hoverColor = 'gray.100';
 
                     return (
-                      <Tr {...row.getRowProps()}>
-                        {row.cells.map((cell, cellIndex) => (
-                          <Td key={cellIndex} textAlign="center" {...cell.getCellProps()}>
-                            {cell.render('Cell')}
-                          </Td>
-                        ))}
-                      </Tr>
+                      <React.Fragment key={rowIndex}>
+                        <Tr
+                          onClick={() => handleRowClick(rowIndex)}
+                          onMouseLeave={() => setSelectedIndex(null)}
+                          {...row.getRowProps()}
+                          _hover={{ backgroundColor: hoverColor }}
+                          bg={rowColor}
+                        >
+                          {row.cells.map((cell, cellIndex) => (
+                            <Td key={cellIndex} textAlign="center" {...cell.getCellProps()}>
+                              {cell.render('Cell')}
+                            </Td>
+                          ))}
+                        </Tr>
+                        {isExpanded && (
+                          <tr>
+                            <Td bgColor={'gray.100'} colSpan={columns.length}>
+                              <VStack>
+                                <PointIndividualProvider
+                                  setIsChange={setIsChange}
+                                  memberData={filteredData.find(
+                                    item => item.memberEmail === memberEmail
+                                  )}
+                                />
+                              </VStack>
+                              <HStack justifyContent={'center'}>
+                                <ChangeRole
+                                  setIsChange={setIsChange}
+                                  memberData={filteredData.find(
+                                    item => item.memberEmail === memberEmail
+                                  )}
+                                />
+                                <Withdrawal
+                                  setIsChange={setIsChange}
+                                  memberData={filteredData.find(
+                                    item => item.memberEmail === memberEmail
+                                  )}
+                                />
+                              </HStack>
+                            </Td>
+                          </tr>
+                        )}
+                      </React.Fragment>
                     );
                   })}
                 </Tbody>

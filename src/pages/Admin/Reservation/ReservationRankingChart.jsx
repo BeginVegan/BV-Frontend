@@ -147,7 +147,7 @@ const ReservationRankingChart = ({ dataList }) => {
 
   if (isLoading) {
     return (
-      <Flex w={492} h={520} justifyContent="center" alignItems="center">
+      <Flex w={526} h={520} justifyContent="center" alignItems="center">
         <Spinner size="xs" />
       </Flex>
     );
@@ -164,7 +164,7 @@ const ReservationRankingChart = ({ dataList }) => {
             }}
             series={reservationsChartData.series}
             type="bar"
-            width="450"
+            width="484"
             height="200"
           />
         </div>
@@ -176,7 +176,7 @@ const ReservationRankingChart = ({ dataList }) => {
             }}
             series={canceledReservationsChartData.series}
             type="bar"
-            width="450"
+            width="484"
             height="200"
           />
         </div>

@@ -1,45 +1,56 @@
 import React, { useState } from 'react';
-import { Button, systemProps } from '@chakra-ui/react';
-import Axios from 'axios';
+import { Button, useToast } from '@chakra-ui/react';
+import Axios from '@/api/apiConfig';
+import Swal from 'sweetalert2';
 
-const ChangeRole = ({ memberData }) => {
+const ChangeRole = ({ memberData, setIsChange }) => {
   const [memberRole, setMemberRole] = useState(memberData.memberRole);
+  const toast = useToast();
 
   const handleButtonClick = async () => {
-    try {
-      if (memberRole === 'admin') {
-        await Axios.get(`member/role/normal`, {
-          params: {
+    const result = await Swal.fire({
+      title:
+        memberRole === 'admin' ? '권한을 일반 회원으로 수정합니다.' : '관리자 권한을 부여합니다.',
+      showCancelButton: true,
+      confirmButtonText: '예',
+      cancelButtonText: '아니오',
+    });
+
+    if (result.isConfirmed) {
+      try {
+        if (memberRole === 'admin') {
+          await Axios.put(`member/role/normal`, {
             memberEmail: memberData.memberEmail,
-          },
-        });
-        setMemberRole('normal');
-      } else {
-        await Axios.get(`member/role/admin`, {
-          params: {
+          });
+          setMemberRole('normal');
+        } else {
+          await Axios.put(`member/role/admin`, {
             memberEmail: memberData.memberEmail,
-          },
+          });
+          setMemberRole('admin');
+        }
+        toast({
+          title: '권한이 수정 되었습니다.',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
         });
-        setMemberRole('admin');
+        setIsChange(true);
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
     }
   };
 
   return (
     <Button
-      position="absolute"
-      top="0px"
-      right="0px"
-      size="sm"
-      w={'120px'}
-      color={memberRole === 'admin' ? 'gray.500' : 'white'}
-      bgColor={memberRole === 'admin' ? 'gray.300' : 'red.300'}
-      _hover={{ bgColor: memberRole === 'admin' ? 'gray.300' : 'red.450' }}
-      onClick={!memberRole ? handleButtonClick : null}
+      w={'160px'}
+      color={'white'}
+      bgColor={'red.300'}
+      _hover={{ bgColor: 'red.450' }}
+      onClick={handleButtonClick}
     >
-      {memberRole ? '회원으로 강등' : '관리자 권한 부여'}
+      {memberRole === 'admin' ? '회원으로 강등' : '관리자 권한 부여'}
     </Button>
   );
 };

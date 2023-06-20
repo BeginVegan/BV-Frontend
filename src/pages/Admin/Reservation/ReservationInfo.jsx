@@ -143,8 +143,8 @@ const ReservationInfo = ({ data }) => {
 
   return (
     <VStack>
+      {/* Filter Section */}
       <Flex
-        mb={5}
         pr={6}
         pl={6}
         borderWidth="1px"
@@ -153,7 +153,6 @@ const ReservationInfo = ({ data }) => {
         bg="white"
         border={'none'}
       >
-        {/* Filter Section */}
         <HStack mt={5} mb={5} w={1232}>
           <Input
             placeholder="예약자 정보"
@@ -237,11 +236,13 @@ const ReservationInfo = ({ data }) => {
         </HStack>
       </Flex>
 
-      <HStack pb={10}>
-        <HStack pr={5}>
+      <HStack pb={1}>
+        {/* ReservationAndCancleChart */}
+        <HStack pr={1}>
           <ReservationAndCancleChart data={filteredData} />
         </HStack>
-        <VStack pl={5}>
+        {/* ReservationRankingChart */}
+        <VStack>
           <ReservationRankingChart dataList={filteredData} />
         </VStack>
       </HStack>
