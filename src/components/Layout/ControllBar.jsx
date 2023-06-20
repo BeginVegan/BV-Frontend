@@ -4,8 +4,6 @@ import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
 import {
   Avatar,
-  Button,
-  Flex,
   HStack,
   Menu,
   MenuButton,
@@ -20,21 +18,40 @@ import {
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { RiArrowDownSLine, RiArrowUpSLine } from 'react-icons/ri';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import SocialKakao from '../LoginAPIs/SocialKakao';
+import SocialGoogle from '../LoginAPIs/SocialGoogle';
+import { loginMenuAtom } from '@/utils/atoms/loginMenuAtom';
 
 function ControllBarContent({ isUserMenuOpen, navigate, logout, setIsUserMenuOpen }) {
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
   const [userStatus, setUserStatus] = useAtom(userAtom);
+  const [isLoginMenuOpen, setIisLoginMenuOpen] = useAtom(loginMenuAtom);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (isLoginMenuOpen) setIsOpen(true);
+    if (!isLoginMenuOpen) setIsOpen(false);
+  }, [isLoginMenuOpen]);
+
+  const closeMenuList = () => {
+    setIisLoginMenuOpen(false);
+  };
+
+  const openMenuList = () => {
+    setIisLoginMenuOpen(true);
+  };
+
   return (
-    <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={6}>
-      {isAuthenticated && userStatus && (
-        <HStack
-          minW={{ base: '72px', md: '144px' }}
-          spacing={{ base: 0, md: 6 }}
-          onClick={() => setIsUserMenuOpen(p => !p)}
-        >
-          <Flex>
+    <Stack flex={{ base: 1, md: 0 }} justifyContent={'flex-end'} direction={'row'} spacing={6}>
+      <HStack
+        minW={{ base: '72px', md: '144px' }}
+        spacing={{ base: 0, md: 6 }}
+        onClick={() => setIsUserMenuOpen(p => !p)}
+      >
+        <>
+          {isAuthenticated && userStatus && (
             <Menu>
               <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
                 <HStack gap={2}>
@@ -81,30 +98,47 @@ function ControllBarContent({ isUserMenuOpen, navigate, logout, setIsUserMenuOpe
                     <MenuItem onClick={() => navigate(ROUTES.MYPAGE_HISTORY)}>히스토리</MenuItem>
                     <MenuItem onClick={() => navigate(ROUTES.MYPAGE_BOOKMARK)}>즐겨찾기</MenuItem>
                   </>
-                )}{' '}
+                )}
                 <MenuDivider />
                 <MenuItem onClick={() => logout()}>로그아웃</MenuItem>
               </MenuList>
             </Menu>
-          </Flex>
-        </HStack>
-      )}
-      {!isAuthenticated && (
-        <Button
-          as={'a'}
-          fontSize={'sm'}
-          fontWeight={600}
-          color={'white'}
-          bg={'green.400'}
-          onClick={() => navigate(ROUTES.LOGIN)}
-          _hover={{
-            bg: 'green.300',
-          }}
-          cursor={'pointer'}
-        >
-          로그인
-        </Button>
-      )}
+          )}
+          {!isAuthenticated && (
+            <Menu isOpen={isOpen} onClose={() => closeMenuList()}>
+              <MenuButton
+                w={'100px'}
+                borderRadius={'full'}
+                fontSize={'sm'}
+                color={'white'}
+                p={2}
+                bg={'green.400'}
+                _hover={{
+                  bg: 'green.300',
+                }}
+                cursor={'pointer'}
+                transition="all 0.3s"
+                _focus={{ boxShadow: 'none' }}
+                onClick={() => openMenuList()}
+              >
+                로그인
+              </MenuButton>
+              <MenuList
+                display={'flex'}
+                flexDirection={'column'}
+                zIndex={100}
+                p={2}
+                bg={useColorModeValue('white', 'gray.900')}
+                borderColor={useColorModeValue('gray.200', 'gray.700')}
+                gap={2}
+              >
+                <SocialKakao />
+                <SocialGoogle />
+              </MenuList>
+            </Menu>
+          )}
+        </>
+      </HStack>
     </Stack>
   );
 }
@@ -115,6 +149,7 @@ const ControllBar = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     // isAuthenticated 값을 불러오는게 조금 느려서 임의로 지연시킴
@@ -139,7 +174,8 @@ const ControllBar = () => {
         title: '로그아웃 성공',
         text: '메인으로 돌아갑니다',
       });
-      navigate(ROUTES.HOME);
+
+      if (location.pathname !== '/main') navigate(ROUTES.HOME);
     } else {
       Swal.fire({
         icon: 'error',

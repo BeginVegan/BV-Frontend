@@ -22,6 +22,7 @@ import {
   Link,
   InputRightElement,
   InputGroup,
+  Checkbox,
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
@@ -79,6 +80,7 @@ const ReservationRestaurant = () => {
   const [selectDate, setSelectDate] = useState(new Date());
   const [selectTime, setSelectTime] = useState(null);
   const [paymentName, setPaymentName] = useState(null);
+  const [withPayment, setWithPayment] = useState(true);
 
   const navigator = useNavigate();
   const today = new Date();
@@ -216,7 +218,7 @@ const ReservationRestaurant = () => {
     const openswal = () => {
       return `
         <div style='display: flex; flex-direction: column; align-items: center'>
-          <div style='display: flex; flex-direction: column; align-items: flex-start; hight: 150px; gap: 8px'>
+          <div style='display: flex; flex-direction: column; align-items: flex-start; hight: 150px; gap: 15px;'>
             <Text>식당이름: ${data.restaurantName}</Text>
             <Text>예약시간: ${format(selectDate, 'yyyy-MM-dd HH:mm:ss')}</Text>
             <Text>예약타입: ${data.reservationType}</Text>
@@ -292,7 +294,7 @@ const ReservationRestaurant = () => {
     const openswal = () => {
       return `
         <div style='display: flex; flex-direction: column; align-items: center'>
-          <div style='display: flex; flex-direction: column; align-items: flex-start; hight: 150px; gap: 8px'>
+          <div style='display: flex; flex-direction: column; align-items: flex-start; hight: 150px; gap: 15px;'>
             <Text>식당이름: ${data.restaurantName}</Text>
             <Text>예약시간: ${format(selectDate, 'yyyy-MM-dd HH:mm:ss')}</Text>
             <Text>예약타입: ${data.reservationType}</Text>
@@ -621,16 +623,21 @@ const ReservationRestaurant = () => {
                   </Text>
                 </HStack>
                 <VStack gap={4}>
-                  <Link onClick={handleSubmit(addReservation)} fontSize={'lg'} color={'gray.600'}>
+                  <Checkbox
+                    fontSize={'lg'}
+                    color={'gray.600'}
+                    onChange={() => setWithPayment(!withPayment)}
+                    size={'lg'}
+                  >
                     현장에서 결제할래요.
-                  </Link>
+                  </Checkbox>
                   <Button
                     bgColor={'green.200'}
                     _hover={{ bgColor: 'green.400', color: 'white' }}
-                    onClick={handleSubmit(addReservationWithPayment)}
+                    onClick={handleSubmit(withPayment ? addReservationWithPayment : addReservation)}
                     disabled={isSubmitting}
                   >
-                    결제하기
+                    {withPayment ? '결제하기' : '예약하기'}
                   </Button>
                 </VStack>
               </VStack>
