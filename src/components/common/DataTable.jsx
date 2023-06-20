@@ -15,6 +15,7 @@ import {
   Text,
   Tooltip,
   Select,
+  Heading,
 } from '@chakra-ui/react';
 import { ArrowRightIcon, ArrowLeftIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { usePagination, useTable } from 'react-table';
@@ -51,7 +52,7 @@ const DataTable = ({ columns, data }) => {
   const navigator = useNavigate();
 
   return (
-    <VStack gap={4}>
+    <VStack width={'1024px'} gap={4}>
       <TableContainer>
         <Table variant="simple" {...getTableProps()}>
           <Thead>
@@ -70,7 +71,7 @@ const DataTable = ({ columns, data }) => {
               prepareRow(row);
               return (
                 <Tr
-                  _hover={{ bgColor: 'gray.400' }}
+                  _hover={{ bgColor: 'gray.200' }}
                   cursor={'pointer'}
                   onClick={() =>
                     navigator(`${ROUTES.ADMIN_RESTAURANT_DETAIL_RAW}/${row.original.no}`)
@@ -93,6 +94,7 @@ const DataTable = ({ columns, data }) => {
           </Tbody>
         </Table>
       </TableContainer>
+      {data.length === 0 && <Heading>조건에 일치하는 식당이 없습니다. (;-;)</Heading>}
       <HStack pt={1}>
         <Flex gap={4}>
           <Flex>

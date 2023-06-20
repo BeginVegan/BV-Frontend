@@ -1,13 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/routes/ROUTES';
 import DataTable from '@/components/common/DataTable';
-import { Box, Button, Card, Flex, Heading, useDisclosure } from '@chakra-ui/react';
+import { Button, Card, Flex, HStack, Heading, Input, Select, Text } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import RestaurantService from '@/api/RestaurantService';
 import LoadingPage from '@/pages/Loading/LoadingPage';
-// import CustomModal from '@/components/common/CustomModal';
-import RegisterMenu from './RegisterMenu';
 
 const columns = [
   {
@@ -42,15 +40,13 @@ const columns = [
 
 const RegisterManagement = () => {
   const navigator = useNavigate();
-  // const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: restaurants, isLoading } = useQuery(
     'getRestaurantList',
     RestaurantService.getRestaurantList
   );
 
-  const data = useMemo(() => {
-    if (isLoading) return;
-    return restaurants.map(res => ({
+  const convertData = data => {
+    return data.map(res => ({
       no: res.restaurantNo,
       name:
         res.restaurantName.length > 7 ? res.restaurantName.slice(0, 7) + '..' : res.restaurantName,
@@ -67,7 +63,47 @@ const RegisterManagement = () => {
       veganlevel: res.restaurantVeganLevel,
       star: res.restaurantStar,
     }));
+  };
+
+  const [filteredData, setFilteredData] = useState(null);
+
+  const [filterCriteria, setFilterCriteria] = useState({
+    storeName: '',
+    storeAddress: '',
+    veganLevel: '',
+  });
+
+  const data = useMemo(() => {
+    if (isLoading) return;
+    setFilteredData(convertData(restaurants));
   }, [isLoading]);
+
+  console.log(filteredData);
+
+  const applyFilter = () => {
+    const filtered = restaurants.filter(restaurant => {
+      const { storeName, storeAddress, veganLevel } = filterCriteria;
+
+      const isstoreNameMatch = !storeName || restaurant.restaurantName.includes(storeName);
+      const isstoreAddressMatch =
+        !storeAddress || restaurant.restaurantAddress.includes(storeAddress);
+      const isveganLevelMatch = !veganLevel || restaurant.restaurantVeganLevel === +veganLevel;
+
+      return isstoreNameMatch && isstoreAddressMatch && isveganLevelMatch;
+    });
+
+    setFilteredData(convertData(filtered));
+  };
+
+  const clearFilter = () => {
+    setFilterCriteria({
+      storeName: '',
+      storeAddress: '',
+      veganLevel: '',
+    });
+
+    setFilteredData(convertData(restaurants));
+  };
 
   if (isLoading) return <LoadingPage />;
 
@@ -76,26 +112,86 @@ const RegisterManagement = () => {
       <Heading display={'flex'} alignSelf={'flex-start'} color={'#323232'} mb={5}>
         식당 관리
       </Heading>
-      <Card borderRadius={'2xl'} shadow={'none'} bg={'white'} py={5} px={10}>
-        <Flex w={'100%'} justifyContent={'flex-end'}>
-          {/* <CustomModal title={'메뉴 수정'} isOpen={isOpen} onOpen={onOpen} onClose={onClose}>
-            <RegisterMenu restaurantno={1} />
-          </CustomModal>
-          <Button mt={4} onClick={onOpen}>
-            메뉴 수정
-          </Button> */}
-          <Button
-            w={'140px'}
-            mb={5}
-            color={'white'}
-            bgColor={'green.300'}
-            _hover={{ bgColor: 'green.400' }}
-            onClick={() => navigator(`${ROUTES.RESTAURANT_REGISTRATION_RAW}/1`)}
+      <Flex
+        mb={5}
+        p={6}
+        width={'1104px'}
+        justifyContent={'space-between'}
+        alignItems={'center'}
+        borderWidth="1px"
+        borderRadius="lg"
+        overflow="hidden"
+        bg="white"
+        border={'none'}
+      >
+        {/* Filter Section */}
+        <HStack>
+          <Input
+            w={'200px'}
+            placeholder="식당 이름"
+            value={filterCriteria.storeName}
+            onChange={e =>
+              setFilterCriteria(prevState => ({ ...prevState, storeName: e.target.value }))
+            }
+          />
+          <Input
+            w={'200px'}
+            placeholder="식당 주소"
+            value={filterCriteria.storeAddress}
+            onChange={e =>
+              setFilterCriteria(prevState => ({ ...prevState, storeAddress: e.target.value }))
+            }
+          />
+
+          <Select
+            w={'200px'}
+            placeholder="비건레벨"
+            value={filterCriteria.veganLevel}
+            onChange={e =>
+              setFilterCriteria(prevState => ({ ...prevState, veganLevel: e.target.value }))
+            }
           >
-            식당등록
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </Select>
+          <Button
+            onClick={applyFilter}
+            bg="green.300"
+            color="white"
+            _hover={{ bg: 'green.400' }}
+            mr={2}
+            w={'100px'}
+          >
+            적용
           </Button>
-        </Flex>
-        <DataTable columns={columns} data={data}></DataTable>
+          <Button
+            w={'100px'}
+            bg="red.300"
+            color={'white'}
+            _hover={{ bg: 'red.400' }}
+            onClick={clearFilter}
+            colorScheme="gray"
+          >
+            취소
+          </Button>
+        </HStack>
+        <Button
+          w={'140px'}
+          color={'white'}
+          bgColor={'blue.300'}
+          _hover={{ bgColor: 'blue.400' }}
+          onClick={() => navigator(`${ROUTES.RESTAURANT_REGISTRATION_RAW}/1`)}
+        >
+          식당등록 +
+        </Button>
+      </Flex>
+      <Card borderRadius={'2xl'} shadow={'none'} bg={'white'} py={5} px={10}>
+        <Flex w={'100%'} justifyContent={'flex-end'}></Flex>
+        <DataTable columns={columns} data={filteredData}></DataTable>
       </Card>
     </>
   );
