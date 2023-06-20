@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
 
-const LOCALHOST = 'http://localhost';
-const BACKEND_SERVER = 'http://localhost:3000/';
-// const BACKEND_SERVER = 'https://begin-vegan-backend.kro.kr:3000/';
+const LOCALHOST = 'http://localhost:3000/';
+const BACKEND_SERVER = 'https://begin-vegan-backend.kro.kr:3000/';
 
 const headers = {
   // 기본 헤더 설정 (옵션)
@@ -12,7 +11,7 @@ const headers = {
 };
 
 const Axios = axios.create({
-  baseURL: `${BACKEND_SERVER}/`,
+  baseURL: `${BACKEND_SERVER}`,
   timeout: 5000, // 요청 타임아웃 설정 (옵션)
   headers: headers,
   withCredentials: true,

@@ -78,8 +78,6 @@ const RegisterManagement = () => {
     setFilteredData(convertData(restaurants));
   }, [isLoading]);
 
-  console.log(filteredData);
-
   const applyFilter = () => {
     const filtered = restaurants.filter(restaurant => {
       const { storeName, storeAddress, veganLevel } = filterCriteria;

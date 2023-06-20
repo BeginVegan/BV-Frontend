@@ -105,7 +105,6 @@ const ReservationRestaurant = () => {
     });
 
     let newPoint;
-    console.log(watchedDiscount);
 
     if (watchedDiscount == undefined || watchedDiscount == 0) return;
     if (totalPrice == 0) {

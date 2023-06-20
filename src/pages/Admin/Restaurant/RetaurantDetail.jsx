@@ -54,9 +54,10 @@ const RetaurantDetail = () => {
   } = useQuery('getRestaurantDetails', fetchRestaurantDetails, {
     retry: 0,
     onError: error => {
+      console.log(error);
       if (error.response?.status === 500) {
         // 에러가 500일 경우에만 페이지 이동
-        navigator(`${ROUTES.ADMIN_RAW}/restaurant`);
+        // navigator(`${ROUTES.ADMIN_RAW}/restaurant`);
         Swal.fire('존재하지 않는 식당입니다.');
       }
     },
