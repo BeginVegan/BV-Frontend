@@ -59,7 +59,7 @@ const BestRestaurantCard = ({
           </Heading>
           <StarIcon boxSize={4} color={'yellow.500'} />
           <Text fontWeight={400} color={'gray.500'} fontSize="lg" mb={4}>
-            {restaurantStar}
+            {restaurantStar.toFixed(1)}
           </Text>
         </HStack>
         <Text fontWeight={400} color={'gray.500'} fontSize="lg" mb={4}>

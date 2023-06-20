@@ -17,6 +17,8 @@ const SearchResultPage = () => {
   const [isPanto, setIsPanto] = useState(false);
   const [currentLocation, setCurrentLocation] = useState({ lat: 37.571848, lng: 127.00116 });
   const [openMarker, setOpenMarker] = useState(null);
+  const [selectedGu, setSelectedGu] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   const { query } = useParams();
 
@@ -61,6 +63,10 @@ const SearchResultPage = () => {
           setIsLoading={setIsLoading}
           currentLocation={currentLocation}
           setIsRestaurantsNull={setIsRestaurantsNull}
+          selectedGu={selectedGu}
+          setSelectedGu={setSelectedGu}
+          selectedOrder={selectedOrder}
+          setSelectedOrder={setSelectedOrder}
         />
       )}
       <GridItem pt={4} ml={'auto'} rowSpan={1} colSpan={2} minW={'450px'}>

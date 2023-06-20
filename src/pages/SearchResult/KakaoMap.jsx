@@ -171,16 +171,16 @@ const CustomMapMarker = ({ loc, setOpenMarker }) => {
       }
       onClick={() => navigate(`/restaurant/${loc.restaurantNo}`)}
       // 마커에 마우스아웃 이벤트를 등록합니다
-      onMouseOut={
-        // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
-        () => {
-          setOpenMarker(null);
-        }
-      }
+      // onMouseOut={
+      //   // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+      //   () => {
+      //     setOpenMarker(null);
+      //   }
+      // }
     >
       {loc.isOpen == true && (
         <CustomOverlayMap position={loc.latlng} yAnchor={1.5} zIndex={500}>
-          <div style={markerStyle}>
+          <div style={markerStyle} onClick={() => navigate(`/restaurant/${loc.restaurantNo}`)}>
             <span style={{ fontSize: '18px', textAlign: 'center' }}>{loc.title}</span>
             <br />
             <span style={{ fontSize: '14px', textAlign: 'center' }}>

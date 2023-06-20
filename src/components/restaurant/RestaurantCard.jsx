@@ -60,7 +60,7 @@ const RestaurantCard = ({ restaurant, setMapCenter, setOpenMarker, setIsPanto })
         <HStack h={'25px'}>
           <StarIcon boxSize={4} color={'yellow.500'} />
           <Text h={'25px'} w={'35px'} fontSize={'lg'} color={'gray.500'} fontWeight={600}>
-            {restaurant.restaurantStar}
+            {restaurant.restaurantStar.toFixed(1)}
           </Text>
           <Heading
             h={'25px'}
@@ -80,7 +80,7 @@ const RestaurantCard = ({ restaurant, setMapCenter, setOpenMarker, setIsPanto })
             : restaurant.restaurantAddress}
         </Text>
         <Text fontWeight={300} color={'gray.500'} fontSize={'sm'}>
-          전화번호: {restaurant.restaurantPhone}
+          {restaurant.restaurantPhone != null && `전화번호: ${restaurant.restaurantPhone}`}
         </Text>
       </Stack>
     </Stack>
