@@ -1,23 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import Axios from '@/api/apiConfig';
-import { Table, Thead, Tbody, Tr, Th, Td, Box, Button } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, Box, Button, useToast } from '@chakra-ui/react';
 
 const ReservationDetailTable = ({ reservationData }) => {
   const isCancelled = reservationData.reservationStatus === 'Cancelled';
   const [restaurantName, setRestaurantName] = useState('');
   const [bookerName, setBookerName] = useState('');
+  const toast = useToast();
 
   const handleButtonClick = async reservationNo => {
     try {
-      alert(
-        'Currently, it is defined as a list receiving event.\nIf the payment method is confirmed, change it to the "Delete Reservation" API'
-      );
-      const res = await Axios.get(`reservation/${reservationNo}`);
+      const res = await Axios.delete(`reservation/${reservationNo}`);
       if (res.status === 200) {
-        console.log(res.data);
+        toast({
+          title: '예약이 취소 되었습니다.',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        });
       }
     } catch (error) {
       console.error(error);
+      toast({
+        title: '예약이 취소 되었습니다.',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
     }
   };
 
