@@ -211,7 +211,7 @@ const RegisterDetail = ({
           type="number"
           display={'none'}
         ></Input>
-        <VeganLevel setValue={setValue} isClickable={true} />
+        <VeganLevel setValue={setValue} level={1} isClickable={true} />
       </FormControl>
     </>
   );

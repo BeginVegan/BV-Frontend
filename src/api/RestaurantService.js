@@ -44,7 +44,6 @@ const RestaurantService = {
 
   updateRestaurant: async ({ restaurantInfo, restaurantImages, options }) => {
     const formData = new FormData();
-    console.log(restaurantImages);
 
     if (restaurantImages) {
       if (restaurantImages.length) {
