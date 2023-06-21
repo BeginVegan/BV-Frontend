@@ -30,6 +30,7 @@ import Swal from 'sweetalert2';
 import { ROUTES } from '@/routes/ROUTES';
 import JSZip from 'jszip';
 import S3Service from '@/api/S3Service';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
 const RetaurantDetail = () => {
   const queryClient = useQueryClient();
@@ -496,25 +497,36 @@ const RetaurantDetail = () => {
             isClickable={isModify}
           />
         </FormControl>
-        <Button mt={4} onClick={onOpen}>
-          메뉴 수정
-        </Button>
+        {isModify && (
+          <Button mt={4} onClick={onOpen}>
+            메뉴 수정
+          </Button>
+        )}
         <ButtonGroup display={'flex'} alignSelf={'flex-end'}>
           {isModify ? (
             <>
               <Button
                 bgColor={'red.200'}
                 _hover={{ bgColor: 'red.400', color: 'white' }}
+                onClick={() => removeRestaurant()}
+                position={'absolute'}
+                left={10}
+              >
+                식당삭제 <DeleteIcon ml={1} />
+              </Button>
+              <Button
+                bgColor={'blue.200'}
+                _hover={{ bgColor: 'blue.400', color: 'white' }}
                 onClick={() => setisModify(false)}
               >
-                취소하기
+                수정취소
               </Button>
               <Button
                 bgColor={'green.200'}
                 _hover={{ bgColor: 'green.400', color: 'white' }}
                 type="submit"
               >
-                수정하기
+                수정완료
               </Button>
             </>
           ) : (
@@ -524,14 +536,7 @@ const RetaurantDetail = () => {
                 _hover={{ bgColor: 'green.400', color: 'white' }}
                 onClick={() => setisModify(true)}
               >
-                수정하기
-              </Button>
-              <Button
-                bgColor={'red.200'}
-                _hover={{ bgColor: 'red.400', color: 'white' }}
-                onClick={() => removeRestaurant()}
-              >
-                삭제하기
+                수정하기 <EditIcon ml={1} />
               </Button>
             </>
           )}
