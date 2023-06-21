@@ -19,6 +19,8 @@ const KakaoMap = ({
   // const [currentLocation, setCurrentLocation] = useState({ lat: 33.5563, lng: 126.79581 }); // 상위 컴포넌트로 꺼냄
 
   useEffect(() => {
+    if (!restaurants) return;
+
     let newLocations = [];
     restaurants.forEach(restaurant => {
       newLocations.push({
@@ -50,67 +52,62 @@ const KakaoMap = ({
   };
 
   return (
-    <>
-      {locations.length != 0 && (
-        <Map
-          center={mapCenter}
-          style={{ position: 'relative', width: '100%', height: '100%' }} // 지도 크기
-          level={level} // 지도 확대 레벨
-          isPanto={isPanto}
-        >
-          <MapMarker
-            position={{ lat: currentLocation.latitude, lng: currentLocation.longitude }}
-            title="현재위치"
-          />
-
-          {locations.map((loc, idx) => (
-            <CustomMapMarker loc={loc} setOpenMarker={setOpenMarker} key={idx} />
-          ))}
-          {openMarker && <CustomMapMarker loc={openMarker} setOpenMarker={setOpenMarker} />}
-
-          <Button
-            variant="unstyled"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            width="32px"
-            height="32px"
-            bgColor={'white'}
-            borderRadius="50%"
-            boxShadow="md"
-            _hover={{ bg: 'gray.200' }}
-            pos={'absolute'}
-            transform="translate(-110%, -120%)"
-            left="100%"
-            top="100%"
-            zIndex={500}
-            onClick={() => setLevel(level + 1)}
-          >
-            -
-          </Button>
-          <Button
-            variant="unstyled"
-            display="flex"
-            alignItems="center"
-            bgColor={'white'}
-            justifyContent="center"
-            width="32px"
-            height="32px"
-            borderRadius="50%"
-            boxShadow="md"
-            _hover={{ bg: 'gray.200' }}
-            pos={'absolute'}
-            transform="translate(-230%, -120%)"
-            left="100%"
-            top="100%"
-            zIndex={500}
-            onClick={() => setLevel(level - 1)}
-          >
-            +
-          </Button>
-        </Map>
-      )}
-    </>
+    <Map
+      center={mapCenter}
+      style={{ position: 'relative', width: '100%', height: '100%' }} // 지도 크기
+      level={level} // 지도 확대 레벨
+      isPanto={isPanto}
+    >
+      <MapMarker
+        position={{ lat: currentLocation.latitude, lng: currentLocation.longitude }}
+        title="현재위치"
+      />
+      {locations.length != 0 &&
+        locations.map((loc, idx) => (
+          <CustomMapMarker loc={loc} setOpenMarker={setOpenMarker} key={idx} />
+        ))}
+      {openMarker && <CustomMapMarker loc={openMarker} setOpenMarker={setOpenMarker} />}
+      <Button
+        variant="unstyled"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        width="32px"
+        height="32px"
+        bgColor={'white'}
+        borderRadius="50%"
+        boxShadow="md"
+        _hover={{ bg: 'gray.200' }}
+        pos={'absolute'}
+        transform="translate(-110%, -120%)"
+        left="100%"
+        top="100%"
+        zIndex={500}
+        onClick={() => setLevel(level + 1)}
+      >
+        -
+      </Button>
+      <Button
+        variant="unstyled"
+        display="flex"
+        alignItems="center"
+        bgColor={'white'}
+        justifyContent="center"
+        width="32px"
+        height="32px"
+        borderRadius="50%"
+        boxShadow="md"
+        _hover={{ bg: 'gray.200' }}
+        pos={'absolute'}
+        transform="translate(-230%, -120%)"
+        left="100%"
+        top="100%"
+        zIndex={500}
+        onClick={() => setLevel(level - 1)}
+      >
+        +
+      </Button>
+    </Map>
   );
 };
 

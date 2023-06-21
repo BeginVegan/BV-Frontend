@@ -138,11 +138,11 @@ const SearchFilter = ({
 
   return (
     <GridItem
-      h={'calc(100vh - 60px)'}
-      w={'430px'}
+      h={'calc(100vh - 73px)'}
+      minW={'430px'}
       bgColor={'white'}
       position={'absolute'}
-      zIndex={'0'}
+      zIndex={1200}
     >
       <Stack spacing={4} p={4} divider={<StackDivider borderColor={'gray.400'} />}>
         <Stack direction={'column'}>
@@ -158,7 +158,7 @@ const SearchFilter = ({
             >
               검색 필터
             </Text>
-            <RiCloseLine size={24} onClick={() => setIsFilterOpen(false)} cursor={'pointer'} />
+            <RiCloseLine size={30} onClick={() => setIsFilterOpen(false)} cursor={'pointer'} />
           </HStack>
           <SimpleGrid columns={2} spacing={5}>
             <input {...register('order')} type="hidden" />

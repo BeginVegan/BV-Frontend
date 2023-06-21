@@ -31,6 +31,7 @@ const SearchBar = ({ isMain }) => {
   return (
     <InputGroup
       ml={!isMain && 8}
+      size="lg"
       w={{ base: '300px', md: '350px', lg: '400px' }}
       display={isMain ? 'flex' : { base: 'none', md: 'flex' }}
     >
@@ -40,7 +41,6 @@ const SearchBar = ({ isMain }) => {
       />
       <Input
         placeholder="지역, 식당 또는 음식"
-        size="full"
         borderRadius={isMain ? '3xl' : 'md'}
         bg="white"
         ref={inputRef}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Stack, Flex, Text, useBreakpointValue } from '@chakra-ui/react';
+import { Stack, Flex, Text, useBreakpointValue, Skeleton } from '@chakra-ui/react';
 import { COLORS } from '@/constants/colors';
 import BestRestaurantCard from '@/components/restaurant/BestRestaurantCard';
 import { useQuery } from 'react-query';
@@ -27,25 +27,16 @@ const BestPage = () => {
     RestaurantService.getBestRestaurantList
   );
 
-  if (isLoading) {
-    return <LoadingPage></LoadingPage>;
-  }
+  // if (isLoading) {
+  //   return <LoadingPage></LoadingPage>;
+  // }
 
   return (
     <>
-      <Stack justify={'center'} align={'center'}>
-        <Flex
-          w={'full'}
-          h={'15vh'}
-          bgColor={COLORS.GREEN200}
-          backgroundSize={'cover'}
-          justify={'center'}
-          align={'center'}
-          backgroundPosition={'center center'}
-          shadow={' rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset'}
-        >
+      <Stack pb={10}>
+        <Flex h={'100px'} justify={'center'} align={'center'}>
           <Text
-            color={'white'}
+            color={'balck'}
             fontWeight={400}
             lineHeight={1.2}
             fontSize={{ base: '2xl', md: '3xl' }}
@@ -53,7 +44,15 @@ const BestPage = () => {
             {pageDetail.title} 베스트 10곳
           </Text>
         </Flex>
-        <Stack py={4} spacing={4}>
+        <Stack spacing={4}>
+          {isLoading && (
+            <>
+              <Skeleton w={'774px'} height={'238px'} borderRadius="lg"></Skeleton>
+              <Skeleton w={'774px'} height={'238px'} borderRadius="lg"></Skeleton>
+              <Skeleton w={'774px'} height={'238px'} borderRadius="lg"></Skeleton>
+              <Skeleton w={'774px'} height={'238px'} borderRadius="lg"></Skeleton>
+            </>
+          )}
           {!isLoading &&
             bestList[category].map((restaurant, index) => (
               <BestRestaurantCard
