@@ -1,3 +1,4 @@
+import { COLORS } from '@/constants/colors';
 import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
@@ -123,8 +124,8 @@ const NavItem = ({ icon, route, onClose, children, ...rest }) => {
       role="group"
       cursor="pointer"
       _hover={{
-        bg: 'green',
-        color: 'white',
+        bg: COLORS.GREEN200,
+        color: 'black',
       }}
       marginBottom={'1rem'}
       bg={hereIAm === route.split('/')[2] ? 'green' : null}
