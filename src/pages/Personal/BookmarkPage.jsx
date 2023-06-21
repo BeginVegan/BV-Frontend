@@ -46,13 +46,25 @@ const BookmarkPage = () => {
   }, [forceUpdate]);
 
 
+  console.log(bookmarks)
   return (
     <VStack width={'100%'} spacing={'2rem'} paddingLeft={'2rem'}>
       <Text fontSize={'3xl'} mt={'2rem'} fontWeight={'extrabold'}>
         즐겨찾기
       </Text>
       <Divider />
-      <SimpleGrid
+      {(!bookmarks || bookmarks.length < 1)? <SimpleGrid
+          justifyItems={'center'}
+          gap={4}
+          height={'85vh'}
+          overflow={'auto'}
+          width={'100%'}
+          columns={1}
+          spacing={10}
+          align={'center'}
+        >
+          <Text mt={"3rem"} fontSize={'2xl'}>등록된 가게가 없습니다 😂</Text>
+        </SimpleGrid>:<SimpleGrid
         justifyItems={'center'}
         gap={4}
         height={'85vh'}
@@ -67,11 +79,7 @@ const BookmarkPage = () => {
           refresh={() => setForceUpdate(!forceUpdate)}
           />
         ))}
-{/*        
-        <BookmarkCard restuarantNo={1} key={0} idx={0} 
-        refresh={() => setForceUpdate(!forceUpdate)}
-        /> */}
-      </SimpleGrid>
+      </SimpleGrid>}
     </VStack>
   );
 };
