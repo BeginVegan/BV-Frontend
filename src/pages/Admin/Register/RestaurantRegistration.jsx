@@ -155,7 +155,7 @@ const RestaurantRegistration = () => {
                   생성하기
                 </Button>
                 <Button
-                  onClick={() => navigate(ROUTES.ADMIN)}
+                  onClick={() => navigate(`${ROUTES.ADMIN_RAW}/restaurant`)}
                   _hover={{ bgColor: 'red.400', color: 'white' }}
                   bgColor={'red.200'}
                 >

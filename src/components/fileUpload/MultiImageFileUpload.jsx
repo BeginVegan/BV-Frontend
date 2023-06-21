@@ -77,7 +77,7 @@ const MultiImageFileUpload = ({
   return (
     <VStack alignItems={'flex-start'}>
       {restaurantImgs.length === 0 && <FormHelperText>이미지를 등록해주세요.</FormHelperText>}
-      <InputGroup p={4} width="500px" overflowX={'scroll'} cursor={'pointer'}>
+      <InputGroup p={4} width="500px" overflowX={'scroll'} cursor={isModify && 'pointer'}>
         <InputLeftElement pointerEvents="none" />
         <input
           {...inputProps}
@@ -89,6 +89,7 @@ const MultiImageFileUpload = ({
           name={name}
           style={{ display: 'none' }}
           multiple
+          disabled={!isModify}
         />
         <HStack>
           {restaurantImgs.map(img => (
