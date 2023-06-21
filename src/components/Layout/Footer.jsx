@@ -2,11 +2,15 @@ import React from 'react';
 import { Box, Container, Image, Link, Stack, Text } from '@chakra-ui/react';
 import { COLORS } from '@/constants/colors';
 import wideLogo from '@/assets/images/logo_wide.png';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/routes/ROUTES';
 
 const Footer = () => {
+  const navigator = useNavigate();
+
   return (
     <Box bottom={0} minH={'165px'} bg={COLORS.GREEN400} color={'white'}>
-      <Container as={Stack} maxW={'6xl'} py={4} justify={'center'} align={'center'}>
+      <Container as={Stack} maxW={'6xl'} pt={1} pb={2} align={'center'}>
         <Image
           h="60px"
           objectFit="cover"
@@ -16,14 +20,16 @@ const Footer = () => {
           onContextMenu={e => e.preventDefault()}
         />
         <Stack mt={0} direction={'row'} spacing={6}>
-          <Link>Home</Link>
-          <Link>About</Link>
+          <Link onClick={() => navigator(ROUTES.HOME)}>Home</Link>
+          <Link href="https://github.com/BeginVegan" target="_blank">
+            Git
+          </Link>
           <Link>Blog</Link>
           <Link>Contact</Link>
         </Stack>
       </Container>
 
-      <Box borderTopWidth={1} borderStyle={'solid'} borderColor={'gray.200'}>
+      <Box borderTopWidth={2} borderStyle={'solid'} borderColor={'gray.200'}>
         <Container
           as={Stack}
           maxW={'6xl'}
