@@ -1,11 +1,9 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Stack, Flex, Text, useBreakpointValue, Skeleton } from '@chakra-ui/react';
-import { COLORS } from '@/constants/colors';
 import BestRestaurantCard from '@/components/restaurant/BestRestaurantCard';
 import { useQuery } from 'react-query';
 import RestaurantService from '@/api/RestaurantService';
-import LoadingPage from '../Loading/LoadingPage';
 
 const categoryDetail = {
   reservation: {
@@ -26,10 +24,6 @@ const BestPage = () => {
     'getBestRestaurantList',
     RestaurantService.getBestRestaurantList
   );
-
-  // if (isLoading) {
-  //   return <LoadingPage></LoadingPage>;
-  // }
 
   return (
     <>

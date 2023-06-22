@@ -1,10 +1,10 @@
-import Header from '@/components/Layout/Header';
 import { ROUTES } from '@/routes/ROUTES';
 import { Box, Flex, Icon, Link } from '@chakra-ui/react';
 import { useState } from 'react';
 import { FiHome, FiTrendingUp, FiUser } from 'react-icons/fi';
 import { RiMenuFoldLine, RiMenuUnfoldLine } from 'react-icons/ri';
 import { Outlet, useParams } from 'react-router-dom';
+import FixedHeader from '@/components/Layout/FixedHeader';
 
 const LinkItems = [
   { name: '회원 관리', category: 'user', icon: FiUser, href: `${ROUTES.ADMIN_RAW}/user` },
@@ -27,7 +27,7 @@ const AdminLayout = () => {
 
   return (
     <>
-      <Header />
+      <FixedHeader />
       <Flex
         position={'relative'}
         minH={'calc(100vh - 60px)'}
@@ -41,7 +41,12 @@ const AdminLayout = () => {
             onClose={() => setIsOpen(false)}
             onOpen={() => setIsOpen(true)}
           />
-          <Flex boxShadow={'rgba(0, 0, 0, 0.35) 8px 0 10px -6px inset'} w={'100%'} bg="#f8f8ff">
+          <Flex
+            py={2}
+            boxShadow={'rgba(0, 0, 0, 0.35) 8px 0 10px -6px inset'}
+            w={'100%'}
+            bg="#f8f8ff"
+          >
             <Outlet />
           </Flex>
         </Flex>
@@ -58,7 +63,7 @@ const SidebarContent = ({ isOpen, onClose, onOpen, ...rest }) => {
 
   return (
     <Flex direction={'column'} bg={'white'} minW={widthPx} maxW={widthPx} {...rest}>
-      <Box w={widthPx} position={'fixed'}>
+      <Box w={widthPx} position={'fixed'} top={'70px'}>
         <Flex h="20" alignItems="center" mx="8" justifyContent={isOpen ? 'flex-end' : 'center'}>
           {isOpen ? (
             <RiMenuFoldLine size={18} cursor={'pointer'} onClick={onClose} />
