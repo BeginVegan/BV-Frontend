@@ -1,4 +1,5 @@
 import Axios from '@/api/apiConfig';
+import useInterval from '@/hooks/useInterval';
 import { Button, Flex, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
@@ -15,13 +16,15 @@ const TimePicker = ({
   const [availableTimes, setAvailableTimes] = useState([]);
   const formattedDate = format(selectDate, 'yyyy-MM-dd');
 
-  const { data, isLoading } = useQuery(['getTime', selectDate], async () => {
+  const { data, isLoading, refetch, isRefetching } = useQuery(['getTime', selectDate], async () => {
     const response = await Axios.get(`restaurant/reservation/${restaurantNo}`);
     return response.data;
   });
 
+  useInterval(() => refetch(), 500);
+
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && !isRefetching) {
       const timeList = [];
       const today = data.filter(el => el.includes(formattedDate));
       const open = +openTime.split(':')[0] - 1;
@@ -34,7 +37,7 @@ const TimePicker = ({
 
       setAvailableTimes(timeList);
     }
-  }, [isLoading, selectDate]);
+  }, [isLoading, selectDate, isRefetching]);
 
   return (
     <Flex gap={4} wrap={'wrap'}>

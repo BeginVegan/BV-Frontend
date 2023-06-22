@@ -137,7 +137,6 @@ const ReservationRestaurant = () => {
       newPoint = watchedDiscount;
     }
 
-    console.log(newPoint);
     setValue('reservationDiscount', parseInt(newPoint, 10));
   }, [watchedDiscount]);
 
@@ -242,8 +241,6 @@ const ReservationRestaurant = () => {
       reverseButtons: true, // 버튼 순서 거꾸로
     }).then(result => {
       if (result.isConfirmed) {
-        Swal.fire('예약이 완료되었습니다.');
-
         // 메뉴 리스트
         const reservationMenuList = [];
         reservationMenus.forEach((value, key) =>
@@ -253,20 +250,29 @@ const ReservationRestaurant = () => {
           })
         );
 
-        onAddReservation({
-          memberEmail: memberData.email,
-          restaurantNo: restaurantno,
-          reservationTime: format(today, 'yyyy-MM-dd HH:mm:ss'),
-          reservationVisitTime: format(selectDate, 'yyyy-MM-dd HH:mm:ss'),
-          reservationType: data.reservationType,
-          reservationPeople: data.reservationPeople,
-          reservationDiscount: data.reservationDiscount,
-          reservationTotalPrice: totalPrice,
-          reservationStatus: '예약',
-          reservationMenuList: reservationMenuList,
-        });
-
-        navigator(`${ROUTES.RESTAURANT_RAW}${restaurantno}`);
+        onAddReservation(
+          {
+            memberEmail: memberData.email,
+            restaurantNo: restaurantno,
+            reservationTime: format(today, 'yyyy-MM-dd HH:mm:ss'),
+            reservationVisitTime: format(selectDate, 'yyyy-MM-dd HH:mm:ss'),
+            reservationType: data.reservationType,
+            reservationPeople: data.reservationPeople,
+            reservationDiscount: data.reservationDiscount,
+            reservationTotalPrice: totalPrice,
+            reservationStatus: '예약',
+            reservationMenuList: reservationMenuList,
+          },
+          {
+            onSuccess: () => {
+              Swal.fire('예약이 완료되었습니다.');
+              navigator(`${ROUTES.RESTAURANT_RAW}${restaurantno}`);
+            },
+            onError: error => {
+              Swal.fire(error.response.data + '다른 시간을 선택해 주세요.');
+            },
+          }
+        );
       }
     });
   };
@@ -322,9 +328,8 @@ const ReservationRestaurant = () => {
           const { imp_uid, error_msg } = res;
 
           if (error_msg) {
-            Swal.fire('결제 실패.');
+            Swal.fire('결제가 실패되었습니다.');
           } else {
-            Swal.fire('예약이 완료되었습니다.');
             // 메뉴 리스트
             const reservationMenuList = [];
             reservationMenus.forEach((value, key) =>
@@ -334,23 +339,30 @@ const ReservationRestaurant = () => {
               })
             );
 
-            onAddReservationWidhPayment({
-              reservationInfo: {
-                memberEmail: memberData.email,
-                restaurantNo: restaurantno,
-                reservationTime: format(today, 'yyyy-MM-dd HH:mm:ss'),
-                reservationVisitTime: format(selectDate, 'yyyy-MM-dd HH:mm:ss'),
-                reservationType: data.reservationType,
-                reservationPeople: data.reservationPeople,
-                reservationDiscount: data.reservationDiscount,
-                reservationTotalPrice: totalPrice,
-                reservationStatus: '예약',
-                reservationMenuList: reservationMenuList,
+            onAddReservationWidhPayment(
+              {
+                reservationInfo: {
+                  memberEmail: memberData.email,
+                  restaurantNo: restaurantno,
+                  reservationTime: format(today, 'yyyy-MM-dd HH:mm:ss'),
+                  reservationVisitTime: format(selectDate, 'yyyy-MM-dd HH:mm:ss'),
+                  reservationType: data.reservationType,
+                  reservationPeople: data.reservationPeople,
+                  reservationDiscount: data.reservationDiscount,
+                  reservationTotalPrice: totalPrice,
+                  reservationStatus: '예약',
+                  reservationMenuList: reservationMenuList,
+                },
+                impUid: imp_uid,
               },
-              impUid: imp_uid,
-            });
-
-            navigator(`${ROUTES.RESTAURANT_RAW}${restaurantno}`);
+              {
+                onSuccess: () => {
+                  Swal.fire('예약이 완료되었습니다.');
+                  navigator(`${ROUTES.RESTAURANT_RAW}${restaurantno}`);
+                },
+                onError: error => Swal.fire(error + '다른 시간을 선택해 주세요.'),
+              }
+            );
           }
         });
       }
@@ -589,7 +601,7 @@ const ReservationRestaurant = () => {
                     </Text>
                   </HStack>
                   <HStack>
-                    <InputGroup w={'100px'}>
+                    <InputGroup w={'120px'}>
                       <Input
                         onKeyUp={e => {
                           if (e.key === 'Enter') {
