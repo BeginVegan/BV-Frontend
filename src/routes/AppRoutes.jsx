@@ -24,6 +24,8 @@ import { ROUTES } from './ROUTES';
 import ReservationRestaurant from '@/pages/Restaurant/ReservationRestaurant';
 import AdminLayout from '@/components/Layout/AdminLayout';
 import RetaurantDetail from '@/pages/Admin/Restaurant/RetaurantDetail';
+import TestPage from '@/pages/Login/TestPage';
+import DefaultHeaderLayout from '@/components/Layout/DefaultHeaderLayout';
 
 const AppRoutes = () => {
   const toast = useToast();
@@ -48,6 +50,7 @@ const AppRoutes = () => {
             <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.MAIN} />} />
             <Route path={ROUTES.MAIN} element={<MainPage />} />
             <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+            <Route path={'/test'} element={<TestPage />} />
           </Route>
           {/* DefaultLayout은 검색창 있는 헤더 만 있는 레이아웃*/}
           <Route element={<DefaultLayout />}>
@@ -55,8 +58,11 @@ const AppRoutes = () => {
             <Route path={ROUTES.BEST} element={<BestPage />} />
           </Route>
           {/* DefaultLayout 레이아웃에서 푸터가 있는 레이아웃*/}
-          <Route element={<DefaultLayout hasFooter={true} />}>
+          <Route element={<DefaultHeaderLayout hasFooter={true} />}>
             <Route path={ROUTES.RESTAURANT} element={<RestaurantDetailPage />} />
+          </Route>
+          {/* DefaultLayout 레이아웃에서 고정된 헤더 푸터가 있는 레이아웃*/}
+          <Route element={<DefaultLayout hasFooter={true} />}>
             <Route path={ROUTES.RESTAURANT_RESERVATION} element={<ReservationRestaurant />} />
           </Route>
           {/* AdminLayout은 관리자용 사이드와 검색창 없는 헤더 만 있는 레이아웃*/}

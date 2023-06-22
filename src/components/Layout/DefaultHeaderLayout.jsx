@@ -1,10 +1,11 @@
+import Header from '@/components/Layout/Header';
 import SearchBar from '@/components/search/SearchBar';
 import { Outlet } from 'react-router-dom';
 import Footer from '@/components/Layout/Footer';
 import { Flex } from '@chakra-ui/react';
 import FixedHeader from '@/components/Layout/FixedHeader';
 
-const DefaultLayout = ({ hasFooter }) => {
+const DefaultHeaderLayout = ({ hasFooter }) => {
   return (
     <>
       <FixedHeader>
@@ -23,4 +24,4 @@ const DefaultLayout = ({ hasFooter }) => {
     </>
   );
 };
-export default DefaultLayout;
+export default DefaultHeaderLayout;

@@ -3,12 +3,20 @@ import { Box, Flex, useColorModeValue, Image } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import wideLogo from '@/assets/images/logo_wide_black.png';
 import { ROUTES } from '@/routes/ROUTES';
+import useScroll from '@/hooks/useScroll';
 
-const Header = ({ children }) => {
+const FixedHeader = ({ children }) => {
   const navigate = useNavigate();
+  const { x, y } = useScroll();
 
   return (
-    <Box w={'100%'}>
+    <Box
+      w={'100%'}
+      zIndex={20000}
+      shadow={y > 100 && 'rgba(0, 0, 0, 0.15) 0px 5px 15px'}
+      opacity={y > 100 && '0.9'}
+      position={y > 100 && 'fixed'}
+    >
       <Flex
         bg={useColorModeValue('white', 'gray.800')}
         color={useColorModeValue('gray.600', 'white')}
@@ -38,4 +46,4 @@ const Header = ({ children }) => {
   );
 };
 
-export default Header;
+export default FixedHeader;
