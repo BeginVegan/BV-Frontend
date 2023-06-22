@@ -19,7 +19,8 @@ const MainHeader = ({ children }) => {
         w={'1220px'}
         bg={useColorModeValue('white', 'gray.800')}
         color={useColorModeValue('gray.600', 'white')}
-        minH={'72px'}
+        minH={'75px'}
+        maxH={'75px'}
         py={{ base: 2 }}
         px={{ base: 4 }}
         align={'center'}

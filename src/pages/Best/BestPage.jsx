@@ -28,7 +28,7 @@ const BestPage = () => {
   return (
     <>
       <Stack pb={10}>
-        <Flex h={'100px'} justify={'center'} align={'center'}>
+        <Flex py={6} justify={'center'} align={'center'}>
           <Text
             color={'balck'}
             fontWeight={400}

@@ -22,6 +22,8 @@ const FixedHeader = ({ children }) => {
         color={useColorModeValue('gray.600', 'white')}
         py={{ base: 2 }}
         px={{ base: 4 }}
+        minH={'75px'}
+        maxH={'75px'}
         borderBottom={1}
         borderStyle={'solid'}
         borderColor={useColorModeValue('gray.200', 'gray.900')}
