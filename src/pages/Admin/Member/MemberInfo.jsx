@@ -140,7 +140,7 @@ const MemberInfo = ({ data, setIsChange }) => {
         border={'none'}
       >
         <Fade in={true} offsetY={-20}>
-          <HStack mt={5} mb={5} w={1232}>
+          <HStack mt={5} mb={5}>
             <Input
               placeholder="멤버 계정"
               value={filterCriteria.memberEmail}
@@ -191,7 +191,7 @@ const MemberInfo = ({ data, setIsChange }) => {
         </Fade>
       </Box>
       {/* Table */}
-      <Card shadow={'none'}>
+      <Card shadow={'none'} w={1288}>
         <CardBody>
           <Fade in={true} offsetY={-20}>
             <TableContainer w={1240}>

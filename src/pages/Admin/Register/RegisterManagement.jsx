@@ -2,7 +2,18 @@ import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/routes/ROUTES';
 import DataTable from '@/components/common/DataTable';
-import { Button, Card, Flex, HStack, Heading, Input, Select, Text } from '@chakra-ui/react';
+import {
+  Button,
+  Card,
+  Flex,
+  HStack,
+  Heading,
+  Input,
+  Select,
+  Skeleton,
+  Spinner,
+  Text,
+} from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import RestaurantService from '@/api/RestaurantService';
 import LoadingPage from '@/pages/Loading/LoadingPage';
@@ -103,94 +114,98 @@ const RegisterManagement = () => {
     setFilteredData(convertData(restaurants));
   };
 
-  if (isLoading) return <LoadingPage />;
-
   return (
     <>
       <Heading display={'flex'} alignSelf={'flex-start'} color={'#323232'} mb={5}>
         식당 관리
       </Heading>
-      <Flex
-        mb={5}
-        p={6}
-        width={'1180px'}
-        justifyContent={'space-between'}
-        alignItems={'center'}
-        borderWidth="1px"
-        borderRadius="lg"
-        overflow="hidden"
-        bg="white"
-        border={'none'}
-      >
-        {/* Filter Section */}
-        <HStack gap={2} w={'900px'} justifyContent={'center'}>
-          <Input
-            w={'200px'}
-            placeholder="식당 이름"
-            value={filterCriteria.storeName}
-            onChange={e =>
-              setFilterCriteria(prevState => ({ ...prevState, storeName: e.target.value }))
-            }
-          />
-          <Input
-            w={'200px'}
-            placeholder="식당 주소"
-            value={filterCriteria.storeAddress}
-            onChange={e =>
-              setFilterCriteria(prevState => ({ ...prevState, storeAddress: e.target.value }))
-            }
-          />
-
-          <Select
-            w={'200px'}
-            placeholder="비건레벨"
-            value={filterCriteria.veganLevel}
-            onChange={e =>
-              setFilterCriteria(prevState => ({ ...prevState, veganLevel: e.target.value }))
-            }
-          >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-          </Select>
-          <Button
-            onClick={applyFilter}
-            bg="green.300"
-            color="white"
-            _hover={{ bg: 'green.400' }}
-            mr={2}
-            w={'100px'}
-          >
-            적용
-          </Button>
-          <Button
-            w={'100px'}
-            bg="red.300"
-            color={'white'}
-            _hover={{ bg: 'red.400' }}
-            onClick={clearFilter}
-            colorScheme="gray"
-          >
-            취소
-          </Button>
-        </HStack>
-        <Button
-          w={'140px'}
-          color={'white'}
-          bgColor={'blue.300'}
-          _hover={{ bgColor: 'blue.400' }}
-          onClick={() => navigator(`${ROUTES.RESTAURANT_REGISTRATION_RAW}/1`)}
+      {isLoading && <Skeleton mb={3} width={'1180px'} h={'72px'} borderRadius={'2xl'} />}
+      {!isLoading && (
+        <Flex
+          mb={5}
+          py={4}
+          px={2}
+          width={'1180px'}
+          justifyContent={'space-between'}
+          alignItems={'center'}
+          borderWidth="1px"
+          borderRadius="lg"
+          overflow="hidden"
+          bg="white"
+          border={'none'}
         >
-          식당등록 +
-        </Button>
-      </Flex>
-      <Card borderRadius={'2xl'} shadow={'none'} bg={'white'} py={5} px={10}>
-        <Flex w={'100%'} justifyContent={'flex-end'}></Flex>
-        <DataTable columns={columns} data={filteredData}></DataTable>
-      </Card>
+          {/* Filter Section */}
+          <HStack gap={2} w={'900px'} justifyContent={'center'}>
+            <Input
+              w={'200px'}
+              placeholder="식당 이름"
+              value={filterCriteria.storeName}
+              onChange={e =>
+                setFilterCriteria(prevState => ({ ...prevState, storeName: e.target.value }))
+              }
+            />
+            <Input
+              w={'200px'}
+              placeholder="식당 주소"
+              value={filterCriteria.storeAddress}
+              onChange={e =>
+                setFilterCriteria(prevState => ({ ...prevState, storeAddress: e.target.value }))
+              }
+            />
+
+            <Select
+              w={'200px'}
+              placeholder="비건레벨"
+              value={filterCriteria.veganLevel}
+              onChange={e =>
+                setFilterCriteria(prevState => ({ ...prevState, veganLevel: e.target.value }))
+              }
+            >
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </Select>
+            <Button
+              onClick={applyFilter}
+              bg="green.300"
+              color="white"
+              _hover={{ bg: 'green.400' }}
+              mr={2}
+              w={'100px'}
+            >
+              적용
+            </Button>
+            <Button
+              w={'100px'}
+              bg="red.300"
+              color={'white'}
+              _hover={{ bg: 'red.400' }}
+              onClick={clearFilter}
+              colorScheme="gray"
+            >
+              취소
+            </Button>
+          </HStack>
+          <Button
+            mr={3}
+            w={'140px'}
+            color={'white'}
+            bgColor={'blue.300'}
+            _hover={{ bgColor: 'blue.400' }}
+            onClick={() => navigator(`${ROUTES.RESTAURANT_REGISTRATION_RAW}/1`)}
+          >
+            식당등록 +
+          </Button>
+        </Flex>
+      )}
+      <Skeleton width={'1180px'} h={'680px'} isLoaded={!isLoading} borderRadius={'2xl'}>
+        <Card borderRadius={'2xl'} shadow={'none'} bg={'white'} py={5} px={10}>
+          {!isLoading && <DataTable columns={columns} data={filteredData}></DataTable>}
+        </Card>
+      </Skeleton>
     </>
   );
 };

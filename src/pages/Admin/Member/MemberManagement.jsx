@@ -1,4 +1,4 @@
-import { Heading, Flex, VStack, Card, CardBody, Spinner } from '@chakra-ui/react';
+import { Heading, Flex, VStack, Card, CardBody, Spinner, Skeleton } from '@chakra-ui/react';
 import Axios from '@/api/apiConfig';
 import React, { useEffect, useState } from 'react';
 import MemberInfo from '@/pages/Admin/Member/MemberInfo';
@@ -19,14 +19,6 @@ const MemberManagement = () => {
     getMembers();
   }, [isChange]);
 
-  if (!memberList) {
-    return (
-      <Flex w={1288} h={1000} justifyContent="center" alignItems="center">
-        <Spinner size="xl" />
-      </Flex>
-    );
-  }
-
   return (
     <>
       <Heading display={'flex'} alignSelf={'flex-start'} color={'#323232'} mb={5}>
@@ -36,7 +28,27 @@ const MemberManagement = () => {
         <Card bg="#f8f8ff" boxShadow={'none'}>
           <CardBody p={0}>
             <VStack>
-              <MemberInfo data={memberList} setIsChange={setIsChange}></MemberInfo>
+              {!memberList && (
+                <>
+                  <Skeleton
+                    width={'1288px'}
+                    h={'80px'}
+                    isLoaded={memberList}
+                    borderRadius={'2xl'}
+                  />
+                  <Skeleton
+                    width={'1288px'}
+                    h={'80px'}
+                    isLoaded={memberList}
+                    borderRadius={'2xl'}
+                  />
+                </>
+              )}
+              <Skeleton width={'1288px'} h={'680px'} isLoaded={memberList} borderRadius={'2xl'}>
+                {memberList && (
+                  <MemberInfo data={memberList} setIsChange={setIsChange}></MemberInfo>
+                )}
+              </Skeleton>
             </VStack>
           </CardBody>
         </Card>
