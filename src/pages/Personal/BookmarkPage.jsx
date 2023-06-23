@@ -32,11 +32,11 @@ const BookmarkPage = () => {
       if (res.status === 200) {
         setBookmarks(res.data);
       } else {
-        console.log(`Unexpected status code ${res.status}`);
+        // console.log(`Unexpected status code ${res.status}`);
         setBookmarks([]);
       }
     } catch (error) {
-      console.error('Error fetching bookmarks', error);
+      // console.error('Error fetching bookmarks', error);
       setBookmarks([]);
     }
   };
@@ -119,6 +119,22 @@ export default BookmarkPage;
 const BookmarkCard = ({ restuarantNo, idx, refresh }) => {
   const { data } = useRestaurantDetail(restuarantNo);
   const navigate = useNavigate();
+  const [s3ImageList, setS3ImageList] = useState(null);
+
+  const getS3ImageList = async () => {
+    try {
+      const res = await Axios.get(`restaurant/img/${data.restaurantPhotoDir}`);
+      if (res.status === 200) {
+        setS3ImageList(res.data);
+      }
+    } catch (error) {
+      setS3ImageList(null);
+    }
+  };
+
+  useEffect(() => {
+    getS3ImageList();
+  }, [data]);
 
   const deleteBookmark = async restaurantNo => {
     const result = await Axios.delete(`mypage/bookmark/${restaurantNo}`);
@@ -147,13 +163,13 @@ const BookmarkCard = ({ restuarantNo, idx, refresh }) => {
         </Text>
         <Card maxW="sm">
           <CardBody>
-            <Box ml="2rem" mt={'1rem'} p="1rem" w="15rem" h="15rem">
+            <Box mt={'1rem'} p="1rem" w="15rem" h="15rem">
               <Image
                 w={'100%'}
                 h={'100%'}
                 src={
-                  data.restuarantPhotoDir
-                    ? data.restuarantPhotoDir
+                  s3ImageList && s3ImageList.length > 0
+                    ? s3ImageList[0]
                     : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/logoSVG.svg'
                 }
                 alt={'식당 이미지'}
@@ -161,7 +177,7 @@ const BookmarkCard = ({ restuarantNo, idx, refresh }) => {
               />
             </Box>
             <Stack mt="6" spacing="3">
-              <Heading size="md">{data.restuarantName}</Heading>
+              <Heading size="md">{data.restaurantName}</Heading>
               <Text>{data.restuarantDetail}</Text>
               <HStack>
                 <AiFillStar color="gold" size={'40px'} />
