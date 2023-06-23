@@ -19,7 +19,7 @@ const KakaoMap = ({
   // const [currentLocation, setCurrentLocation] = useState({ lat: 33.5563, lng: 126.79581 }); // 상위 컴포넌트로 꺼냄
 
   useEffect(() => {
-    if (!restaurants) return;
+    if (!restaurants || restaurants.length === 0) return;
 
     let newLocations = [];
     restaurants.forEach(restaurant => {
