@@ -109,6 +109,7 @@ const RetaurantDetail = () => {
 
     const newImageSrcs = await Promise.all(filePromises);
     setRestaurantImgs(newImageSrcs);
+    setValue('restaurantImages', newImageSrcs);
   };
 
   const downloadImage = async () => {
@@ -319,7 +320,7 @@ const RetaurantDetail = () => {
           </Select>
           <Input
             _disabled={{ opacity: 0.8 }}
-            maxLength="4"
+            maxLength="3"
             w={'100px'}
             {...register('phoneNum2', { required: true, minLength: 4, maxLength: 4 })}
             disabled={!isModify}

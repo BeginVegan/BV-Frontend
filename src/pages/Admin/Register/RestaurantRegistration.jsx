@@ -119,7 +119,7 @@ const RestaurantRegistration = () => {
   };
 
   return (
-    <Flex m={'auto'} p={5} h={'100%'} alignItems={'center'} direction={'column'}>
+    <Flex m={'auto'} p={5} alignItems={'center'} direction={'column'}>
       <Card w={'900px'} shadow={'none'} p={8} borderRadius={'xl'}>
         <Stepper pb={12} size="lg" index={stepno}>
           {steps.map((step, index) => (
