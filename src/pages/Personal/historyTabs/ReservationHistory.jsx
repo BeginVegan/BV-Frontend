@@ -23,19 +23,21 @@ import { isCancellable } from './PurchaseHistory';
 const ReservationHistory = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [reservationList, setReservationList] = useState(null);
-  useEffect(() => {
-    const getReservations = async () => {
-      try {
-        const res = await Axios.get('reservation/list/memberEmail');
-        if (res.status === 200) {
-          setReservationList(res.data);
-        } else {
-          setReservationList([]);
-        }
-      } catch (error) {
+
+  const getReservations = async () => {
+    try {
+      const res = await Axios.get('reservation/list/memberEmail');
+      if (res.status === 200) {
+        setReservationList(res.data);
+      } else {
         setReservationList([]);
       }
-    };
+    } catch (error) {
+      setReservationList([]);
+    }
+  };
+
+  useEffect(() => {
     getReservations();
   }, []);
 
@@ -70,6 +72,7 @@ const ReservationHistory = () => {
           });
         }
       }
+      getReservations();
     });
   };
 
@@ -96,6 +99,9 @@ const ReservationHistory = () => {
     return [];
   }, [filteredReservationList]);
 
+  // console.log(reservationList);
+  // console.log(sortedReservationList);
+  // console.log(filteredReservationList);
   const navigate = useNavigate();
   return (
     <TableContainer marginTop={'1rem'}>
@@ -125,7 +131,9 @@ const ReservationHistory = () => {
                   <CustomTd>{store.reservationStatus}</CustomTd>
                   <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
                   <CustomTd>
-                    {Number(isCancellable(store.reservationTime)) < 0 ? (
+                    {new Date(store.reservationVisitTime) - new Date() > 0 &&
+                    new Date(store.reservationVisitTime) - new Date() > 24 * 60 * 60 * 1000 ? (
+                      //24시간 이내
                       <Button
                         colorScheme="red"
                         size={{ base: 'xs', md: 'sm' }}
