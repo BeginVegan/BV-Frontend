@@ -55,6 +55,12 @@ const MultiImageFileUpload = ({
     const files = e.target.files;
 
     for (let i = 0; i < files.length; i++) {
+      // 파일 사이즈가 5MB 이상이면 업로드를 막음
+      if (files[i].size > 5 * 1024 * 1024) {
+        Toast.fire({ icon: 'error', title: '이미지 최대크기는 5MB입니다.' });
+        continue;
+      }
+
       //동일한 이미지가 존재합니다.
       if (newImages.some(img => img.name === files[i].name)) {
         Toast.fire({ icon: 'error', title: '동일한 이미지가 존재합니다.' });
