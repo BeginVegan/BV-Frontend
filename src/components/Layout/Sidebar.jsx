@@ -91,8 +91,8 @@ const NavItem = ({ icon, route, onClose, children, ...rest }) => {
       showCancelButton: true,
     }).then(async res => {
       if (res.isConfirmed) {
-        const result = await Axios.delete('member')
-        if (result.status === 200 ) {
+        const result = await Axios.delete('member');
+        if (result.status === 200) {
           Swal.fire({
             icon: 'success',
             title: '회원 탈퇴 성공',
@@ -104,13 +104,12 @@ const NavItem = ({ icon, route, onClose, children, ...rest }) => {
               navigate(ROUTES.HOME);
             }
           });
-        }
-        else {
+        } else {
           Swal.fire({
-            icon:'error',
-            title:'회원 탈퇴 실패',
-            text: '다시 시도해 주세요'
-          })
+            icon: 'error',
+            title: '회원 탈퇴 실패',
+            text: '다시 시도해 주세요',
+          });
         }
       }
     });
@@ -123,15 +122,20 @@ const NavItem = ({ icon, route, onClose, children, ...rest }) => {
       borderRadius="lg"
       role="group"
       cursor="pointer"
-      _hover={{
-        bg: COLORS.GREEN200,
-        color: 'black',
-      }}
+      _hover={
+        hereIAm !== route.split('/')[2]
+          ? {
+              bg: COLORS.GREEN200,
+              color: 'black',
+            }
+          : null
+      }
       marginBottom={'1rem'}
       bg={hereIAm === route.split('/')[2] ? 'green' : null}
       color={hereIAm === route.split('/')[2] ? 'white' : 'black'}
       {...rest}
-      onClick={() => { route === ROUTES.MYPAGE_DROP ? dropUser(): navigate(route);
+      onClick={() => {
+        route === ROUTES.MYPAGE_DROP ? dropUser() : navigate(route);
         onClose();
       }}
     >

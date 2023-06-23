@@ -21,11 +21,10 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useRestaurantDetail } from './historyTabs/hooks/useRestaurantDetail';
 
-
 const BookmarkPage = () => {
   const [bookmarks, setBookmarks] = useState(null);
-  const [forceUpdate, setForceUpdate] = useState(false); 
-  
+  const [forceUpdate, setForceUpdate] = useState(false);
+
   const getBookmarks = async () => {
     try {
       const res = await Axios.get('mypage/bookmark/userEmail');
@@ -45,41 +44,69 @@ const BookmarkPage = () => {
     getBookmarks();
   }, [forceUpdate]);
 
-
-  console.log(bookmarks)
+  console.log(bookmarks);
   return (
     <VStack width={'100%'} spacing={'2rem'} paddingLeft={'2rem'}>
       <Text fontSize={'3xl'} mt={'2rem'} fontWeight={'extrabold'}>
         즐겨찾기
       </Text>
       <Divider />
-      {(!bookmarks || bookmarks.length < 1)? <SimpleGrid
+      {!bookmarks || bookmarks.length < 1 ? (
+        // <SimpleGrid justifyItems={'center'} height={'85vh'}>
+
+        //   <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
+        //   <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
+        //   <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
+        //   <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
+        //   <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
+        //   <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
+        // </SimpleGrid>
+        <VStack h="85vh" spacing={'1rem'}>
+          <Text mt={'3rem'} mb={'3rem'} fontSize={'2xl'}>
+            등록된 가게가 없습니다 😂
+          </Text>
+          <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
+          <HStack spacing={'1rem'}>
+            <Text fontSize={'xl'}>➞ 예약 베스트</Text>
+            <Button colorScheme="green" size={'sm'}>
+              GO
+            </Button>
+          </HStack>
+          <HStack spacing={'1rem'}>
+            <Text fontSize={'xl'}>➞ 평점 베스트</Text>
+            <Button colorScheme="green" size={'sm'}>
+              GO
+            </Button>
+          </HStack>
+          <HStack spacing={'1rem'}>
+            <Text fontSize={'xl'}>➞ 리뷰 베스트</Text>
+            <Button colorScheme="green" size={'sm'}>
+              GO
+            </Button>
+          </HStack>
+        </VStack>
+      ) : (
+        <SimpleGrid
           justifyItems={'center'}
           gap={4}
           height={'85vh'}
           overflow={'auto'}
           width={'100%'}
-          columns={1}
+          columns={{ base: 1, md: 2 }}
           spacing={10}
           align={'center'}
         >
-          <Text mt={"3rem"} fontSize={'2xl'}>등록된 가게가 없습니다 😂</Text>
-        </SimpleGrid>:<SimpleGrid
-        justifyItems={'center'}
-        gap={4}
-        height={'85vh'}
-        overflow={'auto'}
-        width={'100%'}
-        columns={{ base: 1, md: 2 }}
-        spacing={10}
-        align={'center'}
-      >
-        {bookmarks && bookmarks.map((bookmark,idx)=>(
-          <BookmarkCard restuarantNo={bookmark.restaurantNo} key={idx} idx={idx} 
-          refresh={() => setForceUpdate(!forceUpdate)}
-          />
-        ))}
-      </SimpleGrid>}
+          {bookmarks &&
+            bookmarks.map((bookmark, idx) => (
+              <BookmarkCard
+                restuarantNo={bookmark.restaurantNo}
+                key={idx}
+                idx={idx}
+                refresh={() => setForceUpdate(!forceUpdate)}
+              />
+            ))}
+        </SimpleGrid>
+      )}
     </VStack>
   );
 };
@@ -87,29 +114,26 @@ export default BookmarkPage;
 
 const BookmarkCard = ({ restuarantNo, idx, refresh }) => {
   const { data } = useRestaurantDetail(restuarantNo);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-
-  
-  const deleteBookmark = async (restaurantNo) => {
-    const result = await Axios.delete(`mypage/bookmark/${restaurantNo}`)
-    if (result.status === 200 ) {
+  const deleteBookmark = async restaurantNo => {
+    const result = await Axios.delete(`mypage/bookmark/${restaurantNo}`);
+    if (result.status === 200) {
       Swal.fire({
         icon: 'success',
         title: '즐겨찾기 삭제 성공',
         text: '더 나은 서비스로 만나 뵙겠습니다',
-      })
-      refresh()
-    }
-    else {
+      });
+      refresh();
+    } else {
       Swal.fire({
-        icon:'error',
-        title:'즐겨찾기 삭제 실패',
-        text: '다시 시도해 주세요'
-      })
+        icon: 'error',
+        title: '즐겨찾기 삭제 실패',
+        text: '다시 시도해 주세요',
+      });
     }
-    refresh()
-  }
+    refresh();
+  };
   if (!data) return <></>;
   return (
     <div>
@@ -119,13 +143,16 @@ const BookmarkCard = ({ restuarantNo, idx, refresh }) => {
         </Text>
         <Card maxW="sm">
           <CardBody>
-            <Box ml="2rem" mt={"1rem"} p="1rem" w="15rem" h="15rem">
+            <Box ml="2rem" mt={'1rem'} p="1rem" w="15rem" h="15rem">
               <Image
                 w={'100%'}
                 h={'100%'}
-                src={data.restuarantPhotoDir ? data.restuarantPhotoDir : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/logoSVG.svg' }
-                
-                alt={"식당 이미지"}
+                src={
+                  data.restuarantPhotoDir
+                    ? data.restuarantPhotoDir
+                    : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/logoSVG.svg'
+                }
+                alt={'식당 이미지'}
                 borderRadius="lg"
               />
             </Box>
