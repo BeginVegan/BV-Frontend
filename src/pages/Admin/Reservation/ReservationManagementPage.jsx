@@ -2,7 +2,6 @@ import ReservationInfo from '@/pages/Admin/Reservation/ReservationInfo';
 import { VStack, Card, CardBody, Heading, Skeleton, HStack } from '@chakra-ui/react';
 import Axios from '@/api/apiConfig';
 import React, { useEffect, useState } from 'react';
-import LoadingPage from '@/pages/Loading/LoadingPage';
 import { generateDummyData } from '@/pages/Admin/Reservation/DummyData';
 
 const ReservationManagementPage = () => {
@@ -12,7 +11,7 @@ const ReservationManagementPage = () => {
     const getReservations = async () => {
       const res = await Axios.get('reservation/list');
       if (res.status === 200) {
-        setReservationList(generateDummyData);
+        setReservationList(res.data.concat(generateDummyData()));
       }
     };
     getReservations();
