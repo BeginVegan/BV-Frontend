@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import SimpleImageSlider from 'react-simple-image-slider';
 import Axios from '@/api/apiConfig';
 
-const RestaurantImg = ({ imageDir }) => {
+const RestaurantImg = ({ ImgWidth, ImgHight, imageDir }) => {
   const [restaurantImg, setRestaurantImg] = useState(null);
 
   useEffect(() => {
@@ -27,15 +27,13 @@ const RestaurantImg = ({ imageDir }) => {
     return <Spinner />;
   }
   return (
-    <Box>
-      <SimpleImageSlider
-        width={600}
-        height={400}
-        images={restaurantImg}
-        showBullets={true}
-        showNavs={true}
-      />
-    </Box>
+    <SimpleImageSlider
+      width={ImgWidth ? ImgWidth : 600}
+      height={ImgHight ? ImgHight : 400}
+      images={restaurantImg}
+      showBullets={true}
+      showNavs={true}
+    />
   );
 };
 

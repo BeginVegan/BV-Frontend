@@ -5,11 +5,12 @@ import { useEffect, useState } from 'react';
 import KakaoMap from './KakaoMap';
 import { useParams } from 'react-router-dom';
 import SearchSidebar from './SearchSidebar';
+import RestaurantDetail from './RestaurantDetail';
 
 const SearchResultPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [openList, setOpenList] = useState(false);
+  const [openList, setOpenList] = useState(true);
   const [restaurants, setRestaurants] = useState(null);
   const [isRestaurantsNull, setIsRestaurantsNull] = useState(false);
   const [mapCenter, setMapCenter] = useState({ lat: 37.571848, lng: 127.00116 });
@@ -19,6 +20,8 @@ const SearchResultPage = () => {
   const [selectedGu, setSelectedGu] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [selectedRestaurantNo, setSelectedRestaurantNo] = useState(null);
 
   const { query } = useParams();
 
@@ -42,7 +45,7 @@ const SearchResultPage = () => {
   };
 
   return (
-    <Flex w={'100vw'} h={'calc(100vh - 73px)'}>
+    <Flex w={'100%'} h={'calc(100vh - 75px)'}>
       {isFilterOpen && (
         <SearchFilter
           restaurants={restaurants}
@@ -74,6 +77,18 @@ const SearchResultPage = () => {
           setOpenList={setOpenList}
           openList={openList}
           setIsFilterOpen={setIsFilterOpen}
+          isDetailOpen={isDetailOpen}
+          setIsDetailOpen={setIsDetailOpen}
+          setSelectedRestaurantNo={setSelectedRestaurantNo}
+          selectedRestaurantNo={selectedRestaurantNo}
+        />
+      )}
+
+      {isDetailOpen && (
+        <RestaurantDetail
+          setIsDetailOpen={setIsDetailOpen}
+          setSelectedRestaurantNo={setSelectedRestaurantNo}
+          restaurantNo={selectedRestaurantNo}
         />
       )}
 
