@@ -138,6 +138,7 @@ const RetaurantDetail = () => {
   };
 
   useEffect(() => {
+    if (isModify) return;
     if (!restaurantDetailLoading && !restaurantDetailFetching) {
       const { restaurant } = restaurantDetail;
 
