@@ -24,6 +24,7 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { AiFillStar } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
+import { formatDate } from './ReservationHistory';
 import { useRestaurantDetail } from './hooks/useRestaurantDetail';
 
 const VisitHistory = () => {
@@ -210,7 +211,7 @@ const RestaurantCards = ({ reservationNo, reviewList, restaurant, id, reservatio
                     borderRadius="lg"
                   />
                 </Box>
-                <Text>{reservationVisitTime} 방문</Text>
+                <Text>{formatDate(reservationVisitTime)} 방문</Text>
               </VStack>
             </CardBody>
             <Divider orientation="vertical" />

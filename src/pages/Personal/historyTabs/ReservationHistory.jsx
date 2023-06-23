@@ -21,6 +21,18 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { isCancellable } from './PurchaseHistory';
 
+export function formatDate(dateString) {
+  const date = new Date(dateString);
+
+  const year = date.getFullYear();
+  const month = ('0' + (date.getMonth() + 1)).slice(-2);
+  const day = ('0' + date.getDate()).slice(-2);
+  const hours = ('0' + date.getHours()).slice(-2);
+  const minutes = ('0' + date.getMinutes()).slice(-2);
+
+  return `${year}.${month}.${day} ${hours}:${minutes}`;
+}
+
 const ReservationHistory = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [reservationList, setReservationList] = useState(null);
@@ -98,6 +110,7 @@ const ReservationHistory = () => {
   }, [filteredReservationList]);
 
   const navigate = useNavigate();
+
   return (
     <Box w={'100%'} maxH={'75vh'} overflowY="auto">
       <TableContainer marginTop={'1rem'}>
@@ -125,277 +138,7 @@ const ReservationHistory = () => {
                     <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
                     <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
                     <CustomTd>{store.reservationStatus}</CustomTd>
-                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
-                    <CustomTd>
-                      {Number(isCancellable(store.reservationTime)) < 0 ? (
-                        <Button
-                          colorScheme="red"
-                          size={{ base: 'xs', md: 'sm' }}
-                          onClick={() => handleCancel(store.reservationNo)}
-                        >
-                          예약취소
-                        </Button>
-                      ) : (
-                        '취소불가'
-                      )}
-                    </CustomTd>
-                  </Tr>
-                );
-              })}
-              {sortedReservationList.map((store, idx) => {
-                return (
-                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
-                    <CustomTd>{idx + 1}</CustomTd>
-                    <CustomTd>
-                      <RestaurantName restaurantNo={store.restaurantNo} />
-                    </CustomTd>
-                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
-                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
-                    <CustomTd>{store.reservationStatus}</CustomTd>
-                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
-                    <CustomTd>
-                      {Number(isCancellable(store.reservationTime)) < 0 ? (
-                        <Button
-                          colorScheme="red"
-                          size={{ base: 'xs', md: 'sm' }}
-                          onClick={() => handleCancel(store.reservationNo)}
-                        >
-                          예약취소
-                        </Button>
-                      ) : (
-                        '취소불가'
-                      )}
-                    </CustomTd>
-                  </Tr>
-                );
-              })}
-              {sortedReservationList.map((store, idx) => {
-                return (
-                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
-                    <CustomTd>{idx + 1}</CustomTd>
-                    <CustomTd>
-                      <RestaurantName restaurantNo={store.restaurantNo} />
-                    </CustomTd>
-                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
-                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
-                    <CustomTd>{store.reservationStatus}</CustomTd>
-                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
-                    <CustomTd>
-                      {Number(isCancellable(store.reservationTime)) < 0 ? (
-                        <Button
-                          colorScheme="red"
-                          size={{ base: 'xs', md: 'sm' }}
-                          onClick={() => handleCancel(store.reservationNo)}
-                        >
-                          예약취소
-                        </Button>
-                      ) : (
-                        '취소불가'
-                      )}
-                    </CustomTd>
-                  </Tr>
-                );
-              })}
-              {sortedReservationList.map((store, idx) => {
-                return (
-                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
-                    <CustomTd>{idx + 1}</CustomTd>
-                    <CustomTd>
-                      <RestaurantName restaurantNo={store.restaurantNo} />
-                    </CustomTd>
-                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
-                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
-                    <CustomTd>{store.reservationStatus}</CustomTd>
-                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
-                    <CustomTd>
-                      {Number(isCancellable(store.reservationTime)) < 0 ? (
-                        <Button
-                          colorScheme="red"
-                          size={{ base: 'xs', md: 'sm' }}
-                          onClick={() => handleCancel(store.reservationNo)}
-                        >
-                          예약취소
-                        </Button>
-                      ) : (
-                        '취소불가'
-                      )}
-                    </CustomTd>
-                  </Tr>
-                );
-              })}
-              {sortedReservationList.map((store, idx) => {
-                return (
-                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
-                    <CustomTd>{idx + 1}</CustomTd>
-                    <CustomTd>
-                      <RestaurantName restaurantNo={store.restaurantNo} />
-                    </CustomTd>
-                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
-                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
-                    <CustomTd>{store.reservationStatus}</CustomTd>
-                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
-                    <CustomTd>
-                      {Number(isCancellable(store.reservationTime)) < 0 ? (
-                        <Button
-                          colorScheme="red"
-                          size={{ base: 'xs', md: 'sm' }}
-                          onClick={() => handleCancel(store.reservationNo)}
-                        >
-                          예약취소
-                        </Button>
-                      ) : (
-                        '취소불가'
-                      )}
-                    </CustomTd>
-                  </Tr>
-                );
-              })}
-              {sortedReservationList.map((store, idx) => {
-                return (
-                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
-                    <CustomTd>{idx + 1}</CustomTd>
-                    <CustomTd>
-                      <RestaurantName restaurantNo={store.restaurantNo} />
-                    </CustomTd>
-                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
-                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
-                    <CustomTd>{store.reservationStatus}</CustomTd>
-                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
-                    <CustomTd>
-                      {Number(isCancellable(store.reservationTime)) < 0 ? (
-                        <Button
-                          colorScheme="red"
-                          size={{ base: 'xs', md: 'sm' }}
-                          onClick={() => handleCancel(store.reservationNo)}
-                        >
-                          예약취소
-                        </Button>
-                      ) : (
-                        '취소불가'
-                      )}
-                    </CustomTd>
-                  </Tr>
-                );
-              })}
-              {sortedReservationList.map((store, idx) => {
-                return (
-                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
-                    <CustomTd>{idx + 1}</CustomTd>
-                    <CustomTd>
-                      <RestaurantName restaurantNo={store.restaurantNo} />
-                    </CustomTd>
-                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
-                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
-                    <CustomTd>{store.reservationStatus}</CustomTd>
-                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
-                    <CustomTd>
-                      {Number(isCancellable(store.reservationTime)) < 0 ? (
-                        <Button
-                          colorScheme="red"
-                          size={{ base: 'xs', md: 'sm' }}
-                          onClick={() => handleCancel(store.reservationNo)}
-                        >
-                          예약취소
-                        </Button>
-                      ) : (
-                        '취소불가'
-                      )}
-                    </CustomTd>
-                  </Tr>
-                );
-              })}
-              {sortedReservationList.map((store, idx) => {
-                return (
-                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
-                    <CustomTd>{idx + 1}</CustomTd>
-                    <CustomTd>
-                      <RestaurantName restaurantNo={store.restaurantNo} />
-                    </CustomTd>
-                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
-                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
-                    <CustomTd>{store.reservationStatus}</CustomTd>
-                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
-                    <CustomTd>
-                      {Number(isCancellable(store.reservationTime)) < 0 ? (
-                        <Button
-                          colorScheme="red"
-                          size={{ base: 'xs', md: 'sm' }}
-                          onClick={() => handleCancel(store.reservationNo)}
-                        >
-                          예약취소
-                        </Button>
-                      ) : (
-                        '취소불가'
-                      )}
-                    </CustomTd>
-                  </Tr>
-                );
-              })}
-              {sortedReservationList.map((store, idx) => {
-                return (
-                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
-                    <CustomTd>{idx + 1}</CustomTd>
-                    <CustomTd>
-                      <RestaurantName restaurantNo={store.restaurantNo} />
-                    </CustomTd>
-                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
-                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
-                    <CustomTd>{store.reservationStatus}</CustomTd>
-                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
-                    <CustomTd>
-                      {Number(isCancellable(store.reservationTime)) < 0 ? (
-                        <Button
-                          colorScheme="red"
-                          size={{ base: 'xs', md: 'sm' }}
-                          onClick={() => handleCancel(store.reservationNo)}
-                        >
-                          예약취소
-                        </Button>
-                      ) : (
-                        '취소불가'
-                      )}
-                    </CustomTd>
-                  </Tr>
-                );
-              })}
-              {sortedReservationList.map((store, idx) => {
-                return (
-                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
-                    <CustomTd>{idx + 1}</CustomTd>
-                    <CustomTd>
-                      <RestaurantName restaurantNo={store.restaurantNo} />
-                    </CustomTd>
-                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
-                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
-                    <CustomTd>{store.reservationStatus}</CustomTd>
-                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
-                    <CustomTd>
-                      {Number(isCancellable(store.reservationTime)) < 0 ? (
-                        <Button
-                          colorScheme="red"
-                          size={{ base: 'xs', md: 'sm' }}
-                          onClick={() => handleCancel(store.reservationNo)}
-                        >
-                          예약취소
-                        </Button>
-                      ) : (
-                        '취소불가'
-                      )}
-                    </CustomTd>
-                  </Tr>
-                );
-              })}
-              {sortedReservationList.map((store, idx) => {
-                return (
-                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
-                    <CustomTd>{idx + 1}</CustomTd>
-                    <CustomTd>
-                      <RestaurantName restaurantNo={store.restaurantNo} />
-                    </CustomTd>
-                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
-                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
-                    <CustomTd>{store.reservationStatus}</CustomTd>
-                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                    <CustomTd>{formatDate(store.reservationVisitTime)}</CustomTd>
                     <CustomTd>
                       {Number(isCancellable(store.reservationTime)) < 0 ? (
                         <Button
