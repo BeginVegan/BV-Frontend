@@ -23,6 +23,7 @@ import {
   InputRightElement,
   InputGroup,
   Checkbox,
+  Card,
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
@@ -402,6 +403,9 @@ const ReservationRestaurant = () => {
             fontWeight={400}
             fontSize={'2xl'}
           >
+            <Text color={'green.300'} display={'inline'}>
+              {data.restaurant.restaurantName}
+            </Text>{' '}
             예약하기
           </Heading>
           <VStack
@@ -410,22 +414,6 @@ const ReservationRestaurant = () => {
             gap={2}
             divider={<StackDivider borderColor={'gray.200'} />}
           >
-            <VStack align={'flex-start'}>
-              <Text w={'100px'} fontWeight={600} color={'gray.400'} fontSize="md">
-                가게정보
-              </Text>
-              <HStack>
-                <Text fontWeight={600} color={'gray.600'} fontSize="md">
-                  {data.restaurant.restaurantName}
-                </Text>
-                <Input
-                  {...register('restaurantName')}
-                  display={'none'}
-                  value={data.restaurant.restaurantName}
-                ></Input>
-                <Text>{data.restaurant.restaurantDetail}</Text>
-              </HStack>
-            </VStack>
             <VStack align={'flex-start'}>
               <Text w={'100px'} fontWeight={600} color={'gray.400'} fontSize="md">
                 식사방식
@@ -494,16 +482,21 @@ const ReservationRestaurant = () => {
               <Text w={'100px'} fontWeight={600} color={'gray.400'} fontSize="md">
                 메뉴추가
               </Text>
-              <VStack gap={3} py={2} h={'300px'} alignSelf={'center'} overflowY={'scroll'}>
+              <VStack gap={3} py={2} alignSelf={'center'}>
                 {data.restaurant.menuList.map(menu => (
-                  <HStack
-                    w={'500px'}
+                  <Card
+                    direction={'row'}
+                    w={'550px'}
+                    p={4}
                     gap={4}
                     key={menu.menuNo}
                     cursor={'pointer'}
+                    _hover={{ bg: 'green.100' }}
                     onClick={() => addReservationMenu(menu.menuNo)}
                   >
                     <Image
+                      borderRadius={'md'}
+                      shadow={'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'}
                       objectFit="cover"
                       minH={'90px'}
                       minW={'120px'}
@@ -524,11 +517,13 @@ const ReservationRestaurant = () => {
                           {menu.menuPrice.toLocaleString()}원
                         </Text>
                       </Text>
-                      <Text fontWeight={200} color={'gray.400'} fontSize="md">
-                        {menu.menuDetail}
+                      <Text fontWeight={200} w={'380px'} color={'gray.400'} fontSize="md">
+                        {menu.menuDetail &&
+                          menu.menuDetail.includes('.') &&
+                          menu.menuDetail.split('.')[0] + '.'}
                       </Text>
                     </VStack>
-                  </HStack>
+                  </Card>
                 ))}
               </VStack>
             </VStack>

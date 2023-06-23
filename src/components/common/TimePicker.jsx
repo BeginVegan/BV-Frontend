@@ -46,8 +46,9 @@ const TimePicker = ({
           key={time}
           w={'70px'}
           onClick={() => setSelectTime(time)}
-          bgColor={selectTime === time && 'gray.300'}
-          _hover={{ bgColor: 'gray.300' }}
+          color={selectTime === time ? 'white' : 'black'}
+          bgColor={selectTime === time ? 'green.400' : 'green.200'}
+          _hover={{ bgColor: 'green.300', color: 'white' }}
         >
           {time}:00
         </Button>

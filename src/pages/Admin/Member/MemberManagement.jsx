@@ -25,7 +25,7 @@ const MemberManagement = () => {
         회원 관리
       </Heading>
       <Flex w={'100%'}>
-        <Card bg="#f8f8ff" boxShadow={'none'}>
+        <Card bg="gray.100" boxShadow={'none'}>
           <CardBody p={0}>
             <VStack>
               {!memberList && (

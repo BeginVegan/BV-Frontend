@@ -1,6 +1,6 @@
 import { css } from '@chakra-ui/react';
 
-export const font = css`
+export const global = css`
   @font-face {
     font-family: 'NEXON Lv1 Gothic OTF';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff')
@@ -51,5 +51,9 @@ export const font = css`
   /* Active Scrollbar Thumb */
   &::-webkit-scrollbar-thumb:active {
     background-color: rgba(0, 0, 0, 0.9);
+  }
+
+  div {
+    background-position: center center !important;
   }
 `;

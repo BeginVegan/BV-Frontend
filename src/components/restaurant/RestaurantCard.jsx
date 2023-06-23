@@ -1,17 +1,5 @@
 import { PhoneIcon, StarIcon } from '@chakra-ui/icons';
-import {
-  Badge,
-  Button,
-  Flex,
-  HStack,
-  Heading,
-  Image,
-  Link,
-  Stack,
-  Text,
-  VStack,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { HStack, Image, Stack, Text, VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 const RestaurantCard = ({
@@ -32,8 +20,8 @@ const RestaurantCard = ({
       w={'375px'}
       direction={'column'}
       onClick={() => {
-        setIsDetailOpen(true);
         setSelectedRestaurantNo(restaurant.restaurantNo);
+        setIsDetailOpen(true);
         setMapCenter({ lat: restaurant.restaurantX, lng: restaurant.restaurantY - 0.014 });
         setOpenMarker({
           restaurantNo: restaurant.restaurantNo,
@@ -46,9 +34,8 @@ const RestaurantCard = ({
       px={5}
       py={3}
     >
-      <VStack>
+      <VStack display={'flex'} alignItems={'flex-start'}>
         <Text
-          width={'100%'}
           fontWeight={600}
           textAlign={'left'}
           _hover={{
