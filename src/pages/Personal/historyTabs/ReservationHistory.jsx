@@ -2,6 +2,7 @@ import Axios from '@/api/apiConfig';
 import { COLORS } from '@/constants/colors';
 import { ROUTES } from '@/routes/ROUTES';
 import {
+  Box,
   Button,
   HStack,
   Table,
@@ -23,21 +24,19 @@ import { isCancellable } from './PurchaseHistory';
 const ReservationHistory = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [reservationList, setReservationList] = useState(null);
-
-  const getReservations = async () => {
-    try {
-      const res = await Axios.get('reservation/list/memberEmail');
-      if (res.status === 200) {
-        setReservationList(res.data);
-      } else {
+  useEffect(() => {
+    const getReservations = async () => {
+      try {
+        const res = await Axios.get('reservation/list/memberEmail');
+        if (res.status === 200) {
+          setReservationList(res.data);
+        } else {
+          setReservationList([]);
+        }
+      } catch (error) {
         setReservationList([]);
       }
-    } catch (error) {
-      setReservationList([]);
-    }
-  };
-
-  useEffect(() => {
+    };
     getReservations();
   }, []);
 
@@ -72,20 +71,7 @@ const ReservationHistory = () => {
           });
         }
       }
-      getReservations();
     });
-  };
-
-  const formatDate = dateString => {
-    const date = new Date(dateString);
-
-    const year = date.getFullYear();
-    const month = ('0' + (date.getMonth() + 1)).slice(-2);
-    const day = ('0' + date.getDate()).slice(-2);
-    const hours = ('0' + date.getHours()).slice(-2);
-    const minutes = ('0' + date.getMinutes()).slice(-2);
-
-    return `${year}/${month}/${day} ${hours}:${minutes}`;
   };
 
   const getHowMany = list => {
@@ -111,102 +97,375 @@ const ReservationHistory = () => {
     return [];
   }, [filteredReservationList]);
 
-  // console.log(reservationList);
-  // console.log(sortedReservationList);
-  // console.log(filteredReservationList);
   const navigate = useNavigate();
   return (
-    <TableContainer marginTop={'1rem'}>
-      {sortedReservationList && sortedReservationList.length > 0 ? (
-        <Table size={isMobile ? 'sm' : 'lg'}>
-          <Thead>
-            <Tr>
-              <CustomTh>번호</CustomTh>
-              <CustomTh>가게명</CustomTh>
-              <CustomTh>메뉴</CustomTh>
-              <CustomTh>금액</CustomTh>
-              <CustomTh>상태</CustomTh>
-              <CustomTh>방문예정</CustomTh>
-              <CustomTh>관리</CustomTh>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {sortedReservationList.map((store, idx) => {
-              return (
-                <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
-                  <CustomTd>{idx + 1}</CustomTd>
-                  <CustomTd>
-                    <RestaurantName restaurantNo={store.restaurantNo} />
-                  </CustomTd>
-                  <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
-                  <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
-                  <CustomTd>{store.reservationStatus}</CustomTd>
-                  <CustomTd>{formatDate(store.reservationVisitTime)}</CustomTd>
-                  <CustomTd>
-                    {new Date(store.reservationVisitTime) - new Date() > 0 &&
-                    new Date(store.reservationVisitTime) - new Date() > 24 * 60 * 60 * 1000 ? (
-                      //24시간 이내
-                      <Button
-                        colorScheme="red"
-                        size={{ base: 'xs', md: 'sm' }}
-                        onClick={() => handleCancel(store.reservationNo)}
-                      >
-                        예약취소
-                      </Button>
-                    ) : (
-                      '취소불가'
-                    )}
-                  </CustomTd>
-                </Tr>
-              );
-            })}
-          </Tbody>
-        </Table>
-      ) : (
-        <VStack width="100%" height="100%" justifyContent="center" alignItems="center" mt={'3rem'}>
-          <Text mt={'3rem'} mb={'3rem'} fontSize={'2xl'}>
-            예약된 가게가 없습니다 😂
-          </Text>
-          <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
-          <HStack spacing={'1rem'}>
-            <Text fontSize={'xl'}>➞ 예약 베스트</Text>
-            <Button
-              colorScheme="green"
-              size={'sm'}
-              onClick={() => {
-                navigate(ROUTES.BEST_RAW + 'reservation');
-              }}
-            >
-              GO
-            </Button>
-          </HStack>
-          <HStack spacing={'1rem'}>
-            <Text fontSize={'xl'}>➞ 평점 베스트</Text>
-            <Button
-              colorScheme="green"
-              size={'sm'}
-              onClick={() => {
-                navigate(ROUTES.BEST_RAW + 'star');
-              }}
-            >
-              GO
-            </Button>
-          </HStack>
-          <HStack spacing={'1rem'}>
-            <Text fontSize={'xl'}>➞ 리뷰 베스트</Text>
-            <Button
-              colorScheme="green"
-              size={'sm'}
-              onClick={() => {
-                navigate(ROUTES.BEST_RAW + 'review');
-              }}
-            >
-              GO
-            </Button>
-          </HStack>
-        </VStack>
-      )}
-    </TableContainer>
+    <Box w={'100%'} maxH={'75vh'} overflowY="scroll">
+      <TableContainer marginTop={'1rem'}>
+        {sortedReservationList && sortedReservationList.length > 0 ? (
+          <Table size={isMobile ? 'sm' : 'lg'}>
+            <Thead>
+              <Tr>
+                <CustomTh>번호</CustomTh>
+                <CustomTh>가게명</CustomTh>
+                <CustomTh>메뉴</CustomTh>
+                <CustomTh>금액</CustomTh>
+                <CustomTh>상태</CustomTh>
+                <CustomTh>방문예정일</CustomTh>
+                <CustomTh>관리</CustomTh>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {sortedReservationList.map((store, idx) => {
+                return (
+                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
+                    <CustomTd>{idx + 1}</CustomTd>
+                    <CustomTd>
+                      <RestaurantName restaurantNo={store.restaurantNo} />
+                    </CustomTd>
+                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
+                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
+                    <CustomTd>{store.reservationStatus}</CustomTd>
+                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                    <CustomTd>
+                      {Number(isCancellable(store.reservationTime)) < 0 ? (
+                        <Button
+                          colorScheme="red"
+                          size={{ base: 'xs', md: 'sm' }}
+                          onClick={() => handleCancel(store.reservationNo)}
+                        >
+                          예약취소
+                        </Button>
+                      ) : (
+                        '취소불가'
+                      )}
+                    </CustomTd>
+                  </Tr>
+                );
+              })}
+              {sortedReservationList.map((store, idx) => {
+                return (
+                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
+                    <CustomTd>{idx + 1}</CustomTd>
+                    <CustomTd>
+                      <RestaurantName restaurantNo={store.restaurantNo} />
+                    </CustomTd>
+                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
+                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
+                    <CustomTd>{store.reservationStatus}</CustomTd>
+                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                    <CustomTd>
+                      {Number(isCancellable(store.reservationTime)) < 0 ? (
+                        <Button
+                          colorScheme="red"
+                          size={{ base: 'xs', md: 'sm' }}
+                          onClick={() => handleCancel(store.reservationNo)}
+                        >
+                          예약취소
+                        </Button>
+                      ) : (
+                        '취소불가'
+                      )}
+                    </CustomTd>
+                  </Tr>
+                );
+              })}
+              {sortedReservationList.map((store, idx) => {
+                return (
+                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
+                    <CustomTd>{idx + 1}</CustomTd>
+                    <CustomTd>
+                      <RestaurantName restaurantNo={store.restaurantNo} />
+                    </CustomTd>
+                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
+                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
+                    <CustomTd>{store.reservationStatus}</CustomTd>
+                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                    <CustomTd>
+                      {Number(isCancellable(store.reservationTime)) < 0 ? (
+                        <Button
+                          colorScheme="red"
+                          size={{ base: 'xs', md: 'sm' }}
+                          onClick={() => handleCancel(store.reservationNo)}
+                        >
+                          예약취소
+                        </Button>
+                      ) : (
+                        '취소불가'
+                      )}
+                    </CustomTd>
+                  </Tr>
+                );
+              })}
+              {sortedReservationList.map((store, idx) => {
+                return (
+                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
+                    <CustomTd>{idx + 1}</CustomTd>
+                    <CustomTd>
+                      <RestaurantName restaurantNo={store.restaurantNo} />
+                    </CustomTd>
+                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
+                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
+                    <CustomTd>{store.reservationStatus}</CustomTd>
+                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                    <CustomTd>
+                      {Number(isCancellable(store.reservationTime)) < 0 ? (
+                        <Button
+                          colorScheme="red"
+                          size={{ base: 'xs', md: 'sm' }}
+                          onClick={() => handleCancel(store.reservationNo)}
+                        >
+                          예약취소
+                        </Button>
+                      ) : (
+                        '취소불가'
+                      )}
+                    </CustomTd>
+                  </Tr>
+                );
+              })}
+              {sortedReservationList.map((store, idx) => {
+                return (
+                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
+                    <CustomTd>{idx + 1}</CustomTd>
+                    <CustomTd>
+                      <RestaurantName restaurantNo={store.restaurantNo} />
+                    </CustomTd>
+                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
+                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
+                    <CustomTd>{store.reservationStatus}</CustomTd>
+                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                    <CustomTd>
+                      {Number(isCancellable(store.reservationTime)) < 0 ? (
+                        <Button
+                          colorScheme="red"
+                          size={{ base: 'xs', md: 'sm' }}
+                          onClick={() => handleCancel(store.reservationNo)}
+                        >
+                          예약취소
+                        </Button>
+                      ) : (
+                        '취소불가'
+                      )}
+                    </CustomTd>
+                  </Tr>
+                );
+              })}
+              {sortedReservationList.map((store, idx) => {
+                return (
+                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
+                    <CustomTd>{idx + 1}</CustomTd>
+                    <CustomTd>
+                      <RestaurantName restaurantNo={store.restaurantNo} />
+                    </CustomTd>
+                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
+                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
+                    <CustomTd>{store.reservationStatus}</CustomTd>
+                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                    <CustomTd>
+                      {Number(isCancellable(store.reservationTime)) < 0 ? (
+                        <Button
+                          colorScheme="red"
+                          size={{ base: 'xs', md: 'sm' }}
+                          onClick={() => handleCancel(store.reservationNo)}
+                        >
+                          예약취소
+                        </Button>
+                      ) : (
+                        '취소불가'
+                      )}
+                    </CustomTd>
+                  </Tr>
+                );
+              })}
+              {sortedReservationList.map((store, idx) => {
+                return (
+                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
+                    <CustomTd>{idx + 1}</CustomTd>
+                    <CustomTd>
+                      <RestaurantName restaurantNo={store.restaurantNo} />
+                    </CustomTd>
+                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
+                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
+                    <CustomTd>{store.reservationStatus}</CustomTd>
+                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                    <CustomTd>
+                      {Number(isCancellable(store.reservationTime)) < 0 ? (
+                        <Button
+                          colorScheme="red"
+                          size={{ base: 'xs', md: 'sm' }}
+                          onClick={() => handleCancel(store.reservationNo)}
+                        >
+                          예약취소
+                        </Button>
+                      ) : (
+                        '취소불가'
+                      )}
+                    </CustomTd>
+                  </Tr>
+                );
+              })}
+              {sortedReservationList.map((store, idx) => {
+                return (
+                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
+                    <CustomTd>{idx + 1}</CustomTd>
+                    <CustomTd>
+                      <RestaurantName restaurantNo={store.restaurantNo} />
+                    </CustomTd>
+                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
+                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
+                    <CustomTd>{store.reservationStatus}</CustomTd>
+                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                    <CustomTd>
+                      {Number(isCancellable(store.reservationTime)) < 0 ? (
+                        <Button
+                          colorScheme="red"
+                          size={{ base: 'xs', md: 'sm' }}
+                          onClick={() => handleCancel(store.reservationNo)}
+                        >
+                          예약취소
+                        </Button>
+                      ) : (
+                        '취소불가'
+                      )}
+                    </CustomTd>
+                  </Tr>
+                );
+              })}
+              {sortedReservationList.map((store, idx) => {
+                return (
+                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
+                    <CustomTd>{idx + 1}</CustomTd>
+                    <CustomTd>
+                      <RestaurantName restaurantNo={store.restaurantNo} />
+                    </CustomTd>
+                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
+                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
+                    <CustomTd>{store.reservationStatus}</CustomTd>
+                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                    <CustomTd>
+                      {Number(isCancellable(store.reservationTime)) < 0 ? (
+                        <Button
+                          colorScheme="red"
+                          size={{ base: 'xs', md: 'sm' }}
+                          onClick={() => handleCancel(store.reservationNo)}
+                        >
+                          예약취소
+                        </Button>
+                      ) : (
+                        '취소불가'
+                      )}
+                    </CustomTd>
+                  </Tr>
+                );
+              })}
+              {sortedReservationList.map((store, idx) => {
+                return (
+                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
+                    <CustomTd>{idx + 1}</CustomTd>
+                    <CustomTd>
+                      <RestaurantName restaurantNo={store.restaurantNo} />
+                    </CustomTd>
+                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
+                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
+                    <CustomTd>{store.reservationStatus}</CustomTd>
+                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                    <CustomTd>
+                      {Number(isCancellable(store.reservationTime)) < 0 ? (
+                        <Button
+                          colorScheme="red"
+                          size={{ base: 'xs', md: 'sm' }}
+                          onClick={() => handleCancel(store.reservationNo)}
+                        >
+                          예약취소
+                        </Button>
+                      ) : (
+                        '취소불가'
+                      )}
+                    </CustomTd>
+                  </Tr>
+                );
+              })}
+              {sortedReservationList.map((store, idx) => {
+                return (
+                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
+                    <CustomTd>{idx + 1}</CustomTd>
+                    <CustomTd>
+                      <RestaurantName restaurantNo={store.restaurantNo} />
+                    </CustomTd>
+                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
+                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
+                    <CustomTd>{store.reservationStatus}</CustomTd>
+                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                    <CustomTd>
+                      {Number(isCancellable(store.reservationTime)) < 0 ? (
+                        <Button
+                          colorScheme="red"
+                          size={{ base: 'xs', md: 'sm' }}
+                          onClick={() => handleCancel(store.reservationNo)}
+                        >
+                          예약취소
+                        </Button>
+                      ) : (
+                        '취소불가'
+                      )}
+                    </CustomTd>
+                  </Tr>
+                );
+              })}
+            </Tbody>
+          </Table>
+        ) : (
+          <VStack
+            width="100%"
+            height="100%"
+            justifyContent="center"
+            alignItems="center"
+            mt={'3rem'}
+          >
+            <Text mt={'3rem'} mb={'3rem'} fontSize={'2xl'}>
+              예약된 가게가 없습니다 😂
+            </Text>
+            <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
+            <HStack spacing={'1rem'}>
+              <Text fontSize={'xl'}>➞ 예약 베스트</Text>
+              <Button
+                colorScheme="green"
+                size={'sm'}
+                onClick={() => {
+                  navigate(ROUTES.BEST_RAW + 'reservation');
+                }}
+              >
+                GO
+              </Button>
+            </HStack>
+            <HStack spacing={'1rem'}>
+              <Text fontSize={'xl'}>➞ 평점 베스트</Text>
+              <Button
+                colorScheme="green"
+                size={'sm'}
+                onClick={() => {
+                  navigate(ROUTES.BEST_RAW + 'star');
+                }}
+              >
+                GO
+              </Button>
+            </HStack>
+            <HStack spacing={'1rem'}>
+              <Text fontSize={'xl'}>➞ 리뷰 베스트</Text>
+              <Button
+                colorScheme="green"
+                size={'sm'}
+                onClick={() => {
+                  navigate(ROUTES.BEST_RAW + 'review');
+                }}
+              >
+                GO
+              </Button>
+            </HStack>
+          </VStack>
+        )}
+      </TableContainer>
+    </Box>
   );
 };
 export default ReservationHistory;
