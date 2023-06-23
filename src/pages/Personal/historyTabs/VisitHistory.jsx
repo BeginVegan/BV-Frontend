@@ -31,55 +31,64 @@ const VisitHistory = () => {
   const [sortBy, setSortBy] = useState('2');
   const [reviewList, setReviewList] = useState(null);
 
-  useEffect(() => {
-    const getReservations = async () => {
-      try {
-        const res = await Axios.get('reservation/list/memberEmail');
-        if (res.status === 200) {
-          setReservationList(res.data);
-        } else {
-          setReservationList([]);
-        }
-      } catch (error) {
+  const getReservations = async () => {
+    try {
+      const res = await Axios.get('reservation/list/memberEmail');
+      if (res.status === 200) {
+        setReservationList(res.data);
+      } else {
         setReservationList([]);
       }
-    };
+    } catch (error) {
+      setReservationList([]);
+    }
+  };
 
-    const getReview = async () => {
-      try {
-        const res = await Axios.get('mypage/review/userEmail');
-        if (res.status === 200) {
-          setReviewList(res.data);
-        } else {
-          setReviewList([]);
-        }
-      } catch (error) {
+  const getReview = async () => {
+    try {
+      const res = await Axios.get('mypage/review/userEmail');
+      if (res.status === 200) {
+        setReviewList(res.data);
+      } else {
         setReviewList([]);
       }
-    };
-
+    } catch (error) {
+      setReviewList([]);
+    }
+  };
+  useEffect(() => {
     getReservations();
     getReview();
   }, []);
 
-  const sortedReservationList = useMemo(() => {
+  const filteredReservationList = useMemo(() => {
     if (reservationList) {
+      return reservationList.filter(
+        reservation => new Date(reservation.reservationVisitTime) < new Date()
+      );
+    }
+    return [];
+  }, [reservationList]);
+
+  const sortedReservationList = useMemo(() => {
+    if (filteredReservationList) {
       if (sortBy === '1') {
         // 최신순
 
-        return [...reservationList].sort(
+        return [...filteredReservationList].sort(
           (a, b) => new Date(b.reservationVisitTime) - new Date(a.reservationVisitTime)
         );
       } else {
         // 별점순
 
-        return [...reservationList].sort((a, b) => b.restaurantStar - a.restaurantStar);
+        return [...filteredReservationList].sort((a, b) => b.restaurantStar - a.restaurantStar);
       }
     }
     return [];
-  }, [reservationList, sortBy]);
+  }, [filteredReservationList, sortBy]);
   const templateColumns = useBreakpointValue({ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' });
 
+  // console.log(sortedReservationList);
   return (
     <div>
       <VStack align={'flex-start'}>
@@ -190,16 +199,19 @@ const RestaurantCards = ({ reservationNo, reviewList, restaurant, id, reservatio
             w="100%"
           >
             <CardBody w="100%">
-              <Box ml="2rem" mt={'1rem'} p="1rem" w="15rem" h="15rem">
-                <Image
-                  w={'100%'}
-                  h={'100%'}
-                  pointerEvents="none"
-                  src={s3ImageList && s3ImageList[0] ? s3ImageList[0] : null}
-                  alt={'레스토랑 이미지'}
-                  borderRadius="lg"
-                />
-              </Box>
+              <VStack>
+                <Box mt={'1rem'} p="1rem" w="15rem" h="15rem">
+                  <Image
+                    w={'100%'}
+                    h={'100%'}
+                    pointerEvents="none"
+                    src={s3ImageList && s3ImageList[0] ? s3ImageList[0] : null}
+                    alt={'레스토랑 이미지'}
+                    borderRadius="lg"
+                  />
+                </Box>
+                <Text>{reservationVisitTime} 방문</Text>
+              </VStack>
             </CardBody>
             <Divider orientation="vertical" />
             <VStack w={'350px'}>
@@ -210,7 +222,7 @@ const RestaurantCards = ({ reservationNo, reviewList, restaurant, id, reservatio
                 <HStack>
                   <AiFillStar color="gold" size={'40px'} />
                   <Text color="blue.600" fontSize="2xl">
-                    {restaurantStar}
+                    {restaurantStar.toFixed(1)}
                   </Text>
                 </HStack>
               </Stack>

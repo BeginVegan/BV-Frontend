@@ -24,14 +24,13 @@ export const isCancellable = dateString => {
 
   const timeGap = date.getTime() - currentTime.getTime();
 
-  return timeGap >= 0 && timeGap <= twentyFourHours;
+  return timeGap >= 0;
 };
 
 const PurchaseHistory = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [paymentList, setPaymentList] = useState(null);
-  const [forceUpdate, setForceUpdate] = useState(false); 
-
+  const [forceUpdate, setForceUpdate] = useState(false);
 
   const getPayments = async () => {
     try {
@@ -52,8 +51,7 @@ const PurchaseHistory = () => {
     getPayments();
   }, []);
 
-
-  const cancelPayment = (impUid) => {
+  const cancelPayment = impUid => {
     Swal.fire({
       icon: 'question',
       title: '정말 취소하시겠습니까?',
@@ -63,34 +61,33 @@ const PurchaseHistory = () => {
       if (res.isConfirmed) {
         try {
           const result = await Axios.delete(`payment?impUid=${impUid}`);
-          if (result.status === 200 ) {
+          if (result.status === 200) {
             Swal.fire({
               icon: 'success',
               title: '결제 취소 성공',
               text: '그동안 이용해 주셔서 감사합니다',
-            })
-          }
-          else {
+            });
+          } else {
             Swal.fire({
-              icon:'error',
-              title:'결제 취소 실패',
-              text: '다시 시도해 주세요'
-            })
+              icon: 'error',
+              title: '결제 취소 실패',
+              text: '다시 시도해 주세요',
+            });
           }
         } catch (error) {
           Swal.fire({
-            icon:'error',
-            title:'결제 취소 실패',
-            text: '다시 시도해 주세요'
-          })
+            icon: 'error',
+            title: '결제 취소 실패',
+            text: '다시 시도해 주세요',
+          });
         }
+        getPayments();
       }
     });
-    getPayments()
-  }
+  };
   return (
     <TableContainer marginTop={'1rem'}>
-      {paymentList && paymentList.length > 0 ?
+      {paymentList && paymentList.length > 0 ? (
         <Table size={isMobile ? 'sm' : 'lg'}>
           <Thead>
             <Tr>
@@ -107,28 +104,36 @@ const PurchaseHistory = () => {
                 <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
                   <CustomTd>{idx + 1}</CustomTd>
                   <CustomTd>
-                    <RestaurantName reservationNo={payment.reservationNo}
+                    <RestaurantName
+                      reservationNo={payment.reservationNo}
                       refresh={() => setForceUpdate(!forceUpdate)}
                     />
                   </CustomTd>
                   <CustomTd>{Number(payment.paymentPrice).toLocaleString()}</CustomTd>
                   <CustomTd>{payment.paymentTime.split(' ')[0]}</CustomTd>
                   <CustomTd>
-                    {isCancellable(new Date()) ? <Button size={isMobile ? 'xs' : 'sm'} colorScheme='red'
-                      onClick={() => cancelPayment(payment.impUid)}
-                    >결제 취소</Button> : '취소불가'}
+                    {
+                      <Button
+                        size={isMobile ? 'xs' : 'sm'}
+                        colorScheme="red"
+                        onClick={() => cancelPayment(payment.impUid)}
+                      >
+                        결제 취소
+                      </Button>
+                    }
                   </CustomTd>
                 </Tr>
               );
             })}
           </Tbody>
-        </Table> :
+        </Table>
+      ) : (
         <Flex justifyContent="center" mt={'2rem'} alignItems="center" height="100%">
           <Text fontSize={'2xl'}>결제 내역이 없습니다 😂</Text>
         </Flex>
-      }
+      )}
     </TableContainer>
-  );  
+  );
 };
 export default PurchaseHistory;
 
@@ -145,37 +150,37 @@ const CustomTd = ({ children }) => {
 };
 const RestaurantName = ({ reservationNo, refresh }) => {
   const [name, setName] = useState(null);
-  const [no, setNo] = useState(null)
+  const [no, setNo] = useState(null);
 
-  const fetchRestaurantName = async (restaurantNo) => {
+  const fetchRestaurantName = async restaurantNo => {
     try {
-      const res = await Axios.get(`restaurant/${restaurantNo}`)
+      const res = await Axios.get(`restaurant/${restaurantNo}`);
       if (res.status === 200) {
-        const restaurantName = res.data.restaurant.restaurantName
-        setName(restaurantName)
+        const restaurantName = res.data.restaurant.restaurantName;
+        setName(restaurantName);
       } else {
         console.log(`Unexpected status code ${res.status}`);
-        setName(null)
+        setName(null);
       }
     } catch (error) {
       console.error('Error fetching restaurant name', error);
-      setName(null)
+      setName(null);
     }
-  }
+  };
 
   const fetchRestaurantNo = async () => {
     try {
       const res = await Axios.get(`reservation/${reservationNo}`);
       if (res.status === 200) {
         const restaurantNo = res.data.restaurantNo;
-        setNo(restaurantNo)
+        setNo(restaurantNo);
       } else {
         console.log(`Unexpected status code ${res.status}`);
-        setNo(null)
+        setNo(null);
       }
     } catch (error) {
       console.error('Error fetching restaurant number', error);
-      setNo(null)
+      setNo(null);
     }
   };
 
@@ -188,10 +193,10 @@ const RestaurantName = ({ reservationNo, refresh }) => {
   }, [no]);
 
   useEffect(() => {
-    if (name){
+    if (name) {
       refresh();
-    } 
+    }
   }, [name]);
-  
+
   return <div>{name}</div>;
 };
