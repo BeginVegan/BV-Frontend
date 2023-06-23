@@ -166,7 +166,7 @@ const BookmarkCard = ({ restuarantNo, idx, refresh }) => {
               <HStack>
                 <AiFillStar color="gold" size={'40px'} />
                 <Text color="blue.600" fontSize="2xl">
-                  {data.restaurantStar}
+                  {data.restaurantStar.toFixed(1)}
                 </Text>
               </HStack>
             </Stack>
