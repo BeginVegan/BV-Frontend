@@ -10,8 +10,10 @@ const SearchBar = ({ isMain }) => {
   const inputRef = useRef(null);
 
   const handleKeyDown = e => {
-    e.preventDefault();
-    if (e.key === 'Enter') handleSubmit();
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSubmit();
+    }
   };
 
   const handleSubmit = () => {
