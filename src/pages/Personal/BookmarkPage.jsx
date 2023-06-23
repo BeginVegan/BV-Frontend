@@ -1,4 +1,5 @@
 import Axios from '@/api/apiConfig';
+import { ROUTES } from '@/routes/ROUTES';
 import {
   Box,
   Button,
@@ -44,7 +45,7 @@ const BookmarkPage = () => {
     getBookmarks();
   }, [forceUpdate]);
 
-  console.log(bookmarks);
+  const navigate = useNavigate();
   return (
     <VStack width={'100%'} spacing={'2rem'} paddingLeft={'2rem'}>
       <Text fontSize={'3xl'} mt={'2rem'} fontWeight={'extrabold'}>
@@ -52,15 +53,6 @@ const BookmarkPage = () => {
       </Text>
       <Divider />
       {!bookmarks || bookmarks.length < 1 ? (
-        // <SimpleGrid justifyItems={'center'} height={'85vh'}>
-
-        //   <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
-        //   <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
-        //   <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
-        //   <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
-        //   <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
-        //   <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
-        // </SimpleGrid>
         <VStack h="85vh" spacing={'1rem'}>
           <Text mt={'3rem'} mb={'3rem'} fontSize={'2xl'}>
             등록된 가게가 없습니다 😂
@@ -68,19 +60,31 @@ const BookmarkPage = () => {
           <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
           <HStack spacing={'1rem'}>
             <Text fontSize={'xl'}>➞ 예약 베스트</Text>
-            <Button colorScheme="green" size={'sm'}>
+            <Button
+              colorScheme="green"
+              size={'sm'}
+              onClick={() => navigate(ROUTES.BEST_RAW + 'reservation')}
+            >
               GO
             </Button>
           </HStack>
           <HStack spacing={'1rem'}>
             <Text fontSize={'xl'}>➞ 평점 베스트</Text>
-            <Button colorScheme="green" size={'sm'}>
+            <Button
+              colorScheme="green"
+              size={'sm'}
+              onClick={() => navigate(ROUTES.BEST_RAW + 'star')}
+            >
               GO
             </Button>
           </HStack>
           <HStack spacing={'1rem'}>
             <Text fontSize={'xl'}>➞ 리뷰 베스트</Text>
-            <Button colorScheme="green" size={'sm'}>
+            <Button
+              colorScheme="green"
+              size={'sm'}
+              onClick={() => navigate(ROUTES.BEST_RAW + 'review')}
+            >
               GO
             </Button>
           </HStack>
