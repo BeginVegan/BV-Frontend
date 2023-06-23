@@ -147,7 +147,7 @@ const RestaurantCards = ({ reservationNo, reviewList, restaurant, id, reservatio
         return review.restaurantNo === restaurantNo && review.reservationNo === reservationNo;
       });
 
-      if (!hasReview && reservationVisitTime < now) {
+      if (!hasReview && new Date(reservationVisitTime) < now) {
         setIsReviewable(true);
       }
     }

@@ -42,11 +42,11 @@ const MyPageMain = () => {
         if (res.status === 200) {
           setReservationList(res.data);
         } else {
-          console.log(`Unexpected status code ${res.status}`);
+          // console.log(`Unexpected status code ${res.status}`);
           setReservationList([]);
         }
       } catch (error) {
-        console.error('Error fetching reservations', error);
+        // console.error('Error fetching reservations', error);
         setReservationList([]);
         setIsError(true);
       }
@@ -58,15 +58,16 @@ const MyPageMain = () => {
         if (res.status === 200) {
           setReviewList(res.data);
         } else {
-          console.log(`Unexpected status code ${res.status}`);
+          // console.log(`Unexpected status code ${res.status}`);
           setReviewList([]);
         }
       } catch (error) {
-        console.error('Error fetching reviews', error);
+        // console.error('Error fetching reviews', error);
         setReviewList([]);
         setIsError(true);
       }
     };
+
     getReservations();
     getReview();
   }, []);
@@ -94,7 +95,7 @@ const MyPageMain = () => {
   //예약중인 리스트 추출
   const onReadyReservationList = useMemo(() => {
     if (reservationList) {
-      return reservationList.filter(store => isCancellable(store.reservationTime));
+      return reservationList.filter(store => isCancellable(store.reservationVisitTime));
     }
     return [];
   }, [reservationList]);
@@ -102,7 +103,12 @@ const MyPageMain = () => {
   //결제완료 리스트 추출
   const doneReservationList = useMemo(() => {
     if (reservationList) {
-      return reservationList.filter(store => !isCancellable(store.reservationTime));
+      const now = new Date();
+      return reservationList.filter(store => {
+        return (
+          !isCancellable(store.reservationVisitTime) && new Date(store.reservationVisitTime) < now
+        );
+      });
     }
     return [];
   }, [reservationList]);
@@ -217,7 +223,7 @@ const MyPageMainCard = ({ title, value, list }) => {
       const details = [];
       if (list && list.length > 0 && Array.isArray(list)) {
         for (let store of list) {
-          const data = await fetchRestaurantDetail(store.reservationNo);
+          const data = await fetchRestaurantDetail(store.restaurantNo);
           details.push({ ...{ reservationNo: store.reservationNo }, ...data });
         }
       }
@@ -280,6 +286,7 @@ const MyPageMainCard = ({ title, value, list }) => {
                     <VStack>
                       {restaurantDetails.map((detail, idx) => {
                         if (idx > 5) return;
+
                         return (
                           <HStack w={'100%'} key={idx}>
                             <Text>{trimName(detail.restaurantName)}</Text>

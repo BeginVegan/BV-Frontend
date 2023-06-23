@@ -11,7 +11,7 @@ const headers = {
 };
 
 const Axios = axios.create({
-  baseURL: `${BACKEND_SERVER}`,
+  baseURL: `${LOCALHOST}`,
   timeout: 5000, // 요청 타임아웃 설정 (옵션)
   headers: headers,
   withCredentials: true,
