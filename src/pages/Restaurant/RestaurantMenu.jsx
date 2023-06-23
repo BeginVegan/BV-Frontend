@@ -1,4 +1,4 @@
-import { Box, HStack, Image, VStack, Text } from '@chakra-ui/react';
+import { Box, HStack, Image, VStack, Text, Card } from '@chakra-ui/react';
 import React from 'react';
 
 const RestaurantMenu = ({ menuList }) => {
@@ -15,8 +15,18 @@ const RestaurantMenu = ({ menuList }) => {
   return (
     <React.Fragment>
       {filteredMenuList.map(menu => (
-        <HStack key={menu.menuNo} w={'600px'} justifyContent={'space-around'}>
-          <VStack w={'400px'} textAlign={'left'} alignItems={'flex-start'}>
+        <Card
+          direction={'row'}
+          key={menu.menuNo}
+          w={'100%'}
+          py={3}
+          px={2}
+          border={'1px solid'}
+          borderColor={'gray.200'}
+          display={'flex'}
+          justifyContent={'space-between'}
+        >
+          <VStack w={'200px'} textAlign={'left'} alignItems={'flex-start'}>
             <Box fontWeight={400} fontSize="md">
               {menu.menuName}
               <Box ml={2} display={'inline'} fontWeight={400} color={'gray.600'} fontSize="md">
@@ -24,11 +34,18 @@ const RestaurantMenu = ({ menuList }) => {
               </Box>
             </Box>
             <Box fontWeight={200} color={'gray.600'} fontSize="sm">
-              {menu.menuDetail}
+              {menu.menuDetail.length > 54 ? menu.menuDetail.slice(0, 54) + '..' : menu.menuDetail}
             </Box>
           </VStack>
-          <Image objectFit="cover" h={'90px'} w={'120px'} src={menu.menuPhotoDir} />
-        </HStack>
+          <Image
+            borderRadius={'md'}
+            shadow={'rgba(149, 157, 165, 0.2) 0px 8px 24px'}
+            objectFit="cover"
+            h={'90px'}
+            w={'120px'}
+            src={menu.menuPhotoDir}
+          />
+        </Card>
       ))}
     </React.Fragment>
   );

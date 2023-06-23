@@ -13,7 +13,7 @@ const DefaultHeaderLayout = ({ hasFooter }) => {
       </FixedHeader>
       <Flex
         position={'relative'}
-        minH={'calc(100vh - 73px)'}
+        minH={'calc(100vh - 75px)'}
         direction={'column'}
         justifyContent={'center'}
         alignItems={'center'}
