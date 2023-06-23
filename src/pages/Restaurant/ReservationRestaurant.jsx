@@ -200,7 +200,6 @@ const ReservationRestaurant = () => {
   };
 
   const addReservation = data => {
-    console.log(data, '!!');
     if (!selectTime) {
       Swal.fire({
         icon: 'warning',
@@ -221,7 +220,6 @@ const ReservationRestaurant = () => {
     selectDate.setHours(selectTime, 0, 0);
 
     const openswal = () => {
-      console.log('openswal', data, data.restaurant, data.restaurantName);
       return `
         <div style='display: flex; flex-direction: column; align-items: center'>
           <div style='display: flex; flex-direction: column; align-items: flex-start; hight: 150px; gap: 15px;'>
