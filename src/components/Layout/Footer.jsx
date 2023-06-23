@@ -9,7 +9,7 @@ const Footer = () => {
   const navigator = useNavigate();
 
   return (
-    <Box bottom={0} minH={'165px'} bg={COLORS.GREEN400} color={'white'}>
+    <Box bottom={0} minH={'150px'} bg={COLORS.GREEN400} color={'white'}>
       <Container as={Stack} maxW={'6xl'} pt={1} pb={2} align={'center'}>
         <Image
           h="60px"
