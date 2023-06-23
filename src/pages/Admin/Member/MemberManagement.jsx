@@ -24,35 +24,21 @@ const MemberManagement = () => {
       <Heading display={'flex'} alignSelf={'flex-start'} color={'#323232'} mb={5}>
         회원 관리
       </Heading>
-      <Flex w={'100%'}>
-        <Card bg="gray.100" boxShadow={'none'}>
-          <CardBody p={0}>
-            <VStack>
-              {!memberList && (
-                <>
-                  <Skeleton
-                    width={'1288px'}
-                    h={'80px'}
-                    isLoaded={memberList}
-                    borderRadius={'2xl'}
-                  />
-                  <Skeleton
-                    width={'1288px'}
-                    h={'80px'}
-                    isLoaded={memberList}
-                    borderRadius={'2xl'}
-                  />
-                </>
-              )}
-              <Skeleton width={'1288px'} h={'680px'} isLoaded={memberList} borderRadius={'2xl'}>
-                {memberList && (
-                  <MemberInfo data={memberList} setIsChange={setIsChange}></MemberInfo>
-                )}
-              </Skeleton>
-            </VStack>
-          </CardBody>
-        </Card>
-      </Flex>
+      <Card bg="gray.100" boxShadow={'none'}>
+        <CardBody p={0}>
+          <VStack>
+            {!memberList && (
+              <>
+                <Skeleton width={'1288px'} h={'80px'} isLoaded={memberList} borderRadius={'2xl'} />
+                <Skeleton width={'1288px'} h={'80px'} isLoaded={memberList} borderRadius={'2xl'} />
+                <Skeleton width={'1288px'} h={'800px'} isLoaded={memberList} borderRadius={'2xl'} />
+              </>
+            )}
+
+            {memberList && <MemberInfo data={memberList} setIsChange={setIsChange}></MemberInfo>}
+          </VStack>
+        </CardBody>
+      </Card>
     </>
   );
 };
