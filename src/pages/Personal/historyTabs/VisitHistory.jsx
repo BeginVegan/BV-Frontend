@@ -33,34 +33,34 @@ const VisitHistory = () => {
 
   useEffect(() => {
     const getReservations = async () => {
-        try {
-          const res = await Axios.get('reservation/list/memberEmail');
-          if (res.status === 200) {
-            setReservationList(res.data);
-          } else {
-            setReservationList([]);
-          }
-        } catch (error) {
+      try {
+        const res = await Axios.get('reservation/list/memberEmail');
+        if (res.status === 200) {
+          setReservationList(res.data);
+        } else {
           setReservationList([]);
         }
-      };
-    
-      const getReview = async () => {
-        try {
-          const res = await Axios.get('mypage/review/userEmail');
-          if (res.status === 200) {
-            setReviewList(res.data);
-          } else {
-            setReviewList([]);
-          }
-        } catch (error) {
+      } catch (error) {
+        setReservationList([]);
+      }
+    };
+
+    const getReview = async () => {
+      try {
+        const res = await Axios.get('mypage/review/userEmail');
+        if (res.status === 200) {
+          setReviewList(res.data);
+        } else {
           setReviewList([]);
         }
-      };
-    
+      } catch (error) {
+        setReviewList([]);
+      }
+    };
+
     getReservations();
     getReview();
-  },[]);
+  }, []);
 
   const sortedReservationList = useMemo(() => {
     if (reservationList) {
@@ -81,78 +81,93 @@ const VisitHistory = () => {
   const templateColumns = useBreakpointValue({ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' });
 
   return (
-    <div >
+    <div>
       <VStack align={'flex-start'}>
-      <RadioGroup  defaultValue="2" onChange={setSortBy}>
-        <Stack spacing={5} direction="row">
-          <Radio colorScheme="green" value="1">
-            최신순
-          </Radio>
-          <Radio colorScheme="green" value="2">
-            별점순
-          </Radio>
-        </Stack>
-      </RadioGroup>
+        <RadioGroup defaultValue="2" onChange={setSortBy}>
+          <Stack spacing={5} direction="row">
+            <Radio colorScheme="green" value="1">
+              최신순
+            </Radio>
+            <Radio colorScheme="green" value="2">
+              별점순
+            </Radio>
+          </Stack>
+        </RadioGroup>
       </VStack>
-     {sortedReservationList && sortedReservationList.length > 0? <Flex height={'80vh'} overflowY={'auto'}>
-        
-        <VStack w="100%" marginTop={'2rem'} align={'start'}>
-          <Grid w={"100%"} templateColumns={templateColumns} gap={4} height={'80vh'} overflowY={'auto'} padding={4}>
-
-          {sortedReservationList.map((restaurant, idx) => {
-            return <RestaurantCards reservationNo={restaurant.reservationNo} reviewList={reviewList} key={idx} id={idx} restaurant={restaurant} />;
-          })}
-          
-          </Grid>
-        </VStack>
-      </Flex> : <VStack
-          width="100%"
-          height="100%"
-          justifyContent="center"
-          alignItems="center"
-          mt={"3rem"}
-        >
+      {sortedReservationList && sortedReservationList.length > 0 ? (
+        <Flex height={'80vh'} overflowY={'auto'}>
+          <VStack w="100%" marginTop={'2rem'} align={'start'}>
+            <Grid
+              w={'100%'}
+              templateColumns={templateColumns}
+              gap={4}
+              height={'80vh'}
+              overflowY={'auto'}
+              padding={4}
+            >
+              {sortedReservationList.map((restaurant, idx) => {
+                return (
+                  <RestaurantCards
+                    reservationNo={restaurant.reservationNo}
+                    reviewList={reviewList}
+                    reservationVisitTime={restaurant.reservationVisitTime}
+                    key={idx}
+                    id={idx}
+                    restaurant={restaurant}
+                  />
+                );
+              })}
+            </Grid>
+          </VStack>
+        </Flex>
+      ) : (
+        <VStack width="100%" height="100%" justifyContent="center" alignItems="center" mt={'3rem'}>
           <Text fontSize={'2xl'}>방문한 가게가 없습니다 😂</Text>
-        </VStack>}
+        </VStack>
+      )}
     </div>
   );
 };
 
 export default VisitHistory;
 
-const RestaurantCards = ({reservationNo, reviewList, restaurant, id }) => {
+const RestaurantCards = ({ reservationNo, reviewList, restaurant, id, reservationVisitTime }) => {
   const { data } = useRestaurantDetail(restaurant.restaurantNo);
-  const { restaurantName, restaurantDetail, restaurantPhotoDir, restaurantStar,restaurantNo } = data || {};
+  const { restaurantName, restaurantDetail, restaurantPhotoDir, restaurantStar, restaurantNo } =
+    data || {};
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const [isReviewable, setIsReviewable] = useState(false)
+  const [isReviewable, setIsReviewable] = useState(false);
   const navigate = useNavigate();
-  const [s3ImageList,setS3ImageList] = useState(null)
+  const [s3ImageList, setS3ImageList] = useState(null);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (reviewList && data) {
-      const hasReview = reviewList.find(review => review.restaurantNo === restaurantNo && review.reservationNo === reservationNo);
-      if (!hasReview) {
-        setIsReviewable(true)
-      } 
+      const now = new Date();
+      const hasReview = reviewList.find(review => {
+        return review.restaurantNo === restaurantNo && review.reservationNo === reservationNo;
+      });
+
+      if (!hasReview && reservationVisitTime < now) {
+        setIsReviewable(true);
+      }
     }
-  },[data])
+  }, [data]);
 
   const getS3ImageList = async () => {
     try {
-        const res = await Axios.get(`restaurant/img/${restaurantPhotoDir}`)
-        if (res.status === 200) {
-        console.log("Images", res)
+      const res = await Axios.get(`restaurant/img/${restaurantPhotoDir}`);
+      if (res.status === 200) {
         setS3ImageList(res.data);
-      } 
-    } catch (error ) {
-      setS3ImageList(null)
+      }
+    } catch (error) {
+      setS3ImageList(null);
     }
-  }
-  useEffect(()=>{
-    if (restaurantPhotoDir){
+  };
+  useEffect(() => {
+    if (restaurantPhotoDir) {
       getS3ImageList();
     }
-  },[restaurantPhotoDir])
+  }, [restaurantPhotoDir]);
 
   return (
     <div key={restaurant.id}>
@@ -175,20 +190,20 @@ const RestaurantCards = ({reservationNo, reviewList, restaurant, id }) => {
             w="100%"
           >
             <CardBody w="100%">
-              <Box ml="2rem" mt={"1rem"} p="1rem" w="15rem" h="15rem">
+              <Box ml="2rem" mt={'1rem'} p="1rem" w="15rem" h="15rem">
                 <Image
                   w={'100%'}
                   h={'100%'}
                   pointerEvents="none"
                   src={s3ImageList && s3ImageList[0] ? s3ImageList[0] : null}
-                  alt={"레스토랑 이미지"}
+                  alt={'레스토랑 이미지'}
                   borderRadius="lg"
                 />
               </Box>
             </CardBody>
             <Divider orientation="vertical" />
             <VStack w={'350px'}>
-              <Stack ml={'3rem'} w={'100%'} mt="6" spacing="3">
+              <Stack ml={'3rem'} w={'350px'} pr={'4rem'} mt="6" spacing="3">
                 <Heading size="md">{restaurantName}</Heading>
                 {/* 상세정보 */}
                 <Text>{restaurantDetail}</Text>
@@ -210,16 +225,22 @@ const RestaurantCards = ({reservationNo, reviewList, restaurant, id }) => {
                   >
                     상세 페이지
                   </Button>
-                  {isReviewable && <Button
-                    variant="solid"
-                    colorScheme="teal"
-                    onClick={() => navigate(`/mypage/review`,{state :{
-                      reservationNo : reservationNo,
-                      restaurantNo : restaurantNo
-                    }})}
-                  >
-                    리뷰 작성
-                  </Button>}
+                  {isReviewable && (
+                    <Button
+                      variant="solid"
+                      colorScheme="teal"
+                      onClick={() =>
+                        navigate(`/mypage/review`, {
+                          state: {
+                            reservationNo: reservationNo,
+                            restaurantNo: restaurantNo,
+                          },
+                        })
+                      }
+                    >
+                      리뷰 작성
+                    </Button>
+                  )}
                 </ButtonGroup>
               </CardFooter>
             </VStack>

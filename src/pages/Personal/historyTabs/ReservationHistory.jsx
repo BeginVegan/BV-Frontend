@@ -1,5 +1,8 @@
 import Axios from '@/api/apiConfig';
+import { COLORS } from '@/constants/colors';
 import {
+  Button,
+  HStack,
   Table,
   TableContainer,
   Tbody,
@@ -9,7 +12,7 @@ import {
   Thead,
   Tr,
   VStack,
-  useBreakpointValue
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
 import Swal from 'sweetalert2';
@@ -20,7 +23,7 @@ const ReservationHistory = () => {
   const [reservationList, setReservationList] = useState(null);
   useEffect(() => {
     const getReservations = async () => {
-      try{
+      try {
         const res = await Axios.get('reservation/list/memberEmail');
         if (res.status === 200) {
           setReservationList(res.data);
@@ -34,7 +37,7 @@ const ReservationHistory = () => {
     getReservations();
   }, []);
 
-  const handleCancel = (reservationNo) => {
+  const handleCancel = reservationNo => {
     Swal.fire({
       icon: 'question',
       title: '정말 취소하시겠습니까?',
@@ -49,21 +52,21 @@ const ReservationHistory = () => {
               icon: 'success',
               title: '예약 취소 성공',
               text: '그동안 이용해 주셔서 감사합니다',
-            })
+            });
           } else {
             Swal.fire({
               icon: 'error',
               title: '예약 취소 실패',
               text: '다시 시도해 주세요',
-            })
+            });
           }
         } catch (error) {
           Swal.fire({
             icon: 'error',
             title: '예약 취소 실패',
             text: '다시 시도해 주세요',
-          })
-        } 
+          });
+        }
       }
     });
   };
@@ -75,10 +78,9 @@ const ReservationHistory = () => {
     return list[0].menuName;
   };
 
-
   const filteredReservationList = useMemo(() => {
     if (reservationList) {
-      return reservationList.filter(store => isCancellable(store.reservationTime));
+      return reservationList.filter(store => isCancellable(store.reservationVisitTime));
     }
     return [];
   }, [reservationList]);
@@ -109,48 +111,63 @@ const ReservationHistory = () => {
           </Thead>
           <Tbody>
             {sortedReservationList.map((store, idx) => {
-                return (
-                  <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
-                    <CustomTd>{idx + 1}</CustomTd>
-                    <CustomTd>
-                      <RestaurantName restaurantNo={store.restaurantNo} />
-                    </CustomTd>
-                    <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
-                    <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
-                    <CustomTd>{store.reservationStatus}</CustomTd>
-                    <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
-                    <CustomTd>
-                      {Number(isCancellable(store.reservationTime)) < 0 ? (
-                        <Button
-                          colorScheme="red"
-                          size={{ base: 'xs', md: 'sm' }}
-                          onClick={() => handleCancel(store.reservationNo)}
-                        >
-                          예약취소
-                        </Button>
-                      ) : (
-                        '취소불가'
-                      )}
-                    </CustomTd>
-                  </Tr>
-                );
+              return (
+                <Tr key={idx} _hover={{ bgColor: COLORS.GREEN100 }}>
+                  <CustomTd>{idx + 1}</CustomTd>
+                  <CustomTd>
+                    <RestaurantName restaurantNo={store.restaurantNo} />
+                  </CustomTd>
+                  <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
+                  <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
+                  <CustomTd>{store.reservationStatus}</CustomTd>
+                  <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                  <CustomTd>
+                    {Number(isCancellable(store.reservationTime)) < 0 ? (
+                      <Button
+                        colorScheme="red"
+                        size={{ base: 'xs', md: 'sm' }}
+                        onClick={() => handleCancel(store.reservationNo)}
+                      >
+                        예약취소
+                      </Button>
+                    ) : (
+                      '취소불가'
+                    )}
+                  </CustomTd>
+                </Tr>
+              );
             })}
           </Tbody>
         </Table>
       ) : (
-        <VStack
-          width="100%"
-          height="100%"
-          justifyContent="center"
-          alignItems="center"
-          mt={"3rem"}
-        >
-          <Text fontSize={'2xl'}>예약된 가게가 없습니다 😂</Text>
+        <VStack width="100%" height="100%" justifyContent="center" alignItems="center" mt={'3rem'}>
+          <Text mt={'3rem'} mb={'3rem'} fontSize={'2xl'}>
+            예약된 가게가 없습니다 😂
+          </Text>
+          <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
+          <HStack spacing={'1rem'}>
+            <Text fontSize={'xl'}>➞ 예약 베스트</Text>
+            <Button colorScheme="green" size={'sm'}>
+              GO
+            </Button>
+          </HStack>
+          <HStack spacing={'1rem'}>
+            <Text fontSize={'xl'}>➞ 평점 베스트</Text>
+            <Button colorScheme="green" size={'sm'}>
+              GO
+            </Button>
+          </HStack>
+          <HStack spacing={'1rem'}>
+            <Text fontSize={'xl'}>➞ 리뷰 베스트</Text>
+            <Button colorScheme="green" size={'sm'}>
+              GO
+            </Button>
+          </HStack>
         </VStack>
       )}
     </TableContainer>
   );
-      }  
+};
 export default ReservationHistory;
 
 const CustomTh = ({ children }) => {
@@ -169,7 +186,6 @@ const RestaurantName = ({ restaurantNo }) => {
   const [name, setName] = useState(null);
 
   useEffect(() => {
-    
     const fetchData = async () => {
       try {
         const res = await Axios.get(`restaurant/${restaurantNo}`);
