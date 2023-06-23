@@ -51,6 +51,7 @@ const RetaurantDetail = () => {
     data: restaurantDetail,
     isLoading: restaurantDetailLoading,
     error: restaurantDetailError,
+    isFetching: restaurantDetailFetching,
     refetch: restaurantRefetch,
   } = useQuery('getRestaurantDetails', fetchRestaurantDetails, {
     retry: 0,
@@ -95,7 +96,7 @@ const RetaurantDetail = () => {
     }
 
     unZip(image);
-  }, [isImageFetching, imageLoading]);
+  }, [isImageFetching, imageLoading, restaurantNo]);
 
   const unZip = async image => {
     const zip = await JSZip.loadAsync(image);
@@ -137,9 +138,13 @@ const RetaurantDetail = () => {
   };
 
   useEffect(() => {
-    if (!restaurantDetailLoading) {
+    if (!restaurantDetailLoading && !restaurantDetailFetching) {
       const { restaurant } = restaurantDetail;
 
+      if (restaurant.restaurantNo != restaurantNo) {
+        restaurantRefetch();
+        return;
+      }
       imageRefetch();
 
       setValue('restaurantName', restaurant.restaurantName);
@@ -171,7 +176,7 @@ const RetaurantDetail = () => {
       setValue('phoneNum2', phoneNum2);
       setValue('phoneNum3', phoneNum3);
     }
-  }, [restaurantDetailLoading]);
+  }, [restaurantDetailLoading, restaurantDetailFetching]);
 
   const handleComplete = async data => {
     setValue('address', getFullAddress(data), { shouldValidate: true });
