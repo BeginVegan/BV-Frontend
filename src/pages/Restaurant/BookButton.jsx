@@ -6,7 +6,7 @@ import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { Button } from '@chakra-ui/react';
 import { loginMenuAtom } from '@/utils/atoms/loginMenuAtom';
 
-const BookButton = ({ restaurantNo }) => {
+const BookButton = ({ restaurantNo, isSmall }) => {
   const [isAuthenticated] = useAtom(isAuthenticatedAtom);
   const [isLoginMenuOpen, setIisLoginMenuOpen] = useAtom(loginMenuAtom);
 
@@ -20,7 +20,7 @@ const BookButton = ({ restaurantNo }) => {
         _hover={{ bgColor: 'green.300', transform: 'scale(1.2)' }}
         onClick={() => navigator(`${ROUTES.RESTAURANT_RESERVATION_RAW}/${restaurantNo}`)}
       >
-        예약하기
+        {isSmall ? '예약' : '예약하기'}
       </Button>
     );
 
@@ -35,7 +35,7 @@ const BookButton = ({ restaurantNo }) => {
         setIisLoginMenuOpen(true);
       }}
     >
-      예약하기
+      {isSmall ? '예약' : '예약하기'}
     </Button>
   );
 };

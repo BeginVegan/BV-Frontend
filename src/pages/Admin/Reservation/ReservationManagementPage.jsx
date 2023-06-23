@@ -12,7 +12,6 @@ const ReservationManagementPage = () => {
     const getReservations = async () => {
       const res = await Axios.get('reservation/list');
       if (res.status === 200) {
-        //setReservationList(res.data);
         setReservationList(generateDummyData);
       }
     };
@@ -24,7 +23,7 @@ const ReservationManagementPage = () => {
       <Heading display={'flex'} alignSelf={'flex-start'} color={'#323232'} mb={5}>
         예약 관리
       </Heading>
-      <Card bg="#f8f8ff" boxShadow={'none'}>
+      <Card bg="gray.100" boxShadow={'none'}>
         {!reservationList && (
           <VStack gap={1}>
             <Skeleton borderRadius={'lg'} w={'1280px'} height={'80px'} />

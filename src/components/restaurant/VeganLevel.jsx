@@ -21,14 +21,14 @@ const VeganLevel = ({ setValue, level, isClickable = false, setSelectedLevel, is
   };
 
   return (
-    <Stack direction={'row'} justifyContent={'center'} gap={!isSmall && 3} w={isSmall && 220}>
+    <Stack direction={'row'} justifyContent={'center'} gap={!isSmall && 3} w={isSmall && 240}>
       <IconButton
         bg={'white'}
         opacity={veganLevel != 7 && veganLevel >= 1 ? '1' : '0.4'}
         icon={<Img src={broccoliIcon} />}
         onClick={() => isClickable && changeVeganLevel(1)}
         size={isSmall && 16}
-        cursor={!isClickable && 'none'}
+        cursor={!isClickable && 'default'}
         _hover={{ bg: 'none' }}
       />
       <IconButton
@@ -37,7 +37,7 @@ const VeganLevel = ({ setValue, level, isClickable = false, setSelectedLevel, is
         icon={<Img src={milkIcon} />}
         onClick={() => isClickable && changeVeganLevel(2)}
         size={isSmall && 16}
-        cursor={!isClickable && 'none'}
+        cursor={!isClickable && 'default'}
         _hover={{ bg: 'none' }}
       />
       <IconButton
@@ -46,7 +46,7 @@ const VeganLevel = ({ setValue, level, isClickable = false, setSelectedLevel, is
         icon={<Img src={eggIcon} />}
         onClick={() => isClickable && changeVeganLevel(3)}
         size={isSmall && 16}
-        cursor={!isClickable && 'none'}
+        cursor={!isClickable && 'default'}
         _hover={{ bg: 'none' }}
       />
       <IconButton
@@ -55,7 +55,7 @@ const VeganLevel = ({ setValue, level, isClickable = false, setSelectedLevel, is
         icon={<Img src={fishIcon} />}
         onClick={() => isClickable && changeVeganLevel(4)}
         size={isSmall && 16}
-        cursor={!isClickable && 'none'}
+        cursor={!isClickable && 'default'}
         _hover={{ bg: 'none' }}
       />
       <IconButton
@@ -64,8 +64,8 @@ const VeganLevel = ({ setValue, level, isClickable = false, setSelectedLevel, is
         icon={<Img src={chickenIcon} />}
         size={isSmall && 16}
         onClick={() => isClickable && changeVeganLevel(5)}
-        cursor={!isClickable && 'none'}
-        _hover={{ bg: 'none' }}
+        cursor={!isClickable && 'default'}
+        _hover={{ bgColor: 'white' }}
       />
       <IconButton
         bg={'white'}
@@ -73,8 +73,8 @@ const VeganLevel = ({ setValue, level, isClickable = false, setSelectedLevel, is
         opacity={veganLevel != 7 && veganLevel >= 6 ? '1' : '0.4'}
         icon={<Img src={meatIcon} />}
         onClick={() => isClickable && changeVeganLevel(6)}
-        cursor={!isClickable && 'none'}
-        _hover={{ bg: 'none' }}
+        cursor={!isClickable && 'default'}
+        _hover={{ bgColor: 'white' }}
       />
     </Stack>
   );

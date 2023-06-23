@@ -45,7 +45,7 @@ const AdminLayout = () => {
             py={2}
             boxShadow={'rgba(0, 0, 0, 0.35) 8px 0 10px -6px inset'}
             w={'100%'}
-            bg="#f8f8ff"
+            bg="gray.100"
           >
             <Outlet />
           </Flex>

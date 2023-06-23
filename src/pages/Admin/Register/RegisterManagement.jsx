@@ -122,7 +122,7 @@ const RegisterManagement = () => {
       {isLoading && <Skeleton mb={3} width={'1180px'} h={'72px'} borderRadius={'2xl'} />}
       {!isLoading && (
         <Flex
-          mb={5}
+          mb={4}
           py={4}
           px={2}
           width={'1180px'}
