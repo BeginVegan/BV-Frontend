@@ -10,6 +10,7 @@ const SearchBar = ({ isMain }) => {
   const inputRef = useRef(null);
 
   const handleKeyDown = e => {
+    e.preventDefault();
     if (e.key === 'Enter') handleSubmit();
   };
 
@@ -51,7 +52,7 @@ const SearchBar = ({ isMain }) => {
         children="검색"
         _hover={{ bgColor: 'green.200' }}
         cursor={'pointer'}
-        onClick={handleSubmit}
+        onClick={e => handleSubmit(e)}
       />
     </InputGroup>
   );
