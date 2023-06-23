@@ -1,4 +1,4 @@
-import { StarIcon } from '@chakra-ui/icons';
+import { PhoneIcon, StarIcon } from '@chakra-ui/icons';
 import {
   Badge,
   Button,
@@ -9,24 +9,32 @@ import {
   Link,
   Stack,
   Text,
+  VStack,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
-const RestaurantCard = ({ restaurant, setMapCenter, setOpenMarker, setIsPanto }) => {
+const RestaurantCard = ({
+  restaurant,
+  setSelectedRestaurantNo,
+  setMapCenter,
+  setOpenMarker,
+  setIsPanto,
+  setIsDetailOpen,
+}) => {
   const navigate = useNavigate();
-  const size = restaurant.restaurantName.length > 8 ? 'lg' : 'xl';
 
   return (
     <Stack
+      _hover={{ bg: 'gray.200' }}
       cursor={'pointer'}
       borderRadius="lg"
-      w={'400px'}
-      h={'150px'}
-      direction={'row'}
-      bg={useColorModeValue('white', 'gray.900')}
+      w={'375px'}
+      direction={'column'}
       onClick={() => {
-        setMapCenter({ lat: restaurant.restaurantX, lng: restaurant.restaurantY });
+        setIsDetailOpen(true);
+        setSelectedRestaurantNo(restaurant.restaurantNo);
+        setMapCenter({ lat: restaurant.restaurantX, lng: restaurant.restaurantY - 0.014 });
         setOpenMarker({
           restaurantNo: restaurant.restaurantNo,
           title: restaurant.restaurantName,
@@ -35,54 +43,68 @@ const RestaurantCard = ({ restaurant, setMapCenter, setOpenMarker, setIsPanto })
         });
         setIsPanto(true);
       }}
+      px={5}
+      py={3}
     >
-      <Flex flex={2}>
+      <VStack>
+        <Text
+          width={'100%'}
+          fontWeight={600}
+          textAlign={'left'}
+          _hover={{
+            cursor: 'pointer',
+            color: 'blue.500',
+          }}
+          onClick={() => navigate(`/restaurant/${restaurant.restaurantNo}`)}
+          fontSize={'xl'}
+        >
+          {restaurant.restaurantName}
+        </Text>
+      </VStack>
+      <HStack>
         <Image
-          maxH={'100px'}
+          borderRadius={'md'}
+          minW={150}
+          maxW={150}
+          minH={120}
+          maxH={120}
           boxShadow={'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'}
           objectFit="cover"
-          boxSize="100%"
           src={
             restaurant.restaurantPhotoDir
               ? `${restaurant.restaurantPhotoDir}`
               : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/restaurant/default.png'
           }
         />
-      </Flex>
-      <Stack
-        flex={4}
-        flexDirection="column"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        p={1}
-        pt={2}
-      >
-        <HStack h={'25px'}>
-          <StarIcon boxSize={4} color={'yellow.500'} />
-          <Text h={'25px'} w={'35px'} fontSize={'lg'} color={'gray.500'} fontWeight={600}>
-            {restaurant.restaurantStar.toFixed(1)}
+        <Stack
+          flexDirection="column"
+          justifyContent="flex-start"
+          alignItems="flex-start"
+          p={1}
+          pt={2}
+        >
+          <HStack h={21}>
+            <StarIcon mb={+1} boxSize={4} color={'yellow.500'} />
+            <Text fontSize={'sm'} color={'gray.500'} fontWeight={400}>
+              {restaurant.restaurantStar.toFixed(1)}
+            </Text>
+            <Text fontSize={'sm'} color={'gray.500'} fontWeight={400}>
+              비건레벨: {restaurant.restaurantVeganLevel}
+            </Text>
+          </HStack>
+          <Text fontWeight={400} color={'gray.500'} fontSize={'sm'}>
+            {restaurant.restaurantAddress.length > 13
+              ? restaurant.restaurantAddress.slice(0, 13) + '..'
+              : restaurant.restaurantAddress}
           </Text>
-          <Heading
-            h={'25px'}
-            _hover={{
-              cursor: 'pointer',
-              color: 'blue.500',
-            }}
-            onClick={() => navigate(`/restaurant/${restaurant.restaurantNo}`)}
-            fontSize={size}
-          >
-            {restaurant.restaurantName}
-          </Heading>
-        </HStack>
-        <Text fontWeight={400} color={'gray.500'} fontSize={'md'}>
-          {restaurant.restaurantAddress.length > 20
-            ? restaurant.restaurantAddress.slice(0, 20) + '..'
-            : restaurant.restaurantAddress}
-        </Text>
-        <Text fontWeight={300} color={'gray.500'} fontSize={'sm'}>
-          {restaurant.restaurantPhone != null && `전화번호: ${restaurant.restaurantPhone}`}
-        </Text>
-      </Stack>
+          <HStack>
+            <PhoneIcon color={'gray.500'} />
+            <Text fontWeight={300} color={'gray.500'} fontSize={'sm'}>
+              {restaurant.restaurantPhone != null && `${restaurant.restaurantPhone}`}
+            </Text>
+          </HStack>
+        </Stack>
+      </HStack>
     </Stack>
   );
 };

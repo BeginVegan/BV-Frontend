@@ -8,6 +8,7 @@ import {
   Text,
   Card,
   CardBody,
+  Flex,
 } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 import React, { useEffect, useState } from 'react';
@@ -92,7 +93,7 @@ const RestaurantDetailPage = () => {
                   <Text w={'100px'} fontWeight={600} color={'gray.400'} fontSize="md">
                     전화번호
                   </Text>
-                  <Text>010-0000-0000</Text>
+                  <Text>{restaurantInfo.restaurant.restaurantPhone}</Text>
                 </HStack>
                 <HStack gap={4}>
                   <Text w={'100px'} fontWeight={600} color={'gray.400'} fontSize="md">
@@ -122,11 +123,13 @@ const RestaurantDetailPage = () => {
                   <VeganLevel level={restaurantInfo.restaurant.restaurantVeganLevel} />
                 </HStack>
               </VStack>
-              <VStack gap={2} py={4} alignItems={'flex-start'}>
-                <Text fontWeight={600} color={'gray.400'} fontSize="md">
+              <VStack w={'full'} gap={2} py={4} alignItems={'center'}>
+                <Text alignSelf={'flex-start'} fontWeight={600} color={'gray.400'} fontSize="md">
                   메뉴
                 </Text>
-                <RestaurantMenu menuList={restaurantInfo.restaurant.menuList} />
+                <Flex direction={'column'} gap={4} w={'80%'}>
+                  <RestaurantMenu menuList={restaurantInfo.restaurant.menuList} />
+                </Flex>
               </VStack>
               <Box>
                 <Text pt={4} pb={2} fontWeight={600} color={'gray.400'} fontSize="md">

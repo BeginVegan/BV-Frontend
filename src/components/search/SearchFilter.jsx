@@ -138,8 +138,8 @@ const SearchFilter = ({
 
   return (
     <GridItem
-      h={'calc(100vh - 73px)'}
-      minW={'430px'}
+      h={'calc(100vh - 75px)'}
+      minW={'381px'}
       bgColor={'white'}
       position={'absolute'}
       zIndex={1200}

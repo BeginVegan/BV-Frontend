@@ -54,7 +54,7 @@ const KakaoMap = ({
   return (
     <Map
       center={mapCenter}
-      style={{ position: 'relative', width: '100%', height: '100%' }} // 지도 크기
+      style={{ position: 'absolute', width: '100vw', height: 'calc(100vh - 75px)' }} // 지도 크기
       level={level} // 지도 확대 레벨
       isPanto={isPanto}
     >
