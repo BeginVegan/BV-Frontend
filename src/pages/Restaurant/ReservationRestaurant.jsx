@@ -1,50 +1,49 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import ReservationService from '@/api/ReservationService';
+import RestaurantService from '@/api/RestaurantService';
+import Axios from '@/api/apiConfig';
+import Loading from '@/components/common/Loading';
+import TimePicker from '@/components/common/TimePicker';
+import { useReservation } from '@/hooks/useReservation';
+import { ROUTES } from '@/routes/ROUTES';
+import { userAtom } from '@/utils/atoms/userAtom';
 import {
   Box,
+  Button,
+  Card,
+  Checkbox,
+  Flex,
   HStack,
   Heading,
+  Image,
+  Input,
+  InputGroup,
+  InputRightElement,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
   Radio,
   RadioGroup,
   Stack,
   StackDivider,
   Text,
   VStack,
-  Image,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  Button,
-  Flex,
-  Input,
   chakra,
-  Link,
-  InputRightElement,
-  InputGroup,
-  Checkbox,
-  Card,
 } from '@chakra-ui/react';
-import DatePicker from 'react-datepicker';
-import { ko } from 'date-fns/esm/locale';
-import 'react-datepicker/dist/react-datepicker.css';
-import { useReservation } from '@/hooks/useReservation';
-import { useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
-import RestaurantService from '@/api/RestaurantService';
-import { useMutation, useQuery } from 'react-query';
 import { addMonths, format } from 'date-fns';
-import TimePicker from '@/components/common/TimePicker';
-import Loading from '@/components/common/Loading';
-import { RiCalendarCheckLine } from 'react-icons/ri';
-import Axios from '@/api/apiConfig';
+import { ko } from 'date-fns/esm/locale';
 import { useAtom } from 'jotai';
-import { userAtom } from '@/utils/atoms/userAtom';
-import Swal from 'sweetalert2';
-import { ROUTES } from '@/routes/ROUTES';
-import ReservationService from '@/api/ReservationService';
 import { debounce } from 'lodash';
-import { FiTrash, FiTrash2 } from 'react-icons/fi';
+import { useEffect, useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { useForm } from 'react-hook-form';
+import { FiTrash2 } from 'react-icons/fi';
+import { RiCalendarCheckLine } from 'react-icons/ri';
+import { useMutation, useQuery } from 'react-query';
+import { useNavigate, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const CustomDatePicker = chakra(DatePicker);
 
@@ -61,7 +60,12 @@ const ReservationRestaurant = () => {
   const { mutate: onAddReservationWidhPayment } = useMutation(
     ReservationService.addReservationWidhPayment
   );
-
+  const [restaurantName, setRestaurantName] = useState('');
+  useEffect(() => {
+    if (data && data.restaurant && data.restaurant.restaurantName) {
+      setRestaurantName(data.restaurant.restaurantName);
+    }
+  }, [data]);
   const {
     register,
     handleSubmit,
@@ -196,6 +200,7 @@ const ReservationRestaurant = () => {
   };
 
   const addReservation = data => {
+    console.log(data, '!!');
     if (!selectTime) {
       Swal.fire({
         icon: 'warning',
@@ -216,10 +221,11 @@ const ReservationRestaurant = () => {
     selectDate.setHours(selectTime, 0, 0);
 
     const openswal = () => {
+      console.log('openswal', data, data.restaurant, data.restaurantName);
       return `
         <div style='display: flex; flex-direction: column; align-items: center'>
           <div style='display: flex; flex-direction: column; align-items: flex-start; hight: 150px; gap: 15px;'>
-            <Text>식당이름: ${data.restaurantName}</Text>
+            <Text>식당이름: ${restaurantName}</Text>
             <Text>예약시간: ${format(selectDate, 'yyyy-MM-dd HH:mm:ss')}</Text>
             <Text>예약타입: ${data.reservationType}</Text>
             <Text>예약인원: ${data.reservationPeople}</Text>
@@ -302,7 +308,7 @@ const ReservationRestaurant = () => {
       return `
         <div style='display: flex; flex-direction: column; align-items: center'>
           <div style='display: flex; flex-direction: column; align-items: flex-start; hight: 150px; gap: 15px;'>
-            <Text>식당이름: ${data.restaurantName}</Text>
+            <Text>식당이름: ${restaurantName}</Text>
             <Text>예약시간: ${format(selectDate, 'yyyy-MM-dd HH:mm:ss')}</Text>
             <Text>예약타입: ${data.reservationType}</Text>
             <Text>예약인원: ${data.reservationPeople}</Text>
