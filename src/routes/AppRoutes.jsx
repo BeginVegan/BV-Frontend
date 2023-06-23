@@ -24,7 +24,6 @@ import { ROUTES } from './ROUTES';
 import ReservationRestaurant from '@/pages/Restaurant/ReservationRestaurant';
 import AdminLayout from '@/components/Layout/AdminLayout';
 import RetaurantDetail from '@/pages/Admin/Restaurant/RetaurantDetail';
-import TestPage from '@/pages/Login/TestPage';
 import DefaultHeaderLayout from '@/components/Layout/DefaultHeaderLayout';
 
 const AppRoutes = () => {
@@ -50,7 +49,6 @@ const AppRoutes = () => {
             <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.MAIN} />} />
             <Route path={ROUTES.MAIN} element={<MainPage />} />
             <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-            <Route path={'/test'} element={<TestPage />} />
           </Route>
           {/* DefaultLayout은 검색창 있는 헤더 만 있는 레이아웃*/}
           <Route element={<DefaultLayout />}>
