@@ -1,5 +1,6 @@
 import Axios from '@/api/apiConfig';
 import { COLORS } from '@/constants/colors';
+import { ROUTES } from '@/routes/ROUTES';
 import {
   Button,
   HStack,
@@ -15,6 +16,7 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { isCancellable } from './PurchaseHistory';
 
@@ -94,6 +96,7 @@ const ReservationHistory = () => {
     return [];
   }, [filteredReservationList]);
 
+  const navigate = useNavigate();
   return (
     <TableContainer marginTop={'1rem'}>
       {sortedReservationList && sortedReservationList.length > 0 ? (
@@ -147,19 +150,37 @@ const ReservationHistory = () => {
           <Text fontSize={'2xl'}>지금 한번 둘러보시겠어요 ?</Text>
           <HStack spacing={'1rem'}>
             <Text fontSize={'xl'}>➞ 예약 베스트</Text>
-            <Button colorScheme="green" size={'sm'}>
+            <Button
+              colorScheme="green"
+              size={'sm'}
+              onClick={() => {
+                navigate(ROUTES.BEST_RAW + 'reservation');
+              }}
+            >
               GO
             </Button>
           </HStack>
           <HStack spacing={'1rem'}>
             <Text fontSize={'xl'}>➞ 평점 베스트</Text>
-            <Button colorScheme="green" size={'sm'}>
+            <Button
+              colorScheme="green"
+              size={'sm'}
+              onClick={() => {
+                navigate(ROUTES.BEST_RAW + 'star');
+              }}
+            >
               GO
             </Button>
           </HStack>
           <HStack spacing={'1rem'}>
             <Text fontSize={'xl'}>➞ 리뷰 베스트</Text>
-            <Button colorScheme="green" size={'sm'}>
+            <Button
+              colorScheme="green"
+              size={'sm'}
+              onClick={() => {
+                navigate(ROUTES.BEST_RAW + 'review');
+              }}
+            >
               GO
             </Button>
           </HStack>
