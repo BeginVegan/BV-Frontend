@@ -87,7 +87,7 @@ const PurchaseHistory = () => {
     });
   };
   return (
-    <Box w={'100%'} maxH={'75vh'} overflowY="scroll">
+    <Box w={'100%'} maxH={'75vh'} overflowY="auto">
       <TableContainer marginTop={'1rem'}>
         {paymentList && paymentList.length > 0 ? (
           <Table size={isMobile ? 'sm' : 'lg'}>
