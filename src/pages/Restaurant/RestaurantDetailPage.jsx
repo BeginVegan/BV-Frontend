@@ -114,7 +114,7 @@ const RestaurantDetailPage = () => {
                   <Text w={'100px'} fontWeight={600} color={'gray.400'} fontSize="md">
                     식당 상세
                   </Text>
-                  <Text>{restaurantInfo.restaurant.restaurantDetail}</Text>
+                  <Text w={'460px'}>{restaurantInfo.restaurant.restaurantDetail}</Text>
                 </HStack>
                 <HStack gap={4}>
                   <Text w={'100px'} fontWeight={600} color={'gray.400'} fontSize="md">

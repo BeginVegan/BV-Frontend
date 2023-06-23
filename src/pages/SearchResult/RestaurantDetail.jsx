@@ -1,15 +1,4 @@
-import {
-  Heading,
-  Box,
-  Stack,
-  HStack,
-  VStack,
-  StackDivider,
-  Text,
-  Card,
-  CardBody,
-  Flex,
-} from '@chakra-ui/react';
+import { Heading, Box, Stack, HStack, VStack, StackDivider, Text, Flex } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
