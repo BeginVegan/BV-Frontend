@@ -76,6 +76,18 @@ const ReservationHistory = () => {
     });
   };
 
+  const formatDate = dateString => {
+    const date = new Date(dateString);
+
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    const hours = ('0' + date.getHours()).slice(-2);
+    const minutes = ('0' + date.getMinutes()).slice(-2);
+
+    return `${year}/${month}/${day} ${hours}:${minutes}`;
+  };
+
   const getHowMany = list => {
     if (list.length > 1) {
       return list[0].menuName + ' 외 ' + (list.length - 1) + '개';
@@ -114,7 +126,7 @@ const ReservationHistory = () => {
               <CustomTh>메뉴</CustomTh>
               <CustomTh>금액</CustomTh>
               <CustomTh>상태</CustomTh>
-              <CustomTh>방문예정일</CustomTh>
+              <CustomTh>방문예정</CustomTh>
               <CustomTh>관리</CustomTh>
             </Tr>
           </Thead>
@@ -129,7 +141,7 @@ const ReservationHistory = () => {
                   <CustomTd>{getHowMany(store.reservationMenuList)}</CustomTd>
                   <CustomTd>{Number(store.reservationTotalPrice).toLocaleString()}</CustomTd>
                   <CustomTd>{store.reservationStatus}</CustomTd>
-                  <CustomTd>{store.reservationTime.split(' ')[0]}</CustomTd>
+                  <CustomTd>{formatDate(store.reservationVisitTime)}</CustomTd>
                   <CustomTd>
                     {new Date(store.reservationVisitTime) - new Date() > 0 &&
                     new Date(store.reservationVisitTime) - new Date() > 24 * 60 * 60 * 1000 ? (
