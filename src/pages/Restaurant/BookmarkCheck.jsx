@@ -3,7 +3,6 @@ import { Box, Tooltip, chakra, Spinner, useToast } from '@chakra-ui/react';
 import { RiHeart3Line, RiHeart3Fill } from 'react-icons/ri';
 import Axios from '@/api/apiConfig';
 import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '@/routes/ROUTES';
 import { useAtom } from 'jotai';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { loginMenuAtom } from '@/utils/atoms/loginMenuAtom';
