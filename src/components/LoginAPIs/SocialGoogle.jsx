@@ -87,12 +87,14 @@ const SocialGoogle = () => {
         }).then(() => {
           setIsAuthenticated(Crypto.encodeByAES256('true'));
           setUserStatus(
-            Crypto.encodeByAES256({
-              email: res.data.memberEmail,
-              name: res.data.memberName,
-              point: res.data.memberPoint,
-              role: res.data.memberRole,
-            })
+            Crypto.encodeByAES256(
+              JSON.stringify({
+                email: res.data.memberEmail,
+                name: res.data.memberName,
+                point: res.data.memberPoint,
+                role: res.data.memberRole,
+              })
+            )
           );
         });
       } else {
