@@ -18,7 +18,7 @@ import {
   Stack,
   Text,
   VStack,
-  useBreakpointValue
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +27,7 @@ import { useRestaurantDetail } from './hooks/useRestaurantDetail';
 
 const ReviewHistory = () => {
   const [reviewList, setReviewList] = useState(null);
-  const [forceUpdate, setForceUpdate] = useState(false); 
+  const [forceUpdate, setForceUpdate] = useState(false);
   const getReview = async () => {
     try {
       const res = await Axios.get('mypage/review/userEmail');
@@ -46,38 +46,41 @@ const ReviewHistory = () => {
   }, [forceUpdate]);
   const templateColumns = useBreakpointValue({ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' });
 
-  return (
-    reviewList && reviewList.length > 0 ?
-      (
-        <VStack align={'flex-start'}>
-          <Grid w={"100%"} templateColumns={templateColumns} gap={4} height={'80vh'} overflowY={'auto'} padding={4}>
-            {reviewList.map((review, idx) => (
-              <RestaurantReviewCard
-                key={idx}
-                idx={idx}
-                restaurantNo={review.restaurantNo}
-                img={review.reviewPhotoDir}
-                reviewNo={review.reviewNo}
-                content={review.reviewContent}
-                refresh={() => setForceUpdate(!forceUpdate)}
-              />
-            ))}
-          </Grid> 
-        </VStack>
-      )
-      : 
-      (
-        <Flex justifyContent="center" mt={'2rem'} alignItems="center" height="100%">
-          <Text fontSize={'2xl'}>리뷰가 없습니다 😂</Text>
-        </Flex>
-      )
-  );  
-  
-
+  return reviewList && reviewList.length > 0 ? (
+    <VStack align={'flex-start'}>
+      <Grid
+        w={'100%'}
+        templateColumns={templateColumns}
+        gap={4}
+        height={'80vh'}
+        overflowY={'auto'}
+        padding={4}
+      >
+        {reviewList.map((review, idx) => {
+          // console.log(review);
+          return (
+            <RestaurantReviewCard
+              key={idx}
+              idx={idx}
+              restaurantNo={review.restaurantNo}
+              img={review.reviewPhotoDir}
+              reviewNo={review.reviewNo}
+              content={review.reviewContent}
+              refresh={() => setForceUpdate(!forceUpdate)}
+            />
+          );
+        })}
+      </Grid>
+    </VStack>
+  ) : (
+    <Flex justifyContent="center" mt={'2rem'} alignItems="center" height="100%">
+      <Text fontSize={'2xl'}>리뷰가 없습니다 😂</Text>
+    </Flex>
+  );
 };
 export default ReviewHistory;
 
-const RestaurantReviewCard = ({ restaurantNo,idx, img, reviewNo, content, refresh }) => {
+const RestaurantReviewCard = ({ restaurantNo, idx, img, reviewNo, content, refresh }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const navigate = useNavigate();
   const { data } = useRestaurantDetail(restaurantNo);
@@ -93,7 +96,7 @@ const RestaurantReviewCard = ({ restaurantNo,idx, img, reviewNo, content, refres
     return list.reduce((acc, menu) => acc + menu.menuPrice, 0);
   };
 
-  const deleteReview = (reviewNo) => {
+  const deleteReview = reviewNo => {
     Swal.fire({
       icon: 'question',
       title: '정말 삭제하시겠습니까?',
@@ -102,35 +105,35 @@ const RestaurantReviewCard = ({ restaurantNo,idx, img, reviewNo, content, refres
     }).then(async res => {
       if (res.isConfirmed) {
         try {
-          const result = await Axios.delete(`mypage/review/${reviewNo}`)
-          if (result.status === 200 ) {
+          const result = await Axios.delete(`mypage/review/${reviewNo}`);
+          if (result.status === 200) {
             Swal.fire({
               icon: 'success',
               title: '리뷰 삭제 성공',
               text: '고객의 리뷰는 가게에 큰 힘이 됩니다',
-            })
-            refresh()
+            });
+            refresh();
           } else {
             Swal.fire({
-              icon:'error',
-              title:'리뷰 삭제 실패',
-              text: '다시 시도해 주세요'
-            })
+              icon: 'error',
+              title: '리뷰 삭제 실패',
+              text: '다시 시도해 주세요',
+            });
           }
         } catch (error) {
           Swal.fire({
-            icon:'error',
-            title:'리뷰 삭제 실패',
-            text: '다시 시도해 주세요'
-          })
+            icon: 'error',
+            title: '리뷰 삭제 실패',
+            text: '다시 시도해 주세요',
+          });
         }
       }
     });
-  }
+  };
   if (!data) return <></>;
 
   return (
-    <div >
+    <div>
       <HStack
         w={'100%'}
         spacing={'2rem'}
@@ -184,11 +187,19 @@ const RestaurantReviewCard = ({ restaurantNo,idx, img, reviewNo, content, refres
               </Stack>
 
               {isMobile && (
-              <CardBody w={'100%'}>
-                <Box ml="2rem" mt={"1rem"} p="1rem" w="15rem" h="15rem">
-                  <Image w="100%" h="100%"  src={img ? img : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/logoSVG.svg'} alt={"리뷰 이미지"} borderRadius="lg" />
-                </Box>
-              </CardBody>
+                <CardBody w={'100%'}>
+                  <Box ml="2rem" mt={'1rem'} p="1rem" w="15rem" h="15rem">
+                    <Image
+                      w="100%"
+                      h="100%"
+                      src={
+                        img ? img : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/logoSVG.svg'
+                      }
+                      alt={'리뷰 이미지'}
+                      borderRadius="lg"
+                    />
+                  </Box>
+                </CardBody>
               )}
             </Stack>
             <Spacer />
@@ -202,11 +213,7 @@ const RestaurantReviewCard = ({ restaurantNo,idx, img, reviewNo, content, refres
                 >
                   상세 페이지
                 </Button>
-                <Button
-                  variant="solid"
-                  colorScheme="teal"
-                  onClick={() => deleteReview(reviewNo)}
-                >
+                <Button variant="solid" colorScheme="teal" onClick={() => deleteReview(reviewNo)}>
                   리뷰 삭제
                 </Button>
               </ButtonGroup>
@@ -216,8 +223,14 @@ const RestaurantReviewCard = ({ restaurantNo,idx, img, reviewNo, content, refres
           <Spacer />
           {!isMobile && (
             <CardBody w={'100%'}>
-              <Box ml="2rem" mt={"1rem"} p="1rem" w="15rem" h="15rem">
-                <Image w="100%" h="100%"  src={img? img: 'https://bv-image.s3.ap-northeast-2.amazonaws.com/logoSVG.svg'} alt={"리뷰 이미지"} borderRadius="lg" />
+              <Box ml="2rem" mt={'1rem'} p="1rem" w="15rem" h="15rem">
+                <Image
+                  w="100%"
+                  h="100%"
+                  src={img ? img : 'https://bv-image.s3.ap-northeast-2.amazonaws.com/logoSVG.svg'}
+                  alt={'리뷰 이미지'}
+                  borderRadius="lg"
+                />
               </Box>
             </CardBody>
           )}
