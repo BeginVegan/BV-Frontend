@@ -271,7 +271,7 @@ const ReservationRestaurant = () => {
           {
             onSuccess: () => {
               Swal.fire('예약이 완료되었습니다.');
-              navigator(`${ROUTES.RESTAURANT_RAW}${restaurantno}`);
+              navigator(`${ROUTES.MYPAGE_HISTORY}`);
             },
             onError: error => {
               Swal.fire(error.response.data + '다른 시간을 선택해 주세요.');
@@ -363,7 +363,7 @@ const ReservationRestaurant = () => {
               {
                 onSuccess: () => {
                   Swal.fire('예약이 완료되었습니다.');
-                  navigator(`${ROUTES.RESTAURANT_RAW}${restaurantno}`);
+                  navigator(`${ROUTES.MYPAGE_HISTORY}`);
                 },
                 onError: error => Swal.fire(error + '다른 시간을 선택해 주세요.'),
               }

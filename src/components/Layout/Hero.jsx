@@ -10,7 +10,7 @@ const Hero = () => {
   return (
     <Flex
       w={'full'}
-      h={{ base: '300px', md: '450px' }}
+      h={{ base: '300px', md: '500px' }}
       backgroundImage={heroloaded}
       backgroundSize={'cover'}
       backgroundPosition={'center center'}

@@ -1,10 +1,15 @@
 import { ROUTES } from '@/routes/ROUTES';
 import { Box, Flex, Icon, Link } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiHome, FiTrendingUp, FiUser } from 'react-icons/fi';
 import { RiMenuFoldLine, RiMenuUnfoldLine } from 'react-icons/ri';
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import FixedHeader from '@/components/Layout/FixedHeader';
+import { userAtom } from '@/utils/atoms/userAtom';
+import Loading from '../common/Loading';
+import Swal from 'sweetalert2';
+import { useAtom } from 'jotai';
+import LoadingPage from '@/pages/Loading/LoadingPage';
 
 const LinkItems = [
   { name: '회원 관리', category: 'user', icon: FiUser, href: `${ROUTES.ADMIN_RAW}/user` },
@@ -24,6 +29,21 @@ const LinkItems = [
 
 const AdminLayout = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const navigator = useNavigate();
+  const [userStatus, setUserStatus] = useAtom(userAtom);
+  if (userStatus == null) {
+    <LoadingPage />;
+  }
+
+  useEffect(() => {
+    if (!userStatus) return;
+    if (userStatus.role === 'admin') return;
+
+    navigator(ROUTES.MAIN);
+    Swal.fire({
+      html: `관리자만 접근할 수 있는 페이지입니다.`,
+    });
+  }, [userStatus]);
 
   return (
     <>

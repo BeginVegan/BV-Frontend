@@ -13,7 +13,7 @@ const MainPage = () => {
     <>
       <Hero />
       <Flex p={4} m={'auto'} direction={'column'} justifyContent={'center'} alignItems={'center'}>
-        <Heading alignSelf={'flex-start'} pb={5} size="md" color={'green.600'}>
+        <Heading alignSelf={'flex-start'} pb={5} fontSize={'2xl'} color={'green.600'}>
           믿고보는 맛집 리스트
         </Heading>
 
