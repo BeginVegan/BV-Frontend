@@ -7,11 +7,11 @@ const BestStoreCard = ({ heading, description, img, href, ...rest }) => {
 
   return (
     <Box
-      w={{ base: 'full', xl: '360px' }}
+      w={{ base: 'full', xl: '420px' }}
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
-      h={'242px'}
+      h={'270px'}
       bgImage={img}
       backgroundSize={'cover'}
       backgroundPosition={'center center'}
@@ -23,12 +23,19 @@ const BestStoreCard = ({ heading, description, img, href, ...rest }) => {
       cursor={'pointer'}
       {...rest}
     >
-      <Stack w={'100%'} h={'100%'} p={8} bgColor={'rgba(0, 0, 0, 0.2)'} spacing={2}>
-        <Box mt={12}>
-          <Heading align={'center'} size="md" color={'white'}>
+      <Stack
+        justifyContent={'center'}
+        w={'100%'}
+        h={'100%'}
+        p={8}
+        bgColor={'rgba(0, 0, 0, 0.2)'}
+        spacing={2}
+      >
+        <Box>
+          <Heading align={'center'} fontSize="2xl" color={'white'}>
             {heading}
           </Heading>
-          <Text align={'center'} mt={2} fontSize={'md'} color={'white'}>
+          <Text align={'center'} mt={2} fontSize={'lg'} color={'white'}>
             {description}
           </Text>
         </Box>
