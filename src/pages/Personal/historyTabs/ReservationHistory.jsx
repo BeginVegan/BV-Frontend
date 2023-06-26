@@ -140,7 +140,7 @@ const ReservationHistory = () => {
                     <CustomTd>{store.reservationStatus}</CustomTd>
                     <CustomTd>{formatDate(store.reservationVisitTime)}</CustomTd>
                     <CustomTd>
-                      {Number(isCancellable(store.reservationVisitTime)) < 0 ? (
+                      {isCancellable(store.reservationVisitTime) === true ? (
                         <Button
                           colorScheme="red"
                           size={{ base: 'xs', md: 'sm' }}
