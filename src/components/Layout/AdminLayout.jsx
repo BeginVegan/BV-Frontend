@@ -6,10 +6,10 @@ import { RiMenuFoldLine, RiMenuUnfoldLine } from 'react-icons/ri';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import FixedHeader from '@/components/Layout/FixedHeader';
 import { userAtom } from '@/utils/atoms/userAtom';
-import Loading from '../common/Loading';
 import Swal from 'sweetalert2';
 import { useAtom } from 'jotai';
 import LoadingPage from '@/pages/Loading/LoadingPage';
+import Crypto from '@/utils/cryptoJS/crypto';
 
 const LinkItems = [
   { name: '회원 관리', category: 'user', icon: FiUser, href: `${ROUTES.ADMIN_RAW}/user` },
@@ -31,13 +31,10 @@ const AdminLayout = () => {
   const [isOpen, setIsOpen] = useState(true);
   const navigator = useNavigate();
   const [userStatus, setUserStatus] = useAtom(userAtom);
-  if (userStatus == null) {
-    <LoadingPage />;
-  }
 
   useEffect(() => {
-    if (!userStatus) return;
-    if (userStatus.role === 'admin') return;
+    if (!Crypto.decodeByAES256(userStatus)) return;
+    if (JSON.parse(Crypto.decodeByAES256(userStatus)).role === 'admin') return;
 
     navigator(ROUTES.MAIN);
     Swal.fire({

@@ -1,4 +1,5 @@
 import { atomWithStorage } from 'jotai/utils';
+import Crypto from '../cryptoJS/crypto';
 
 /**
  * @example
@@ -9,4 +10,4 @@ import { atomWithStorage } from 'jotai/utils';
  * role: 'admin',
  * }
  */
-export const userAtom = atomWithStorage("userStatus",null);
+export const userAtom = atomWithStorage('userStatus', Crypto.encodeByAES256(''));

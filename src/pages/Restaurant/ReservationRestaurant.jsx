@@ -6,6 +6,7 @@ import TimePicker from '@/components/common/TimePicker';
 import { useReservation } from '@/hooks/useReservation';
 import { ROUTES } from '@/routes/ROUTES';
 import { userAtom } from '@/utils/atoms/userAtom';
+import Crypto from '@/utils/cryptoJS/crypto';
 import {
   Box,
   Button,
@@ -91,9 +92,11 @@ const ReservationRestaurant = () => {
   const today = new Date();
 
   const getPoint = async () => {
-    const res = await Axios.get(`/member/${memberData.email}`);
-    if (res.data.memberPoint == memberData.point) return;
-    setMemeberData({ ...memberData, point: res.data.memberPoint });
+    const res = await Axios.get(`/member/${JSON.parse(Crypto.decodeByAES256(memberData)).email}`);
+    if (res.data.memberPoint == JSON.parse(Crypto.decodeByAES256(memberData)).point) return;
+    setMemeberData(
+      Crypto.encodeByAES256(JSON.stringify({ ...memberData, point: res.data.memberPoint }))
+    );
   };
 
   const watchedDiscount = watch('reservationDiscount'); // 입력 요소의 값을 감시
@@ -131,13 +134,15 @@ const ReservationRestaurant = () => {
         title: '최소 결제 금액은 만원입니다.',
       });
       newPoint = totalPrice - 10000;
-    } else if (watchedDiscount > memberData.point) {
+    } else if (watchedDiscount > JSON.parse(Crypto.decodeByAES256(memberData)).point) {
       // 보유 포인트보다 사용할 순 없다
       Toast.fire({
         icon: 'error',
-        title: `사용가능한 최대 포인트는, ${memberData.point} 포인트 입니다.`,
+        title: `사용가능한 최대 포인트는, ${
+          JSON.parse(Crypto.decodeByAES256(memberData)).point
+        } 포인트 입니다.`,
       });
-      newPoint = memberData.point;
+      newPoint = JSON.parse(Crypto.decodeByAES256(memberData)).point;
     } else {
       newPoint = watchedDiscount;
     }
@@ -146,7 +151,8 @@ const ReservationRestaurant = () => {
   }, [watchedDiscount]);
 
   useEffect(() => {
-    if (memberData) getPoint();
+    if (!Crypto.decodeByAES256(memberData)) return;
+    if (JSON.parse(Crypto.decodeByAES256(memberData))) getPoint();
   }, [memberData]);
 
   useEffect(() => {
@@ -257,7 +263,7 @@ const ReservationRestaurant = () => {
 
         onAddReservation(
           {
-            memberEmail: memberData.email,
+            memberEmail: JSON.parse(Crypto.decodeByAES256(memberData)).email,
             restaurantNo: restaurantno,
             reservationTime: format(today, 'yyyy-MM-dd HH:mm:ss'),
             reservationVisitTime: format(selectDate, 'yyyy-MM-dd HH:mm:ss'),
@@ -347,7 +353,7 @@ const ReservationRestaurant = () => {
             onAddReservationWidhPayment(
               {
                 reservationInfo: {
-                  memberEmail: memberData.email,
+                  memberEmail: JSON.parse(Crypto.decodeByAES256(memberData)).email,
                   restaurantNo: restaurantno,
                   reservationTime: format(today, 'yyyy-MM-dd HH:mm:ss'),
                   reservationVisitTime: format(selectDate, 'yyyy-MM-dd HH:mm:ss'),
@@ -596,7 +602,7 @@ const ReservationRestaurant = () => {
                       포인트
                     </Text>
                     <Text w={'200px'} fontWeight={400} color={'gray.400'} fontSize="md">
-                      사용가능 포인트 : {memberData.point}
+                      사용가능 포인트 : {JSON.parse(Crypto.decodeByAES256(memberData)).point}
                     </Text>
                   </HStack>
                   <HStack>

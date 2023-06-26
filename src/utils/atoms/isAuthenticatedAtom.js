@@ -1,2 +1,7 @@
 import { atomWithStorage } from 'jotai/utils';
-export const isAuthenticatedAtom = atomWithStorage('isAuthenticated', false);
+import Crypto from '../cryptoJS/crypto';
+
+export const isAuthenticatedAtom = atomWithStorage(
+  'isAuthenticated',
+  Crypto.encodeByAES256('false')
+);

@@ -3,6 +3,7 @@ import { ReactComponent as GoogleLoginButton } from '@/assets/socialLogins/googl
 import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
+import Crypto from '@/utils/cryptoJS/crypto';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
@@ -84,13 +85,15 @@ const SocialGoogle = () => {
           title: '로그인 성공',
           text: '반갑습니다',
         }).then(() => {
-          setIsAuthenticated(true);
-          setUserStatus({
-            email: res.data.memberEmail,
-            name: res.data.memberName,
-            point: res.data.memberPoint,
-            role: res.data.memberRole,
-          });
+          setIsAuthenticated(Crypto.encodeByAES256('true'));
+          setUserStatus(
+            Crypto.encodeByAES256({
+              email: res.data.memberEmail,
+              name: res.data.memberName,
+              point: res.data.memberPoint,
+              role: res.data.memberRole,
+            })
+          );
         });
       } else {
         Swal.fire({

@@ -5,6 +5,7 @@ import { useAtom } from 'jotai';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { Button } from '@chakra-ui/react';
 import { loginMenuAtom } from '@/utils/atoms/loginMenuAtom';
+import Crypto from '@/utils/cryptoJS/crypto';
 
 const BookButton = ({ restaurantNo, isSmall }) => {
   const [isAuthenticated] = useAtom(isAuthenticatedAtom);
@@ -12,7 +13,7 @@ const BookButton = ({ restaurantNo, isSmall }) => {
 
   const navigator = useNavigate();
 
-  if (isAuthenticated === true)
+  if (Crypto.decodeByAES256(isAuthenticated) == 'true')
     return (
       <Button
         color={'white'}

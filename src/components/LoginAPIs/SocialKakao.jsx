@@ -1,8 +1,8 @@
 import Axios from '@/api/apiConfig';
 import { ReactComponent as KakaoLoginButton } from '@/assets/socialLogins/kakaoLogin.svg';
-import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
+import Crypto from '@/utils/cryptoJS/crypto';
 import { useAtom } from 'jotai';
 import { useState } from 'react';
 import KakaoLogin from 'react-kakao-login';
@@ -37,13 +37,17 @@ const SocialKakao = () => {
         title: '로그인 성공',
         text: '반갑습니다',
       }).then(() => {
-        setIsAuthenticated(true);
-        setUserStatus({
-          email: res.data.memberEmail,
-          name: res.data.memberName,
-          point: res.data.memberPoint,
-          role: res.data.memberRole,
-        });
+        setIsAuthenticated(Crypto.encodeByAES256('true'));
+        setUserStatus(
+          Crypto.encodeByAES256(
+            JSON.stringify({
+              email: res.data.memberEmail,
+              name: res.data.memberName,
+              point: res.data.memberPoint,
+              role: res.data.memberRole,
+            })
+          )
+        );
       });
     } else {
       Swal.fire({
