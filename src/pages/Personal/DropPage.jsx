@@ -2,6 +2,7 @@ import Axios from '@/api/apiConfig';
 import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
+import Crypto from '@/utils/cryptoJS/crypto';
 import { Button, Divider, Flex, Spacer, Text, VStack } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
@@ -20,34 +21,39 @@ const DropPage = () => {
       showCancelButton: true,
     }).then(async res => {
       if (res.isConfirmed) {
-        const result = await Axios.delete('member')
-        if (result.status === 200 ) {
+        const result = await Axios.delete('member');
+        if (result.status === 200) {
           Swal.fire({
             icon: 'success',
             title: '회원 탈퇴 성공',
             text: '그동안 이용해 주셔서 감사합니다',
           }).then(res => {
             if (res.isConfirmed) {
-              setIsAuthenticated(false);
-              setUserStatus(null);
+              setIsAuthenticated(Crypto.encodeByAES256('false'));
+              setUserStatus(Crypto.encodeByAES256(''));
               navigate(ROUTES.HOME);
             }
           });
-        }
-        else {
+        } else {
           Swal.fire({
-            icon:'error',
-            title:'회원 탈퇴 실패',
-            text: '다시 시도해 주세요'
-          })
+            icon: 'error',
+            title: '회원 탈퇴 실패',
+            text: '다시 시도해 주세요',
+          });
         }
       }
     });
   };
   return (
-    <Flex direction="column" alignItems="center" w={"80%"} justifyContent="flex-start" height="100vh">
-      <VStack width={'100%'} spacing={'2rem'} h={"80%"}>
-        <Text fontSize={'3xl'} mt={"2rem"} fontWeight={'extrabold'}>
+    <Flex
+      direction="column"
+      alignItems="center"
+      w={'80%'}
+      justifyContent="flex-start"
+      height="100vh"
+    >
+      <VStack width={'100%'} spacing={'2rem'} h={'80%'}>
+        <Text fontSize={'3xl'} mt={'2rem'} fontWeight={'extrabold'}>
           회원탈퇴
         </Text>
         <Divider />
@@ -66,6 +72,5 @@ const DropPage = () => {
       </VStack>
     </Flex>
   );
-  
 };
 export default DropPage;

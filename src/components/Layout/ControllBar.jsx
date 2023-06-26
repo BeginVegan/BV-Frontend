@@ -23,6 +23,7 @@ import Swal from 'sweetalert2';
 import SocialKakao from '../LoginAPIs/SocialKakao';
 import SocialGoogle from '../LoginAPIs/SocialGoogle';
 import { loginMenuAtom } from '@/utils/atoms/loginMenuAtom';
+import Crypto from '@/utils/cryptoJS/crypto';
 
 function ControllBarContent({ isUserMenuOpen, navigate, logout, setIsUserMenuOpen }) {
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
@@ -51,7 +52,7 @@ function ControllBarContent({ isUserMenuOpen, navigate, logout, setIsUserMenuOpe
         onClick={() => setIsUserMenuOpen(p => !p)}
       >
         <>
-          {isAuthenticated && userStatus && (
+          {Crypto.decodeByAES256(isAuthenticated) && Crypto.decodeByAES256(userStatus) && (
             <Menu>
               <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
                 <HStack gap={2}>
@@ -64,10 +65,10 @@ function ControllBarContent({ isUserMenuOpen, navigate, logout, setIsUserMenuOpe
                     ml="2"
                   >
                     <Text fontSize="sm" fontWeight={600}>
-                      {userStatus.name}
+                      {JSON.parse(Crypto.decodeByAES256(userStatus)).name}
                     </Text>
                     <Text fontSize="xs" color="gray.600">
-                      {userStatus.role}
+                      {JSON.parse(Crypto.decodeByAES256(userStatus)).role}
                     </Text>
                   </VStack>
                   {!isUserMenuOpen ? <RiArrowDownSLine size={24} /> : <RiArrowUpSLine size={24} />}
@@ -81,7 +82,7 @@ function ControllBarContent({ isUserMenuOpen, navigate, logout, setIsUserMenuOpe
                 bg={useColorModeValue('white', 'gray.900')}
                 borderColor={useColorModeValue('gray.200', 'gray.700')}
               >
-                {userStatus && userStatus.role === 'admin' && (
+                {userStatus && JSON.parse(Crypto.decodeByAES256(userStatus)).role === 'admin' && (
                   <>
                     <MenuItem onClick={() => navigate(ROUTES.ADMIN_RAW)}>관리페이지</MenuItem>
                     <MenuItem onClick={() => navigate(`${ROUTES.ADMIN_RAW}/reservation`)}>
@@ -92,7 +93,7 @@ function ControllBarContent({ isUserMenuOpen, navigate, logout, setIsUserMenuOpe
                     </MenuItem>
                   </>
                 )}
-                {userStatus && userStatus.role === 'normal' && (
+                {userStatus && JSON.parse(Crypto.decodeByAES256(userStatus)).role === 'normal' && (
                   <>
                     <MenuItem onClick={() => navigate(ROUTES.MYPAGE_HOME)}>마이페이지</MenuItem>
                     <MenuItem onClick={() => navigate(ROUTES.MYPAGE_HISTORY)}>히스토리</MenuItem>
@@ -104,7 +105,7 @@ function ControllBarContent({ isUserMenuOpen, navigate, logout, setIsUserMenuOpe
               </MenuList>
             </Menu>
           )}
-          {!isAuthenticated && (
+          {Crypto.decodeByAES256(isAuthenticated) == 'false' && (
             <Menu isOpen={isOpen} onClose={() => closeMenuList()}>
               <MenuButton
                 w={'100px'}
@@ -167,8 +168,8 @@ const ControllBar = () => {
     if (res.status === 200) {
       localStorage.removeItem('isAuthenticated');
       localStorage.removeItem('userStatus');
-      setIsAuthenticated(false);
-      setUserStatus(null);
+      setIsAuthenticated(Crypto.encodeByAES256('false'));
+      setUserStatus(Crypto.encodeByAES256(''));
       Swal.fire({
         icon: 'success',
         title: '로그아웃 성공',

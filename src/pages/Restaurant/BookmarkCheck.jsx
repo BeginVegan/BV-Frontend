@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAtom } from 'jotai';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { loginMenuAtom } from '@/utils/atoms/loginMenuAtom';
+import Crypto from '@/utils/cryptoJS/crypto';
 
 const CustomRiHeart3Line = chakra(RiHeart3Line);
 const CustomRiHeart3Fill = chakra(RiHeart3Fill);
@@ -30,7 +31,7 @@ const BookmarkCheck = ({ restaurantNo }) => {
       }
     };
 
-    if (isAuthenticated === true) getBookmarkStatus();
+    if (Crypto.decodeByAES256(isAuthenticated) == 'true') getBookmarkStatus();
     else setIsBookmark(false);
   }, [restaurantNo, isAuthenticated]);
 
@@ -68,7 +69,7 @@ const BookmarkCheck = ({ restaurantNo }) => {
     }
   };
 
-  if (isAuthenticated != true) {
+  if (Crypto.decodeByAES256(isAuthenticated) != 'true') {
     return (
       <Tooltip hasArrow label="로그인 후 즐겨찾기 추가해보세요!" bg="red.400" placement="top">
         <Box position="relative" display="inline-block">

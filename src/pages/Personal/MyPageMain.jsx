@@ -27,6 +27,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoadingPage from '../Loading/LoadingPage';
 import { isCancellable } from './historyTabs/PurchaseHistory';
+import Crypto from '@/utils/cryptoJS/crypto';
 
 const MyPageMain = () => {
   const [userStatus, setUserStatus] = useAtom(userAtom);
@@ -73,14 +74,18 @@ const MyPageMain = () => {
   }, []);
 
   const getFetchUserInfo = async () => {
-    const res = await Axios.get(`member/${userStatus.email}`);
+    const res = await Axios.get(`member/${JSON.parse(Crypto.decodeByAES256(userStatus)).email}`);
     if (res.status === 200) {
-      setUserStatus({
-        email: res.data.memberEmail,
-        name: res.data.memberName,
-        point: res.data.memberPoint,
-        role: res.data.memberRole,
-      });
+      setUserStatus(
+        Crypto.encodeByAES256(
+          JSON.stringify({
+            email: res.data.memberEmail,
+            name: res.data.memberName,
+            point: res.data.memberPoint,
+            role: res.data.memberRole,
+          })
+        )
+      );
     }
   };
   useEffect(() => {
@@ -90,7 +95,8 @@ const MyPageMain = () => {
   }, [reviewList, reservationList, userStatus]);
 
   useEffect(() => {
-    if (userStatus && userStatus.email) getFetchUserInfo();
+    if (userStatus) return;
+    if (JSON.parse(Crypto.decodeByAES256(userStatus)).email) getFetchUserInfo();
   }, []);
   //예약중인 리스트 추출
   const onReadyReservationList = useMemo(() => {
@@ -129,16 +135,24 @@ const MyPageMain = () => {
   }, [doneReservationList, reviewList]);
 
   const getGradeIcon = () => {
-    if (!userStatus || userStatus.point === null || userStatus.point === undefined) {
+    if (
+      !userStatus ||
+      JSON.parse(Crypto.decodeByAES256(userStatus)).point === null ||
+      JSON.parse(Crypto.decodeByAES256(userStatus)).point === undefined
+    ) {
       return '-';
     }
-    if (userStatus.point < 10000) return '🌱';
-    if (userStatus.point < 50000) return '🌿';
-    if (userStatus.point < 100000) return '🪴';
+    if (JSON.parse(Crypto.decodeByAES256(userStatus)).point < 10000) return '🌱';
+    if (JSON.parse(Crypto.decodeByAES256(userStatus)).point < 50000) return '🌿';
+    if (JSON.parse(Crypto.decodeByAES256(userStatus)).point < 100000) return '🪴';
     return '🌳';
   };
   const getGradeName = () => {
-    if (!userStatus || userStatus.point === null || userStatus.point === undefined) {
+    if (
+      !userStatus ||
+      JSON.parse(Crypto.decodeByAES256(userStatus)).point === null ||
+      JSON.parse(Crypto.decodeByAES256(userStatus)).point === undefined
+    ) {
       return ' ';
     }
     if (userStatus.point < 10000) return '새싹';
@@ -153,7 +167,9 @@ const MyPageMain = () => {
         <VStack>
           <HStack>
             <Text fontSize={'4xl'} fontWeight={'bold'}>
-              {userStatus && userStatus.name ? userStatus.name : '-'}
+              {userStatus && JSON.parse(Crypto.decodeByAES256(userStatus)).name
+                ? JSON.parse(Crypto.decodeByAES256(userStatus)).name
+                : '-'}
             </Text>
             <Text fontSize={'3xl'}>님의 등급은</Text>
           </HStack>
@@ -197,7 +213,11 @@ const MyPageMain = () => {
           <WrapItem>
             <MyPageMainCard
               title="포인트"
-              value={userStatus && userStatus.point != null ? userStatus.point : '-'}
+              value={
+                userStatus && JSON.parse(Crypto.decodeByAES256(userStatus)).point != null
+                  ? JSON.parse(Crypto.decodeByAES256(userStatus)).point
+                  : '-'
+              }
             />
           </WrapItem>
         </Wrap>

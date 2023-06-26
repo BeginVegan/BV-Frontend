@@ -2,6 +2,7 @@ import { COLORS } from '@/constants/colors';
 import { ROUTES } from '@/routes/ROUTES';
 import { isAuthenticatedAtom } from '@/utils/atoms/isAuthenticatedAtom';
 import { userAtom } from '@/utils/atoms/userAtom';
+import Crypto from '@/utils/cryptoJS/crypto';
 import {
   Box,
   CloseButton,
@@ -99,8 +100,8 @@ const NavItem = ({ icon, route, onClose, children, ...rest }) => {
             text: '그동안 이용해 주셔서 감사합니다',
           }).then(res => {
             if (res.isConfirmed) {
-              setIsAuthenticated(false);
-              setUserStatus(null);
+              setIsAuthenticated(Crypto.encodeByAES256('false'));
+              setUserStatus(Crypto.encodeByAES256(''));
               navigate(ROUTES.HOME);
             }
           });
